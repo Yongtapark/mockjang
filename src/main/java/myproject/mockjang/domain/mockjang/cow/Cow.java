@@ -16,9 +16,10 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
+import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.domain.records.CowRecord;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
@@ -58,9 +59,13 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   @OneToMany(mappedBy = "cow")
   private List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
+  @OneToMany(mappedBy = "cow")
+  private List<CowRecord> records=new ArrayList<>();
+
   @Builder
-  public Cow(String cowId, Gender gender,Barn barn,Pen pen, SlaughterStatus slaughterStatus,
-      List<FeedConsumption> feedConsumptions) {
+  public Cow(String cowId, Gender gender, Barn barn, Pen pen, SlaughterStatus slaughterStatus,
+      List<FeedConsumption> feedConsumptions, List<CowRecord> records) {
+
     this.cowId = cowId;
     this.gender = gender;
     this.barn = barn;
@@ -68,6 +73,9 @@ public class Cow extends AbstractAuditable<Cow, Long> {
     this.slaughterStatus = slaughterStatus;
     if (feedConsumptions != null) {
       this.feedConsumptions = feedConsumptions;
+    }
+    if (records != null) {
+      this.records = records;
     }
   }
 
@@ -88,5 +96,9 @@ public class Cow extends AbstractAuditable<Cow, Long> {
       this.dad = parent;
     }
     parent.children.add(this);
+  }
+
+  public void registerDailyRecord(CowRecord record) {
+    records.add(record);
   }
 }
