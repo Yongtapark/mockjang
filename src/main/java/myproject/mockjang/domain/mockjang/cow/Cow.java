@@ -1,6 +1,5 @@
-package myproject.mockjang.domain.cow;
+package myproject.mockjang.domain.mockjang.cow;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,7 +16,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
+import myproject.mockjang.domain.mockjang.pen.Pen;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
@@ -38,6 +39,12 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   private SlaughterStatus slaughterStatus;
 
   @ManyToOne(fetch = FetchType.LAZY)
+  private Barn barn;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Pen pen;
+
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "mom_id")
   private Cow mom;
 
@@ -45,20 +52,27 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   @JoinColumn(name = "dad_id")
   private Cow dad;
 
-  @OneToMany(mappedBy = "mom", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "mom")
   private List<Cow> children = new ArrayList<>();
 
-  @OneToMany(mappedBy = "cow", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "cow")
   private List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
   @Builder
-  public Cow(String cowId, Gender gender, SlaughterStatus slaughterStatus, List<FeedConsumption> feedConsumptions) {
+  public Cow(String cowId, Gender gender,Barn barn,Pen pen, SlaughterStatus slaughterStatus,
+      List<FeedConsumption> feedConsumptions) {
     this.cowId = cowId;
     this.gender = gender;
+    this.barn = barn;
+    this.pen = pen;
     this.slaughterStatus = slaughterStatus;
     if (feedConsumptions != null) {
       this.feedConsumptions = feedConsumptions;
     }
+  }
+
+  public void registerPen(Pen pen) {
+    this.pen = pen;
   }
 
   public void registerAllChildren(List<Cow> children) {
