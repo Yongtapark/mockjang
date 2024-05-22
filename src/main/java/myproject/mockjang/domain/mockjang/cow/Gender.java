@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.cow;
+package myproject.mockjang.domain.mockjang.cow;
 
 import lombok.Getter;
 

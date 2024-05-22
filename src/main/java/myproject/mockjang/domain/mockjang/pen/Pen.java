@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
+import myproject.mockjang.domain.records.PenRecord;
 
 @Entity
 @Getter
@@ -28,13 +29,18 @@ public class Pen {
   private Barn barn;
   @OneToMany(mappedBy = "pen")
   private List<Cow> cows = new ArrayList<>();
+  @OneToMany(mappedBy = "pen")
+  private List<PenRecord> records = new ArrayList<>();
 
   @Builder
-  public Pen(String penId, Barn barn, List<Cow> cows) {
+  public Pen(String penId, Barn barn, List<Cow> cows, List<PenRecord> records) {
     this.penId = penId;
     this.barn = barn;
     if(cows!=null){
       this.cows = cows;
+    }
+    if(records !=null){
+      this.records = records;
     }
   }
 
@@ -50,5 +56,9 @@ public class Pen {
     for (Cow cow : cows) {
       registerCow(cow);
     }
+  }
+
+  public void registerDailyRecord(PenRecord record) {
+    records.add(record);
   }
 }

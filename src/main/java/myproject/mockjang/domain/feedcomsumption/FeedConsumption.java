@@ -11,7 +11,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.cow.Cow;
+import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.feed.Feed;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 

@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -34,7 +35,7 @@ public class Feed extends AbstractAuditable<Feed,Long> {
   private Double dailyConsumption;
 
   @OneToMany(mappedBy = "feed")
-  private List<FeedConsumption> feedConsumptions;
+  private List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
   @Builder
   public Feed(String name, LocalDate purchaseDate, LocalDate expirationDate, String description,
@@ -44,6 +45,8 @@ public class Feed extends AbstractAuditable<Feed,Long> {
     ExpirationDate = expirationDate;
     this.description = description;
     this.dailyConsumption = dailyConsumption;
-    this.feedConsumptions = feedConsumptions;
+    if(feedConsumptions != null) {
+      this.feedConsumptions = feedConsumptions;
+    }
   }
 }
