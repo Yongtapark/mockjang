@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.cow;
+package myproject.mockjang.domain.mockjang.cow;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -6,14 +6,15 @@ import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.Gender;
+import myproject.mockjang.domain.records.CowRecord;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class CowTest extends IntegrationTestSupport {
 
-  @DisplayName("어미 소가 자식을 등록 할 수 있다.")
+  @DisplayName("부모가 자식을 등록 할 수 있다.")
   @Test
-  void momRegisterAllChildren() {
+  void registerAllChildren() {
     //given
     Cow mom = createCow("0001", Gender.FEMALE);
     Cow child1 = createCow("0003", Gender.MALE);
@@ -29,9 +30,9 @@ class CowTest extends IntegrationTestSupport {
     assertThat(mom.getChildren()).contains(child1, child2, child3);
   }
 
-  @DisplayName("아비 소가 자식을 등록 할 수 있다.")
+  @DisplayName("부모가 자식을 등록 할 수 있다.")
   @Test
-  void dadRegisterAllChildrenF() {
+  void registerAllChildrenF() {
     //given
     Cow dad = createCow("0001", Gender.MALE);
     Cow child1 = createCow("0003", Gender.MALE);
@@ -62,10 +63,7 @@ class CowTest extends IntegrationTestSupport {
     //then
     assertThat(child1.getDad()).isEqualTo(dad);
     assertThat(child1.getMom()).isEqualTo(mom);
-  }
-
-  private static Cow createCow(String cowId, Gender gender) {
-    return Cow.builder().cowId(cowId).gender(gender).build();
+    assertThat(mom.getChildren()).hasSize(1);
   }
 
   @DisplayName("소는 ")

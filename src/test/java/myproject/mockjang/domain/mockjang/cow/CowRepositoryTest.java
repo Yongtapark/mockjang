@@ -1,16 +1,14 @@
-package myproject.mockjang.domain.cow;
+package myproject.mockjang.domain.mockjang.cow;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.domain.mockjang.cow.Cow;
-import myproject.mockjang.domain.mockjang.cow.CowRepository;
-import myproject.mockjang.domain.mockjang.cow.Gender;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 @Transactional
 class CowRepositoryTest extends IntegrationTestSupport {
@@ -38,14 +36,15 @@ class CowRepositoryTest extends IntegrationTestSupport {
     Cow mom = createCow("0001", Gender.FEMALE);
     Cow dad = createCow("0002", Gender.MALE);
     Cow child = createCow("0003", Gender.MALE);
-    cowRepository.save(mom);
-    cowRepository.save(dad);
     child.registerParent(mom);
     child.registerParent(dad);
+    cowRepository.save(mom);
+    cowRepository.save(dad);
     cowRepository.save(child);
 
     //when
     Cow findCow = cowRepository.findByCowId(child.getCowId());
+
 
     //then
     assertThat(findCow).isEqualTo(child);
@@ -80,10 +79,6 @@ class CowRepositoryTest extends IntegrationTestSupport {
     //then
     assertThat(findMomCow).isEqualTo(mom);
     assertThat(findMomCow.getChildren()).contains(savedChild1, savedChild2, savedChild3);
-  }
-
-  private static Cow createCow(String cowId, Gender gender) {
-    return Cow.builder().cowId(cowId).gender(gender).build();
   }
 
 }
