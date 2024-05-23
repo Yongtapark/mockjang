@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
-import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 
 @Entity

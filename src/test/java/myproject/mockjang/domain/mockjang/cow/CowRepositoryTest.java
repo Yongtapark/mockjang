@@ -41,6 +41,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
     cowRepository.save(mom);
     cowRepository.save(dad);
     cowRepository.save(child);
+    cowRepository.flush();
 
     //when
     Cow findCow = cowRepository.findByCowId(child.getCowId());
@@ -80,5 +81,4 @@ class CowRepositoryTest extends IntegrationTestSupport {
     assertThat(findMomCow).isEqualTo(mom);
     assertThat(findMomCow.getChildren()).contains(savedChild1, savedChild2, savedChild3);
   }
-
 }
