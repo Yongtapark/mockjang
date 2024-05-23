@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -100,5 +101,9 @@ public class Cow extends AbstractAuditable<Cow, Long> {
 
   public void registerDailyRecord(CowRecord record) {
     records.add(record);
+  }
+
+  public void registerFeedConsumptions(FeedConsumption feedConsumption){
+    feedConsumptions.add(feedConsumption);
   }
 }

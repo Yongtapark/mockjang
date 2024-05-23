@@ -18,17 +18,21 @@ import org.springframework.data.jpa.domain.AbstractAuditable;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Feed extends AbstractAuditable<Feed,Long> {
+public class Feed extends AbstractAuditable<Feed, Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  private String codeId;
 
   private String name;
 
   private LocalDate purchaseDate;
 
   private LocalDate ExpirationDate;
+
+  private Double amount;
 
   private String description;
 
@@ -38,15 +42,16 @@ public class Feed extends AbstractAuditable<Feed,Long> {
   private List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
   @Builder
-  public Feed(String name, LocalDate purchaseDate, LocalDate expirationDate, String description,
-      Double dailyConsumption, List<FeedConsumption> feedConsumptions) {
+  public Feed(String codeId, String name, LocalDate purchaseDate, LocalDate expirationDate,
+      Double amount, String description, Double dailyConsumption,
+      List<FeedConsumption> feedConsumptions) {
+    this.codeId = codeId;
     this.name = name;
     this.purchaseDate = purchaseDate;
     ExpirationDate = expirationDate;
+    this.amount = amount;
     this.description = description;
     this.dailyConsumption = dailyConsumption;
-    if(feedConsumptions != null) {
-      this.feedConsumptions = feedConsumptions;
-    }
+    this.feedConsumptions = feedConsumptions;
   }
 }

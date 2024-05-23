@@ -34,13 +34,21 @@ public class FeedConsumption extends AbstractAuditable<FeedConsumption, Long> {
 
   private LocalDate date;
 
-  private Double amount;
+  private Double dailyConsumptionAmount;
 
   @Builder
-  public FeedConsumption(Cow cow, Feed feed, LocalDate date, Double amount) {
+  public FeedConsumption(Cow cow, Feed feed, LocalDate date, Double dailyConsumptionAmount) {
     this.cow = cow;
     this.feed = feed;
     this.date = date;
-    this.amount = amount;
+    this.dailyConsumptionAmount = dailyConsumptionAmount;
+  }
+
+  public void registerDailyCowConsumption(){
+    cow.registerFeedConsumptions(this);
+  }
+
+  public String getFeedName() {
+   return feed.getName();
   }
 }
