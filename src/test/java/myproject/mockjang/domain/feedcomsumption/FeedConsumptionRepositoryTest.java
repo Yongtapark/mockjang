@@ -2,6 +2,7 @@ package myproject.mockjang.domain.feedcomsumption;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
