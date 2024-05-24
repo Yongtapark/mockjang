@@ -8,7 +8,6 @@ import myproject.mockjang.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 
 @Transactional
 class CowRepositoryTest extends IntegrationTestSupport {
@@ -46,7 +45,6 @@ class CowRepositoryTest extends IntegrationTestSupport {
     //when
     Cow findCow = cowRepository.findByCowId(child.getCowId());
 
-
     //then
     assertThat(findCow).isEqualTo(child);
     assertThat(findCow.getMom()).isEqualTo(mom);
@@ -80,5 +78,27 @@ class CowRepositoryTest extends IntegrationTestSupport {
     //then
     assertThat(findMomCow).isEqualTo(mom);
     assertThat(findMomCow.getChildren()).contains(savedChild1, savedChild2, savedChild3);
+  }
+
+  @DisplayName("도축,비도축 상태로 소들을 조회")
+  @Test
+  void findAllByCowStatus() {
+    //given
+    Cow cow1 = createCow("0001", Gender.FEMALE, CowStatus.SLAUGHTERED);
+    Cow cow2 = createCow("0002", Gender.MALE, CowStatus.RAISING);
+    Cow cow3 = createCow("0003", Gender.FEMALE, CowStatus.RAISING);
+    Cow cow4 = createCow("0004", Gender.MALE, CowStatus.RAISING);
+    cowRepository.save(cow1);
+    cowRepository.save(cow2);
+    cowRepository.save(cow3);
+    cowRepository.save(cow4);
+
+    //when
+    List<Cow> raisingCows = cowRepository.findAllByCowStatus(
+        CowStatus.RAISING);
+
+    //then
+    assertThat(raisingCows).hasSize(3);
+    assertThat(raisingCows).contains(cow2, cow3, cow4);
   }
 }
