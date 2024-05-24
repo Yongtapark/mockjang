@@ -13,6 +13,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
+import myproject.mockjang.exception.NegativeNumberException;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
@@ -30,13 +32,13 @@ public class Feed extends AbstractAuditable<Feed, Long> {
 
   private LocalDate purchaseDate;
 
-  private LocalDate ExpirationDate;
+  private LocalDate expirationDate;
 
   private Double amount;
 
   private String description;
-
   private Double dailyConsumption;
+  private FeedUsageStatus usageStatus;
 
   @OneToMany(mappedBy = "feed")
   private List<FeedConsumption> feedConsumptions = new ArrayList<>();
@@ -44,14 +46,26 @@ public class Feed extends AbstractAuditable<Feed, Long> {
   @Builder
   public Feed(String codeId, String name, LocalDate purchaseDate, LocalDate expirationDate,
       Double amount, String description, Double dailyConsumption,
-      List<FeedConsumption> feedConsumptions) {
+      List<FeedConsumption> feedConsumptions, FeedUsageStatus usageStatus) {
     this.codeId = codeId;
     this.name = name;
     this.purchaseDate = purchaseDate;
-    ExpirationDate = expirationDate;
+    this.expirationDate = expirationDate;
     this.amount = amount;
     this.description = description;
-    this.dailyConsumption = dailyConsumption;
-    this.feedConsumptions = feedConsumptions;
+    this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
+    this.usageStatus = usageStatus;
+  }
+  public void addDailyConsumptionAmount(Double dailyConsumptionAmount){
+    if(dailyConsumptionAmount<0){
+      throw new NegativeNumberException("error.validation.negativeNumber");
+    }
+    this.dailyConsumption+=dailyConsumptionAmount;
+  }
+
+  public void resetDailyConsumption() {
+    this.dailyConsumption=0.0;
   }
 }
+
+

@@ -48,7 +48,4 @@ public class FeedConsumption extends AbstractAuditable<FeedConsumption, Long> {
     cow.registerFeedConsumptions(this);
   }
 
-  public String getFeedName() {
-   return feed.getName();
-  }
 }
