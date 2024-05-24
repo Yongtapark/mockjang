@@ -4,13 +4,17 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.domain.mockjang.cow.Cow;
-import myproject.mockjang.domain.mockjang.cow.Gender;
-import myproject.mockjang.domain.records.CowRecord;
+import myproject.mockjang.exception.CowStatusException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 class CowTest extends IntegrationTestSupport {
+
+  @Autowired
+  MessageSource messageSource;
 
   @DisplayName("부모가 자식을 등록 할 수 있다.")
   @Test
@@ -66,13 +70,43 @@ class CowTest extends IntegrationTestSupport {
     assertThat(mom.getChildren()).hasSize(1);
   }
 
-  @DisplayName("소는 ")
+  @DisplayName("소의 도축상태를 변경한다.")
   @Test
-  void test() {
-      //given
+  void changeSlaughterStatus() {
+    //given
+    Cow cow = createCow("0001", Gender.MALE);
 
-      //when
+    //when
+    cow.changeSlaughterStatus(CowStatus.SLAUGHTERED);
 
-      //then
+    //then
+    assertThat(cow.getCowStatus()).isEqualTo(CowStatus.SLAUGHTERED);
+  }
+
+  @DisplayName("도축 상태인 소만 단가를 입력할 수 있다.")
+  @Test
+  void registerUnitPrice() {
+    //given
+    Cow cow = createCow("0001", Gender.MALE);
+    cow.registerCowStatus(CowStatus.SLAUGHTERED);
+
+    //when
+    cow.registerUnitPrice(100_000_000);
+
+    //then
+    assertThat(cow.getUnitPrice()).isEqualTo(100_000_000);
+  }
+
+  @DisplayName("비 도축 상태인 소는 단가를 입력하면 예외를 발생시킨다.")
+  @Test
+  void registerUnitPriceWithNoSLAUGHTERED() {
+    //given
+    Cow cow = createCow("0001", Gender.MALE);
+    cow.registerCowStatus(CowStatus.RAISING);
+
+    String korMessage = messageSource.getMessage("error.business.cow.status.onlySlaughtered", null, LocaleContextHolder.getLocale());
+    //when //then
+    assertThatThrownBy(() -> cow.registerUnitPrice(100_000_000)).isInstanceOf(
+        CowStatusException.class).hasMessage(korMessage);
   }
 }
