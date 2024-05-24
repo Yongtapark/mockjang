@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -21,6 +20,7 @@ import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.CowRecord;
+import myproject.mockjang.exception.CowStatusException;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
@@ -38,7 +38,7 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   private Gender gender;
 
   @Enumerated(EnumType.STRING)
-  private SlaughterStatus slaughterStatus;
+  private CowStatus cowStatus;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Barn barn;
@@ -63,15 +63,18 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   @OneToMany(mappedBy = "cow")
   private List<CowRecord> records=new ArrayList<>();
 
+  private Integer unitPrice;
+
   @Builder
-  public Cow(String cowId, Gender gender, Barn barn, Pen pen, SlaughterStatus slaughterStatus,
-      List<FeedConsumption> feedConsumptions, List<CowRecord> records) {
+  public Cow(String cowId, Gender gender, Barn barn, Pen pen, CowStatus cowStatus,
+      List<FeedConsumption> feedConsumptions, List<CowRecord> records, Integer unitPrice) {
 
     this.cowId = cowId;
     this.gender = gender;
     this.barn = barn;
     this.pen = pen;
-    this.slaughterStatus = slaughterStatus;
+    this.cowStatus = cowStatus;
+    this.unitPrice = unitPrice;
     if (feedConsumptions != null) {
       this.feedConsumptions = feedConsumptions;
     }
@@ -105,5 +108,20 @@ public class Cow extends AbstractAuditable<Cow, Long> {
 
   public void registerFeedConsumptions(FeedConsumption feedConsumption){
     feedConsumptions.add(feedConsumption);
+  }
+
+  public void changeSlaughterStatus(CowStatus cowStatus) {
+    this.cowStatus = cowStatus;
+  }
+
+  public void registerCowStatus(CowStatus cowStatus) {
+    this.cowStatus = cowStatus;
+  }
+
+  public void registerUnitPrice(Integer unitPrice) {
+    if(cowStatus!=CowStatus.SLAUGHTERED){
+      throw new CowStatusException("error.business.cow.status.onlySlaughtered");
+    }
+    this.unitPrice=unitPrice;
   }
 }
