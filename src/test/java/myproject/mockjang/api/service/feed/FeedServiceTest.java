@@ -58,14 +58,14 @@ class FeedServiceTest extends IntegrationTestSupport {
     FeedConsumption cornConsumption1 = FeedConsumption.builder().feed(corn)
         .dailyConsumptionAmount(6000.0).cow(cow1).date(eatDate1).build();
     FeedConsumption feedConsumption1 = FeedConsumption.builder().feed(feed)
-        .dailyConsumptionAmount(7000.0).cow(cow1).date(eatDate1).build();
+        .dailyConsumptionAmount(0.0).cow(cow1).date(eatDate1).build();
 
     FeedConsumption hayConsumption2 = FeedConsumption.builder().feed(hay)
         .dailyConsumptionAmount(5000.0).cow(cow2).date(eatDate1).build();
     FeedConsumption cornConsumption2 = FeedConsumption.builder().feed(corn)
         .dailyConsumptionAmount(6000.0).cow(cow2).date(eatDate1).build();
     FeedConsumption feedConsumption2 = FeedConsumption.builder().feed(feed)
-        .dailyConsumptionAmount(7000.0).cow(cow2).date(eatDate1).build();
+        .dailyConsumptionAmount(0.0).cow(cow2).date(eatDate1).build();
 
     hayConsumption1.registerDailyCowConsumption();
     cornConsumption1.registerDailyCowConsumption();
@@ -90,8 +90,8 @@ class FeedServiceTest extends IntegrationTestSupport {
 
     //then
     assertThat(findHay.getDailyConsumption()).isEqualTo(
-        hayConsumption1.getDailyConsumptionAmount() + hayConsumption1.getDailyConsumptionAmount());
-    assertThat(findCorn.getDailyConsumption()).isEqualTo(cornConsumption1.getDailyConsumptionAmount() + cornConsumption1.getDailyConsumptionAmount());
-    assertThat(findFeed.getDailyConsumption()).isEqualTo(feedConsumption1.getDailyConsumptionAmount() + feedConsumption1.getDailyConsumptionAmount());
+        hayConsumption1.getDailyConsumptionAmount() + hayConsumption2.getDailyConsumptionAmount());
+    assertThat(findCorn.getDailyConsumption()).isEqualTo(cornConsumption1.getDailyConsumptionAmount() + cornConsumption2.getDailyConsumptionAmount());
+    assertThat(findFeed.getDailyConsumption()).isEqualTo(feedConsumption1.getDailyConsumptionAmount() + feedConsumption2.getDailyConsumptionAmount());
   }
 }
