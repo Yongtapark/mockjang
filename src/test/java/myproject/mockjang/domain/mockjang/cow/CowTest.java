@@ -15,6 +15,8 @@ class CowTest extends IntegrationTestSupport {
   @Autowired
   MessageSource messageSource;
 
+  private static final int UNIT_PRICE_100_000_000 = 100_000_000;
+
   @DisplayName("부모가 자식을 등록 할 수 있다.")
   @Test
   void registerAllChildren() {
