@@ -4,9 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
-import myproject.mockjang.domain.Exceptions;
+import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.exception.CowStatusException;
+import myproject.mockjang.exception.cow.CowStatusException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ class CowTest extends IntegrationTestSupport {
 
   @Autowired
   MessageSource messageSource;
-
-  private static final int UNIT_PRICE_100_000_000 = 100_000_000;
 
   @DisplayName("부모가 자식을 등록 할 수 있다.")
   @Test
@@ -86,12 +84,12 @@ class CowTest extends IntegrationTestSupport {
     assertThat(cow.getCowStatus()).isEqualTo(CowStatus.SLAUGHTERED);
   }
 
-  @DisplayName("도축 상태인 소만 단가를 입력할 수 있다.")
+  @DisplayName("도축 상태인 소는 단가를 입력할 수 있다.")
   @Test
   void registerUnitPrice() {
     //given
     Cow cow = createCow("0001", Gender.MALE);
-    cow.registerCowStatus(CowStatus.SLAUGHTERED);
+    cow.changeCowStatus(CowStatus.SLAUGHTERED);
 
     //when
     cow.registerUnitPrice(UNIT_PRICE_100_000_000);
@@ -102,7 +100,18 @@ class CowTest extends IntegrationTestSupport {
 
   @DisplayName("비 도축 상태인 소는 단가를 입력하면 예외를 발생시킨다.")
   @Test
-  void registerUnitPriceWithNoSLAUGHTERED() {
+  void registerUnitPriceWithNotSlaughtered() {
+    //given
+    Cow cow = createCow("0001", Gender.MALE,CowStatus.RAISING);
+
+    //when //then
+    assertThatThrownBy(() -> cow.registerUnitPrice(UNIT_PRICE_100_000_000)).isInstanceOf(
+        CowStatusException.class).hasMessage(Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR.getMessage());
+  }
+
+  @DisplayName("cowStatus가 null인 소는 단가를 입력하면 예외를 발생시킨다.")
+  @Test
+  void registerUnitPriceWithNull() {
     //given
     Cow cow = createCow("0001", Gender.MALE);
 
