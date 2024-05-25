@@ -16,12 +16,12 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.Exceptions;
+import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.CowRecord;
-import myproject.mockjang.exception.CowStatusException;
+import myproject.mockjang.exception.cow.CowStatusException;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
@@ -62,7 +62,7 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   private List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
   @OneToMany(mappedBy = "cow")
-  private List<CowRecord> records=new ArrayList<>();
+  private List<CowRecord> records = new ArrayList<>();
 
   private Integer unitPrice;
 
@@ -107,7 +107,7 @@ public class Cow extends AbstractAuditable<Cow, Long> {
     records.add(record);
   }
 
-  public void registerFeedConsumptions(FeedConsumption feedConsumption){
+  public void registerFeedConsumptions(FeedConsumption feedConsumption) {
     feedConsumptions.add(feedConsumption);
   }
 
@@ -115,14 +115,14 @@ public class Cow extends AbstractAuditable<Cow, Long> {
     this.cowStatus = cowStatus;
   }
 
-  public void registerCowStatus(CowStatus cowStatus) {
+  public void changeCowStatus(CowStatus cowStatus) {
     this.cowStatus = cowStatus;
   }
 
   public void registerUnitPrice(Integer unitPrice) {
-    if(cowStatus!=CowStatus.SLAUGHTERED){
+    if (getCowStatus() == null || !getCowStatus().equals(CowStatus.SLAUGHTERED)) {
       throw new CowStatusException(Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR);
     }
-    this.unitPrice=unitPrice;
+    this.unitPrice = unitPrice;
   }
 }
