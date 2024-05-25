@@ -58,7 +58,7 @@ public class Feed extends AbstractAuditable<Feed, Long> {
   }
   public void addDailyConsumptionAmount(Double dailyConsumptionAmount){
     if(dailyConsumptionAmount<0){
-      throw new NegativeNumberException("error.validation.negativeNumber");
+      throw new NegativeNumberException("error.domain.negativeNumber");
     }
     this.dailyConsumption+=dailyConsumptionAmount;
   }

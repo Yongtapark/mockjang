@@ -16,15 +16,9 @@ public class GlobalExceptionHandler {
 
   private final MessageSource messageSource;
 
-  @ExceptionHandler(NegativeNumberException.class)
-  public ResponseEntity<String> handleNegativeNumberException(NegativeNumberException ex) {
-    String errorMessage = getErrorMessage(ex.getMessageKey());
-    return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-  }
-
-  @ExceptionHandler(CowStatusException.class)
-  public ResponseEntity<String> handleCowStatusException(CowStatusException ex) {
-    String errorMessage = getErrorMessage(ex.getMessageKey());
+  @ExceptionHandler({NegativeNumberException.class, CowStatusException.class})
+  public ResponseEntity<String> handleException(IllegalArgumentException ex) {
+    String errorMessage = getErrorMessage(ex.getMessage());
     return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
   }
 

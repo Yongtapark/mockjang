@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 
 class CowTest extends IntegrationTestSupport {
 
@@ -91,10 +90,10 @@ class CowTest extends IntegrationTestSupport {
     cow.registerCowStatus(CowStatus.SLAUGHTERED);
 
     //when
-    cow.registerUnitPrice(100_000_000);
+    cow.registerUnitPrice(UNIT_PRICE_100_000_000);
 
     //then
-    assertThat(cow.getUnitPrice()).isEqualTo(100_000_000);
+    assertThat(cow.getUnitPrice()).isEqualTo(UNIT_PRICE_100_000_000);
   }
 
   @DisplayName("비 도축 상태인 소는 단가를 입력하면 예외를 발생시킨다.")
@@ -102,11 +101,9 @@ class CowTest extends IntegrationTestSupport {
   void registerUnitPriceWithNoSLAUGHTERED() {
     //given
     Cow cow = createCow("0001", Gender.MALE);
-    cow.registerCowStatus(CowStatus.RAISING);
 
-    String korMessage = messageSource.getMessage("error.business.cow.status.onlySlaughtered", null, LocaleContextHolder.getLocale());
     //when //then
-    assertThatThrownBy(() -> cow.registerUnitPrice(100_000_000)).isInstanceOf(
-        CowStatusException.class).hasMessage(korMessage);
+    assertThatThrownBy(() -> cow.registerUnitPrice(UNIT_PRICE_100_000_000)).isInstanceOf(
+        CowStatusException.class).hasMessage(DOMAIN_ONLY_SLAUGHTERED_ERROR);
   }
 }

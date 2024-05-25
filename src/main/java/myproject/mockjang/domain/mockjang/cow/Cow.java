@@ -120,7 +120,7 @@ public class Cow extends AbstractAuditable<Cow, Long> {
 
   public void registerUnitPrice(Integer unitPrice) {
     if(cowStatus!=CowStatus.SLAUGHTERED){
-      throw new CowStatusException("error.business.cow.status.onlySlaughtered");
+      throw new CowStatusException("error.domain.cowStatus.onlySlaughtered");
     }
     this.unitPrice=unitPrice;
   }

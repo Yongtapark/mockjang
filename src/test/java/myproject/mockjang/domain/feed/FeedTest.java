@@ -15,6 +15,8 @@ class FeedTest extends IntegrationTestSupport {
   @DisplayName("일일소비량에 원하는 수량을 더한다.")
   @Test
   void addDailyConsumptionAmount() {
+    final double ADD_FEED_AMOUNT = 5.0;
+    final int TOTAL_FEED_AMOUNT = 10;
     //given
     LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
@@ -23,11 +25,11 @@ class FeedTest extends IntegrationTestSupport {
         .expirationDate(expireDate).usageStatus(USING).dailyConsumption(0.0).build();
 
     //when
-    hay.addDailyConsumptionAmount(5.0);
-    hay.addDailyConsumptionAmount(5.0);
+    hay.addDailyConsumptionAmount(ADD_FEED_AMOUNT);
+    hay.addDailyConsumptionAmount(ADD_FEED_AMOUNT);
 
     //then
-    assertThat(hay.getDailyConsumption()).isEqualTo(10);
+    assertThat(hay.getDailyConsumption()).isEqualTo(TOTAL_FEED_AMOUNT);
   }
 
   @DisplayName("일일소비량에 음수를 더하면 예외를 발생시킨다.")
@@ -38,11 +40,12 @@ class FeedTest extends IntegrationTestSupport {
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
 
     Feed hay = Feed.builder().name("건초").description("마른건초").purchaseDate(purchaseDate)
-        .expirationDate(expireDate).usageStatus(USING).dailyConsumption(0.0).build();
+        .expirationDate(expireDate).usageStatus(USING)
+        .dailyConsumption(INITIALIZE_DAILY_CONSUMPTION_TO_ZERO).build();
 
     //when //then
-    assertThatThrownBy(() -> hay.addDailyConsumptionAmount(-5.0)).isInstanceOf(
-        NegativeNumberException.class).hasMessage("error.validation.negativeNumber");
+    assertThatThrownBy(() -> hay.addDailyConsumptionAmount(NEGATIVE_NUMBER)).isInstanceOf(
+        NegativeNumberException.class).hasMessage(DOMAIN_NEGATIVE_NUMBER_ERROR);
   }
 
   @DisplayName("건초의 일일소비량을 0으로 초기화한다.")

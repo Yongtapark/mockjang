@@ -10,6 +10,19 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 public abstract class IntegrationTestSupport {
 
+  //ERROR
+  protected static final String DOMAIN_ONLY_SLAUGHTERED_ERROR = "error.domain.cowStatus.onlySlaughtered";
+  protected static final String DOMAIN_NEGATIVE_NUMBER_ERROR = "error.domain.negativeNumber";
+
+  protected static final String BUSINESS_ONLY_SLAUGHTERED_ERROR = "error.business.cowStatus.onlySlaughtered";
+
+  //COW
+  protected static final int UNIT_PRICE_100_000_000 = 100_000_000;
+
+  //FEED
+  protected static final double INITIALIZE_DAILY_CONSUMPTION_TO_ZERO = 0.0;
+  protected static final double NEGATIVE_NUMBER = -5.0;
+
   protected static Cow createCow(String cowId, Gender gender) {
     return Cow.builder().cowId(cowId).gender(gender).build();
   }
