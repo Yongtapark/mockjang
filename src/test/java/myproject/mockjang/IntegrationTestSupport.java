@@ -17,7 +17,6 @@ public abstract class IntegrationTestSupport {
   protected static final String BUSINESS_ONLY_SLAUGHTERED_ERROR = "error.business.cowStatus.onlySlaughtered";
 
   //COW
-  protected static final int UNIT_PRICE_100_000_000 = 100_000_000;
 
   //FEED
   protected static final double INITIALIZE_DAILY_CONSUMPTION_TO_ZERO = 0.0;
