@@ -33,7 +33,7 @@ public class Pen {
   private List<PenRecord> records = new ArrayList<>();
 
   @Builder
-  public Pen(String penId, Barn barn, List<Cow> cows, List<PenRecord> records) {
+  private Pen(String penId, Barn barn, List<Cow> cows, List<PenRecord> records) {
     this.penId = penId;
     this.barn = barn;
     if(cows!=null){
@@ -44,11 +44,22 @@ public class Pen {
     }
   }
 
+  public static Pen createPen(String penId) {
+    return Pen.builder()
+        .penId(penId)
+        .build();
+  }
+
   public void registerBarn(Barn barn) {
+    barn.registerPen(this);
     this.barn = barn;
   }
+  public void changeBarnTo(Barn barn) {
+    this.barn.deletePen(this);
+    registerBarn(barn);
+  }
+
   public void registerCow(Cow cow) {
-    cow.registerPen(this);
     cows.add(cow);
   }
 

@@ -31,12 +31,15 @@ public class Barn {
   private List<BarnRecord> records = new ArrayList<>();
 
   @Builder
-  public Barn(String barnId) {
+  private Barn(String barnId) {
     BarnId = barnId;
   }
 
+  public static Barn createBarn(String barnId) {
+    return Barn.builder().barnId(barnId).build();
+  }
+
   public void registerPen(Pen pen) {
-    pen.registerBarn(this);
     pens.add(pen);
   }
 
@@ -44,6 +47,10 @@ public class Barn {
     for (Pen pen : pens) {
       registerPen(pen);
     }
+  }
+
+  public void deletePen(Pen pen) {
+    pens.remove(pen);
   }
 
   public void registerDailyRecord(BarnRecord record) {
