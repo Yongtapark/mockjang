@@ -1,4 +1,4 @@
-package myproject.mockjang.domain;
+package myproject.mockjang.exception;
 
 import lombok.Getter;
 

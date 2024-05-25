@@ -1,7 +1,7 @@
-package myproject.mockjang.exception;
+package myproject.mockjang.exception.cow;
 
 import lombok.Getter;
-import myproject.mockjang.domain.Exceptions;
+import myproject.mockjang.exception.Exceptions;
 
 @Getter
 public class CowStatusException extends IllegalArgumentException{
