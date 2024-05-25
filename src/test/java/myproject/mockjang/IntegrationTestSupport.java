@@ -9,13 +9,6 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 @SpringBootTest
 public abstract class IntegrationTestSupport {
-
-  //ERROR
-  protected static final String DOMAIN_ONLY_SLAUGHTERED_ERROR = "error.domain.cowStatus.onlySlaughtered";
-  protected static final String DOMAIN_NEGATIVE_NUMBER_ERROR = "error.domain.negativeNumber";
-
-  protected static final String BUSINESS_ONLY_SLAUGHTERED_ERROR = "error.business.cowStatus.onlySlaughtered";
-
   //COW
 
   //FEED
