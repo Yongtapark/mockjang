@@ -1,8 +1,10 @@
 package myproject.mockjang.domain.mockjang.cow;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
+import myproject.mockjang.domain.Exceptions;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.exception.CowStatusException;
 import org.junit.jupiter.api.DisplayName;
@@ -106,6 +108,6 @@ class CowTest extends IntegrationTestSupport {
 
     //when //then
     assertThatThrownBy(() -> cow.registerUnitPrice(UNIT_PRICE_100_000_000)).isInstanceOf(
-        CowStatusException.class).hasMessage(DOMAIN_ONLY_SLAUGHTERED_ERROR);
+        CowStatusException.class).hasMessage(Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR.getMessage());
   }
 }

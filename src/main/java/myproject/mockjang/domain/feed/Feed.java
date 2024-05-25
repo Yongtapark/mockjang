@@ -12,6 +12,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import myproject.mockjang.domain.Exceptions;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.exception.NegativeNumberException;
 import org.antlr.v4.runtime.misc.NotNull;
@@ -58,7 +59,7 @@ public class Feed extends AbstractAuditable<Feed, Long> {
   }
   public void addDailyConsumptionAmount(Double dailyConsumptionAmount){
     if(dailyConsumptionAmount<0){
-      throw new NegativeNumberException("error.domain.negativeNumber");
+      throw new NegativeNumberException(Exceptions.DOMAIN_NEGATIVE_ERROR);
     }
     this.dailyConsumption+=dailyConsumptionAmount;
   }

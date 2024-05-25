@@ -1,5 +1,6 @@
 package myproject.mockjang.domain.feed;
 
+import static myproject.mockjang.domain.Exceptions.*;
 import static myproject.mockjang.domain.feed.FeedUsageStatus.USING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -45,7 +46,7 @@ class FeedTest extends IntegrationTestSupport {
 
     //when //then
     assertThatThrownBy(() -> hay.addDailyConsumptionAmount(NEGATIVE_NUMBER)).isInstanceOf(
-        NegativeNumberException.class).hasMessage(DOMAIN_NEGATIVE_NUMBER_ERROR);
+        NegativeNumberException.class).hasMessage(DOMAIN_NEGATIVE_ERROR.getMessage());
   }
 
   @DisplayName("건초의 일일소비량을 0으로 초기화한다.")

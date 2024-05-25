@@ -16,6 +16,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import myproject.mockjang.domain.Exceptions;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
@@ -120,7 +121,7 @@ public class Cow extends AbstractAuditable<Cow, Long> {
 
   public void registerUnitPrice(Integer unitPrice) {
     if(cowStatus!=CowStatus.SLAUGHTERED){
-      throw new CowStatusException("error.domain.cowStatus.onlySlaughtered");
+      throw new CowStatusException(Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR);
     }
     this.unitPrice=unitPrice;
   }
