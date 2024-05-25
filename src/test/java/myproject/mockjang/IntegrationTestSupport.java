@@ -10,7 +10,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 public abstract class IntegrationTestSupport {
   //COW
-
+  public static final int UNIT_PRICE_100_000_000 = 100_000_000;
   //FEED
   protected static final double INITIALIZE_DAILY_CONSUMPTION_TO_ZERO = 0.0;
   protected static final double NEGATIVE_NUMBER = -5.0;

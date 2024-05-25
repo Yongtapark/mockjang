@@ -1,13 +1,13 @@
 package myproject.mockjang.domain.feed;
 
-import static myproject.mockjang.domain.Exceptions.*;
+import static myproject.mockjang.exception.Exceptions.*;
 import static myproject.mockjang.domain.feed.FeedUsageStatus.USING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.exception.NegativeNumberException;
+import myproject.mockjang.exception.feed.NegativeNumberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

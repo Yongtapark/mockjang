@@ -12,10 +12,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.Exceptions;
+import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
-import myproject.mockjang.exception.NegativeNumberException;
-import org.antlr.v4.runtime.misc.NotNull;
+import myproject.mockjang.exception.feed.NegativeNumberException;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
