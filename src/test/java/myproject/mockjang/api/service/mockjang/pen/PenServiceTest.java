@@ -1,5 +1,7 @@
 package myproject.mockjang.api.service.mockjang.pen;
 
+import static myproject.mockjang.exception.Exceptions.COMMON_BLANK_STRING;
+import static myproject.mockjang.exception.Exceptions.COMMON_STRING_OVER_10;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -8,8 +10,10 @@ import java.util.NoSuchElementException;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
+import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.exception.common.StringException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +72,7 @@ class PenServiceTest extends IntegrationTestSupport {
     barnRepository.save(barn1);
     String penId = "1-1";
     Pen pen = Pen.createPen(penId);
-    pen.registerBarn(barn1);
+    pen.registerUpperGroup(barn1);
     penRepository.save(pen);
 
     //when
@@ -78,6 +82,31 @@ class PenServiceTest extends IntegrationTestSupport {
     assertThat(barn1.getPens()).isEmpty();
     assertThat(barn2.getPens()).hasSize(1);
     assertThat(barn2.getPens()).containsOnly(pen);
+  }
+
+
+  @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
+  @Test
+  void createBarnWithEmptyBarnId() {
+    //given // when //then
+    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY,null)).isInstanceOf(StringException.class)
+            .hasMessage(COMMON_BLANK_STRING.getMessage());
+  }
+
+  @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
+  @Test
+  void createBarnWithOnlySpaceBarnId() {
+    //given // when //then
+    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY,null)).isInstanceOf(StringException.class)
+            .hasMessage(COMMON_BLANK_STRING.getMessage());
+  }
+
+  @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
+  @Test
+  void createBarnWithOver10Size() {
+    //given // when //then
+    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY,null)).isInstanceOf(StringException.class)
+            .hasMessage(COMMON_STRING_OVER_10.getMessage());
   }
 
 
