@@ -7,8 +7,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.domain.mockjang.cow.Cow;
-import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import org.junit.jupiter.api.DisplayName;
@@ -56,8 +54,8 @@ class BarnTest extends IntegrationTestSupport {
         Barn barn = Barn.createBarn("1번축사");
         Pen pen1 = Pen.createPen("1-1");
         Pen pen2 = Pen.createPen("1-2");
-        pen1.registerBarn(barn);
-        pen2.registerBarn(barn);
+        pen1.registerUpperGroup(barn);
+        pen2.registerUpperGroup(barn);
 
         //when
         barn.deletePen(pen1);
@@ -88,7 +86,7 @@ class BarnTest extends IntegrationTestSupport {
         Pen relatedPen = Pen.createPen("1-1");
         Pen noRelatedPen = Pen.createPen("1-1");
 
-        relatedPen.registerBarn(barn);
+        relatedPen.registerUpperGroup(barn);
 
         //when //then
         assertThatThrownBy(()->barn.removeOneOfUnderGroups(noRelatedPen)).isInstanceOf(ThereIsNoGroupException.class).hasMessage(COMMON_NO_UNDER_GROUP.formatMessage(Barn.class));

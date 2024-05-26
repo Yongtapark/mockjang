@@ -23,7 +23,7 @@ class CowTest extends IntegrationTestSupport {
 
   @DisplayName("소를 등록하면 축사칸에 등록할 수 있다.")
   @Test
-  void registerPen() {
+  void registerUpperGroup() {
     //given
     Pen pen = Pen.createPen("1번축사");
     Cow mom = createCow("0001", Gender.FEMALE);
@@ -32,10 +32,10 @@ class CowTest extends IntegrationTestSupport {
     Cow child3 = createCow("0005", Gender.MALE);
 
     //when
-    mom.registerPen(pen);
-    child1.registerPen(pen);
-    child2.registerPen(pen);
-    child3.registerPen(pen);
+    mom.registerUpperGroup(pen);
+    child1.registerUpperGroup(pen);
+    child2.registerUpperGroup(pen);
+    child3.registerUpperGroup(pen);
     List<Cow> cows = pen.getCows();
 
     //then
@@ -52,10 +52,10 @@ class CowTest extends IntegrationTestSupport {
 
     Pen pen1 = Pen.createPen("1-1");
     Pen pen2 = Pen.createPen("1-2");
-    pen1.registerBarn(barn1);
-    pen2.registerBarn(barn2);
+    pen1.registerUpperGroup(barn1);
+    pen2.registerUpperGroup(barn2);
     Cow cow = createCow("0001", Gender.FEMALE);
-    cow.registerPen(pen1);
+    cow.registerUpperGroup(pen1);
 
     //when
     cow.changePen(pen2);
