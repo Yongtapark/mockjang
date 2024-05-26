@@ -11,13 +11,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.BarnRecord;
+import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Barn {
+public class Barn extends AbstractAuditable<YongTaPark,Long> {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -25,10 +27,10 @@ public class Barn {
   private String BarnId;
 
   @OneToMany(mappedBy = "barn")
-  private List<Pen> pens = new ArrayList<>();
+  private final List<Pen> pens = new ArrayList<>();
 
   @OneToMany(mappedBy ="barn")
-  private List<BarnRecord> records = new ArrayList<>();
+  private final List<BarnRecord> records = new ArrayList<>();
 
   @Builder
   private Barn(String barnId) {
@@ -39,13 +41,13 @@ public class Barn {
     return Barn.builder().barnId(barnId).build();
   }
 
-  public void registerPen(Pen pen) {
+  public void addPen(Pen pen) {
     pens.add(pen);
   }
 
-  public void registerPen(List<Pen> pens) {
+  public void addPen(List<Pen> pens) {
     for (Pen pen : pens) {
-      registerPen(pen);
+      addPen(pen);
     }
   }
 

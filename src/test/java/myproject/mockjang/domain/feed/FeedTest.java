@@ -1,7 +1,7 @@
 package myproject.mockjang.domain.feed;
 
-import static myproject.mockjang.exception.Exceptions.*;
 import static myproject.mockjang.domain.feed.FeedUsageStatus.USING;
+import static myproject.mockjang.exception.Exceptions.DOMAIN_NEGATIVE_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

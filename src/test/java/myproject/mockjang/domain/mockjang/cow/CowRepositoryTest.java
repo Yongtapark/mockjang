@@ -2,16 +2,22 @@ package myproject.mockjang.domain.mockjang.cow;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.domain.mockjang.barn.Barn;
+import myproject.mockjang.domain.mockjang.barn.BarnRepository;
+import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.domain.mockjang.pen.PenRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Transactional
 class CowRepositoryTest extends IntegrationTestSupport {
 
+  @Autowired
+  private BarnRepository barnRepository;
+  @Autowired
+  private PenRepository penRepository;
   @Autowired
   private CowRepository cowRepository;
 
@@ -100,5 +106,39 @@ class CowRepositoryTest extends IntegrationTestSupport {
     //then
     assertThat(raisingCows).hasSize(3);
     assertThat(raisingCows).contains(cow2, cow3, cow4);
+  }
+
+  @DisplayName("축사칸을 변경 할 수 있다.")
+  @Test
+  void changePen() {
+    //given
+    Barn barn1 = Barn.createBarn("1번축사");
+    Barn barn2 = Barn.createBarn("2번축사");
+
+    barnRepository.save(barn1);
+    barnRepository.save(barn2);
+
+    Pen pen1 = Pen.createPen("1-1");
+    Pen pen2 = Pen.createPen("1-2");
+    pen1.registerBarn(barn1);
+    pen2.registerBarn(barn2);
+    penRepository.save(pen1);
+    penRepository.save(pen2);
+
+    Cow cow = createCow("0001", Gender.FEMALE);
+    cow.registerPen(pen1);
+    cowRepository.save(cow);
+
+    //when
+    cow.changePen(pen2);
+
+    List<Cow> cows1 = penRepository.findById(pen1.getId()).orElseThrow().getCows();
+    List<Cow> cows2 = penRepository.findById(pen2.getId()).orElseThrow().getCows();
+
+    //then
+    assertThat(cow.getBarn()).isEqualTo(barn2);
+    assertThat(cow.getPen()).isEqualTo(pen2);
+    assertThat(cows1).isEmpty();
+    assertThat(cows2).containsOnly(cow);
   }
 }

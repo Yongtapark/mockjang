@@ -3,7 +3,6 @@ package myproject.mockjang.api.service.feed;
 import static myproject.mockjang.domain.feed.FeedUsageStatus.USING;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
@@ -16,7 +15,6 @@ import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-@Transactional
 class FeedServiceTest extends IntegrationTestSupport {
 
   @Autowired

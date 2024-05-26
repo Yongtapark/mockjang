@@ -1,7 +1,7 @@
 package myproject.mockjang.domain.records;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.Embedded;
+import static myproject.mockjang.exception.Exceptions.DOMAIN_NO_COW_OR_PEN_OR_BARN;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.exception.record.RecordException;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -27,15 +29,23 @@ public class CowRecord extends Records{
   private Barn barn;
 
   @Builder
-  public CowRecord(Cow cow, Pen pen, Barn barn) {
+  private CowRecord(Cow cow, Pen pen, Barn barn) {
     this.cow = cow;
     this.pen = pen;
     this.barn = barn;
   }
 
-  public void writeRecord(String memo) {
+  public static CowRecord createMemo(Cow cow) {
+    return CowRecord.builder()
+        .cow(cow)
+        .pen(cow.getPen())
+        .barn(cow.getBarn())
+        .build();
+  }
+
+  public void writeDownMemo(String memo) {
     if(barn==null || cow==null || pen==null) {
-      throw new RuntimeException("there is no barn or cow");
+      throw new RecordException(DOMAIN_NO_COW_OR_PEN_OR_BARN);
     }
     writeMemo(memo);
     cow.registerDailyRecord(this);

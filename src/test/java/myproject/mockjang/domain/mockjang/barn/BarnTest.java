@@ -1,11 +1,10 @@
 package myproject.mockjang.domain.mockjang.barn;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,17 +14,12 @@ class BarnTest extends IntegrationTestSupport {
   @Test
   void registerOnePen() {
     //given
-    Barn barn = Barn.builder()
-        .barnId("1번축사")
-        .build();
+    Barn barn = Barn.createBarn("1번축사");
 
-    Pen pen = Pen.builder()
-        .penId("1-1")
-        .barn(barn)
-        .build();
+    Pen pen = Pen.createPen("1-1");
 
     //when
-    barn.registerPen(pen);
+    barn.addPen(pen);
 
     //then
     assertThat(barn.getPens()).hasSize(1);
@@ -36,25 +30,37 @@ class BarnTest extends IntegrationTestSupport {
   @Test
   void registerMultiPen() {
     //given
-    Barn barn = Barn.builder()
-        .barnId("1번축사")
-        .build();
+    Barn barn = Barn.createBarn("1번축사");
 
-    Pen pen1 = Pen.builder()
-        .penId("1-1")
-        .barn(barn)
-        .build();
-    Pen pen2 = Pen.builder()
-        .penId("1-2")
-        .barn(barn)
-        .build();
+    Pen pen1 = Pen.createPen("1-1");
+    Pen pen2 = Pen.createPen("1-2");
 
     //when
-    barn.registerPen(List.of(pen1,pen2));
+    barn.addPen(List.of(pen1, pen2));
 
     //then
     assertThat(barn.getPens()).hasSize(2);
-    assertThat(barn.getPens()).contains(pen1,pen2);
+    assertThat(barn.getPens()).contains(pen1, pen2);
   }
 
+  @DisplayName("축사의 축사칸을 제거한다")
+  @Test
+  void deletePen() {
+    //given
+    Barn barn = Barn.createBarn("1번축사");
+    Pen pen1 = Pen.createPen("1-1");
+    Pen pen2 = Pen.createPen("1-2");
+    pen1.registerBarn(barn);
+    pen2.registerBarn(barn);
+
+    //when
+    barn.deletePen(pen1);
+
+    List<Pen> pens = barn.getPens();
+
+    //then
+    assertThat(pens).hasSize(1);
+    assertThat(pens).doesNotContain(pen1);
+    assertThat(pens).contains(pen2);
+  }
 }

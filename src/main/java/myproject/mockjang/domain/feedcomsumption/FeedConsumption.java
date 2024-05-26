@@ -11,14 +11,15 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.mockjang.cow.Cow;
+import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.feed.Feed;
+import myproject.mockjang.domain.mockjang.cow.Cow;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class FeedConsumption extends AbstractAuditable<FeedConsumption, Long> {
+public class FeedConsumption extends AbstractAuditable<YongTaPark, Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class FeedConsumption extends AbstractAuditable<FeedConsumption, Long> {
   private Double dailyConsumptionAmount;
 
   @Builder
-  public FeedConsumption(Cow cow, Feed feed, LocalDate date, Double dailyConsumptionAmount) {
+  private FeedConsumption(Cow cow, Feed feed, LocalDate date, Double dailyConsumptionAmount) {
     this.cow = cow;
     this.feed = feed;
     this.date = date;

@@ -1,5 +1,7 @@
 package myproject.mockjang.domain.mockjang.cow;
 
+import static myproject.mockjang.exception.Exceptions.DOMAIN_BARN_ALREADY_EXIST;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,30 +12,35 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.CowRecord;
+import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Cow extends AbstractAuditable<Cow, Long> {
+public class Cow extends AbstractAuditable<YongTaPark, Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String cowId;
+
+  private LocalDateTime birthDate;
 
   @Enumerated(EnumType.STRING)
   private Gender gender;
@@ -56,7 +63,7 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   private Cow dad;
 
   @OneToMany(mappedBy = "mom")
-  private List<Cow> children = new ArrayList<>();
+  private final List<Cow> children = new ArrayList<>();
 
   @OneToMany(mappedBy = "cow")
   private List<FeedConsumption> feedConsumptions = new ArrayList<>();
@@ -67,10 +74,11 @@ public class Cow extends AbstractAuditable<Cow, Long> {
   private Integer unitPrice;
 
   @Builder
-  public Cow(String cowId, Gender gender, Barn barn, Pen pen, CowStatus cowStatus,
+  private Cow(String cowId, LocalDateTime birthDate, Gender gender, Barn barn, Pen pen, CowStatus cowStatus,
       List<FeedConsumption> feedConsumptions, List<CowRecord> records, Integer unitPrice) {
 
     this.cowId = cowId;
+    this.birthDate = birthDate;
     this.gender = gender;
     this.barn = barn;
     this.pen = pen;
@@ -84,8 +92,41 @@ public class Cow extends AbstractAuditable<Cow, Long> {
     }
   }
 
+  public static Cow createCow(String cowId,Gender gender,CowStatus cowStatus,
+      LocalDateTime birthDate) {
+    return Cow.builder()
+        .cowId(cowId)
+        .birthDate(birthDate)
+        .gender(gender)
+        .cowStatus(cowStatus)
+        .build();
+  }
+
+  public void registerBarn(Barn barn) {
+    if (this.barn != null) {
+      throw new UpperGroupAlreadyExistException(DOMAIN_BARN_ALREADY_EXIST);
+    }
+    this.barn=barn;
+  }
+
+  private void changeBarn(Barn barn) {
+    this.barn=null;
+    this.barn =barn;
+  }
+
   public void registerPen(Pen pen) {
+    if (this.pen != null) {
+      throw new UpperGroupAlreadyExistException(DOMAIN_BARN_ALREADY_EXIST);
+    }
     this.pen = pen;
+    pen.addCow(this);
+  }
+
+  public void changePen(Pen pen) {
+    this.pen.deleteCow(this);
+    this.pen=null;
+    changeBarn(pen.getBarn());
+    registerPen(pen);
   }
 
   public void registerAllChildren(List<Cow> children) {

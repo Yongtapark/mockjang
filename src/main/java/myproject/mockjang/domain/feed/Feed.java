@@ -12,21 +12,22 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
+import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.feed.NegativeNumberException;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Feed extends AbstractAuditable<Feed, Long> {
+public class Feed extends AbstractAuditable<YongTaPark, Long> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String codeId;
+  private String feedId;
 
   private String name;
 
@@ -41,13 +42,13 @@ public class Feed extends AbstractAuditable<Feed, Long> {
   private FeedUsageStatus usageStatus;
 
   @OneToMany(mappedBy = "feed")
-  private List<FeedConsumption> feedConsumptions = new ArrayList<>();
+  private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
   @Builder
-  public Feed(String codeId, String name, LocalDate purchaseDate, LocalDate expirationDate,
+  private Feed(String feedId, String name, LocalDate purchaseDate, LocalDate expirationDate,
       Double amount, String description, Double dailyConsumption,
       List<FeedConsumption> feedConsumptions, FeedUsageStatus usageStatus) {
-    this.codeId = codeId;
+    this.feedId = feedId;
     this.name = name;
     this.purchaseDate = purchaseDate;
     this.expirationDate = expirationDate;

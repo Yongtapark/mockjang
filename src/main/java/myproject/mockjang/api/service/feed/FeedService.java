@@ -6,6 +6,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.domain.feed.Feed;
 import myproject.mockjang.domain.feed.FeedRepository;
+import myproject.mockjang.domain.feed.FeedUsageStatus;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumptionRepository;
 import org.springframework.stereotype.Service;
@@ -14,22 +15,35 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class FeedService {
-
+  private final FeedRepository feedRepository;
   private final FeedConsumptionRepository feedConsumptionRepository;
+
+ /* public Feed findByFeedId() {
+    feedRepository.findAl
+  }*/
+
+  public List<Feed> findUsingFeeds() {
+    return feedRepository.findAllByUsageStatus(FeedUsageStatus.USING);
+  }
+
+  public List<Feed> findAll() {
+    return feedRepository.findAll();
+  }
 
   public void calculateMultiDailyConsumption(LocalDate eatDate,List<Feed> feeds) {
     List<FeedConsumption> dailyConsumptions = feedConsumptionRepository.findAllByDate(eatDate);
     for (Feed feed : feeds) {
-      calculateOneFeedConsumption(feed, dailyConsumptions);
-    }
-  }
-
-  private void calculateOneFeedConsumption(Feed feed, List<FeedConsumption> dailyConsumptions) {
-    feed.resetDailyConsumption();
-    for (FeedConsumption dailyConsumption : dailyConsumptions) {
-      if (dailyConsumption.getFeed().equals(feed)) {
-        feed.addDailyConsumptionAmount(dailyConsumption.getDailyConsumptionAmount());
+      feed.resetDailyConsumption();
+      for (FeedConsumption dailyConsumption : dailyConsumptions) {
+        calculateOneFeedConsumption(feed, dailyConsumption);
       }
     }
   }
+
+  private void calculateOneFeedConsumption(Feed feed, FeedConsumption dailyConsumption) {
+    if (dailyConsumption.getFeed().equals(feed)) {
+      feed.addDailyConsumptionAmount(dailyConsumption.getDailyConsumptionAmount());
+    }
+  }
+
 }

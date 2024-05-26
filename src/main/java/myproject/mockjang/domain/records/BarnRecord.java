@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
-import myproject.mockjang.domain.mockjang.pen.Pen;
 
 @Entity
 @Getter
@@ -19,11 +18,15 @@ public class BarnRecord extends Records{
   private Barn barn;
 
   @Builder
-  public BarnRecord(Barn barn) {
+  private BarnRecord(Barn barn) {
     this.barn = barn;
   }
 
-  public void writeRecord(String memo) {
+  public static BarnRecord creatMemo(Barn barn) {
+    return BarnRecord.builder().barn(barn).build();
+  }
+
+  public void writeDownMemo(String memo) {
     if(barn==null) {
       throw new RuntimeException("there is no barn or cow");
     }

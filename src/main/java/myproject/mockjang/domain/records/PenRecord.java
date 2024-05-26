@@ -22,15 +22,16 @@ public class PenRecord extends Records{
   private Barn barn;
 
   @Builder
-  public PenRecord(Pen pen, Barn barn) {
+  private PenRecord(Barn barn,Pen pen) {
     this.pen = pen;
-    this.barn = barn;
+    this.barn =barn;
   }
 
-  public void writeRecord(String memo) {
-    if(barn==null || pen==null) {
-      throw new RuntimeException("there is no barn or cow");
-    }
+  public static PenRecord createMemo(Pen pen) {
+    return PenRecord.builder().pen(pen).barn(pen.getBarn()).build();
+  }
+
+  public void writeDownMemo(String memo) {
     writeMemo(memo);
     pen.registerDailyRecord(this);
   }
