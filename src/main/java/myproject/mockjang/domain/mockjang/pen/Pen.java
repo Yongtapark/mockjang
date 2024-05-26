@@ -1,5 +1,7 @@
 package myproject.mockjang.domain.mockjang.pen;
 
+import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
+import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
 import static myproject.mockjang.exception.Exceptions.DOMAIN_BARN_ALREADY_EXIST;
 
 import jakarta.persistence.Entity;
@@ -16,16 +18,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.creater.YongTaPark;
+import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.records.PenRecord;
+import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Pen extends AbstractAuditable<YongTaPark,Long> {
+public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -55,18 +59,21 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> {
         .build();
   }
 
-  public void registerBarn(Barn barn) {
-    if (this.barn != null) {
-      throw new UpperGroupAlreadyExistException(DOMAIN_BARN_ALREADY_EXIST);
+  @Override
+  public void registerUpperGroup(Mockjang mockjang) {
+    if(mockjang instanceof Barn barn){
+      if (this.barn != null) {
+        throw new UpperGroupAlreadyExistException(barn,DOMAIN_BARN_ALREADY_EXIST);
+      }
+      barn.addPen(this);
+      this.barn = barn;
     }
-    barn.addPen(this);
-    this.barn = barn;
   }
 
   public void changeBarnTo(Barn barn) {
     this.barn.deletePen(this);
     this.barn = null;
-    registerBarn(barn);
+    registerUpperGroup(barn);
   }
 
   public void addCow(Cow cow) {
@@ -85,5 +92,23 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> {
 
   public void deleteCow(Cow cow) {
     cows.remove(cow);
+  }
+
+  @Override
+  public Mockjang getUpperGroup() {
+    if(barn==null){
+      throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP,this);
+    }
+    return barn;
+  }
+
+  @Override
+  public void removeOneOfUnderGroups(Mockjang mockjang) {
+    if(cows.isEmpty()){
+      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP,this);
+    }
+    if(!cows.remove(mockjang)){
+      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP,this);
+    }
   }
 }
