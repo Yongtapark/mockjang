@@ -120,13 +120,13 @@ class CowRepositoryTest extends IntegrationTestSupport {
 
     Pen pen1 = Pen.createPen("1-1");
     Pen pen2 = Pen.createPen("1-2");
-    pen1.registerBarn(barn1);
-    pen2.registerBarn(barn2);
+    pen1.registerUpperGroup(barn1);
+    pen2.registerUpperGroup(barn2);
     penRepository.save(pen1);
     penRepository.save(pen2);
 
     Cow cow = createCow("0001", Gender.FEMALE);
-    cow.registerPen(pen1);
+    cow.registerUpperGroup(pen1);
     cowRepository.save(cow);
 
     //when
