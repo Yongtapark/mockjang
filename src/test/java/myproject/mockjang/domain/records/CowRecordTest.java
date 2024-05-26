@@ -19,7 +19,7 @@ class CowRecordTest extends IntegrationTestSupport {
     Barn barn = Barn.builder().barnId("1번축사").build();
     Pen pen = Pen.builder().penId("1-1").barn(barn).build();
     Cow cow = Cow.builder().cowId("1111").build();
-    cow.registerPen(pen);
+    cow.registerUpperGroup(pen);
     cow.registerBarn(barn);
 
     CowRecord cowRecord1 = CowRecord.createMemo(cow);

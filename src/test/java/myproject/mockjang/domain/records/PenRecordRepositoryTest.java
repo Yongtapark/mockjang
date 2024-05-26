@@ -33,7 +33,7 @@ class PenRecordRepositoryTest extends IntegrationTestSupport {
         .penId("1-1")
         .build();
 
-    pen.registerBarn(barn);
+    pen.registerUpperGroup(barn);
     penRepository.save(pen);
 
     PenRecord penRecord1 = PenRecord.createMemo(pen);

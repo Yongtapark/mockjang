@@ -33,7 +33,7 @@ class CowRecordRepositoryTest extends IntegrationTestSupport {
     Pen pen = Pen.builder().penId("1-1").barn(barn).build();
     penRepository.save(pen);
     Cow cow = Cow.builder().cowId("1111").build();
-    cow.registerPen(pen);
+    cow.registerUpperGroup(pen);
     cow.registerBarn(barn);
     cowRepository.save(cow);
     CowRecord cowRecord1 = CowRecord.createMemo(cow);
