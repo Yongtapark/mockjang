@@ -20,7 +20,7 @@ class FeedRepositoryTest extends IntegrationTestSupport {
     LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
     Feed feed = Feed.builder()
-        .codeId("xxxx")
+        .feedId("xxxx")
         .name("건초")
         .purchaseDate(purchaseDate)
         .expirationDate(expireDate)
