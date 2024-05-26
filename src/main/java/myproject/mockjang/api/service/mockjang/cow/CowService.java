@@ -5,6 +5,7 @@ import static myproject.mockjang.exception.Exceptions.BUSINESS_ONLY_SLAUGHTERED_
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import myproject.mockjang.api.service.mockjang.MockjangService;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
@@ -16,13 +17,14 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CowService {
+public class CowService extends MockjangService {
 
   private final CowRepository cowRepository;
 
   public Cow createRaisingCow(String cowId, Gender gender, Pen pen, LocalDateTime birthDate) {
+    codeIdFilter(cowId);
     Cow rasingCow = Cow.createCow(cowId, gender, CowStatus.RAISING,birthDate);
-    rasingCow.registerPen(pen);
+    rasingCow.registerUpperGroup(pen);
     rasingCow.registerBarn(pen.getBarn());
     return cowRepository.save(rasingCow);
   }
