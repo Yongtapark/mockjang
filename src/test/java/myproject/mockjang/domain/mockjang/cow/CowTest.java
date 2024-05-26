@@ -1,5 +1,6 @@
 package myproject.mockjang.domain.mockjang.cow;
 
+import static myproject.mockjang.exception.Exceptions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -7,7 +8,7 @@ import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.junit.jupiter.api.DisplayName;
@@ -157,7 +158,7 @@ class CowTest extends IntegrationTestSupport {
 
     //when //then
     assertThatThrownBy(() -> cow.registerUnitPrice(UNIT_PRICE_100_000_000)).isInstanceOf(
-        CowStatusException.class).hasMessage(Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR.getMessage());
+        CowStatusException.class).hasMessage(DOMAIN_ONLY_SLAUGHTERED_ERROR.getMessage());
   }
 
   @DisplayName("cowStatus가 null인 소는 단가를 입력하면 예외를 발생시킨다.")
@@ -168,12 +169,12 @@ class CowTest extends IntegrationTestSupport {
 
     //when //then
     assertThatThrownBy(() -> cow.registerUnitPrice(UNIT_PRICE_100_000_000)).isInstanceOf(
-        CowStatusException.class).hasMessage(Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR.getMessage());
+        CowStatusException.class).hasMessage(DOMAIN_ONLY_SLAUGHTERED_ERROR.getMessage());
   }
 
   @DisplayName("이미 축사가 등록된 소에게 축사를 등록하면 예외를 발생시킨다.")
   @Test
-  void test() {
+  void whenMultiRegisterBarn() {
     //given
     Barn barn1 = Barn.createBarn("1번축사");
     Barn barn2 = Barn.createBarn("2번축사");
@@ -182,6 +183,26 @@ class CowTest extends IntegrationTestSupport {
 
     //when //then
     assertThatThrownBy(() -> cow.registerBarn(barn2)).isInstanceOf(
-        UpperGroupAlreadyExistException.class);
+        UpperGroupAlreadyExistException.class).hasMessage(DOMAIN_BARN_ALREADY_EXIST.formatMessage(Barn.class));
+  }
+
+  @DisplayName("호출 시점에 상위 그룹이 존재하지 않을 시 예외를 발생시킨다.")
+  @Test
+  void getUpperGroupWithNoUpperGroup() {
+    //given
+    Cow cow = createCow("0001", Gender.MALE);
+
+    //when //then
+    assertThatThrownBy(cow::getUpperGroup).isInstanceOf(ThereIsNoGroupException.class).hasMessage(COMMON_NO_UPPER_GROUP.formatMessage(Cow.class));
+  }
+
+  @DisplayName("호출 시점에 하위 그룹 리스트가 비어있다면 예외를 발생시킨다.")
+  @Test
+  void removeOneOfUnderGroupsWithNoUnderGroup() {
+    //given
+    Cow cow = createCow("0001", Gender.MALE);
+
+    //when //then
+    assertThatThrownBy(()->cow.removeOneOfUnderGroups(null)).isInstanceOf(ThereIsNoGroupException.class).hasMessage(COMMON_NO_UNDER_GROUP.formatMessage(Cow.class));
   }
 }
