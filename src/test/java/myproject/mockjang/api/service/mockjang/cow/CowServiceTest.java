@@ -1,6 +1,8 @@
 package myproject.mockjang.api.service.mockjang.cow;
 
 import static myproject.mockjang.exception.Exceptions.BUSINESS_ONLY_SLAUGHTERED_ERROR;
+import static myproject.mockjang.exception.Exceptions.COMMON_BLANK_STRING;
+import static myproject.mockjang.exception.Exceptions.COMMON_STRING_OVER_10;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -16,6 +18,7 @@ import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.exception.common.StringException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,7 +42,7 @@ class CowServiceTest extends IntegrationTestSupport {
     Barn barn = Barn.createBarn("1번축사");
     barnRepository.save(barn);
     Pen pen = Pen.createPen("1-1");
-    pen.registerBarn(barn);
+    pen.registerUpperGroup(barn);
     penRepository.save(pen);
     LocalDateTime birthDate = LocalDateTime.of(2024, 5, 25, 0, 0);
 
@@ -107,13 +110,13 @@ class CowServiceTest extends IntegrationTestSupport {
 
     Pen pen1 = Pen.createPen("1-1");
     Pen pen2 = Pen.createPen("1-2");
-    pen1.registerBarn(barn1);
-    pen2.registerBarn(barn2);
+    pen1.registerUpperGroup(barn1);
+    pen2.registerUpperGroup(barn2);
     penRepository.save(pen1);
     penRepository.save(pen2);
 
     Cow cow = createCow("0001", Gender.FEMALE);
-    cow.registerPen(pen1);
+    cow.registerUpperGroup(pen1);
     cowRepository.save(cow);
 
     //when
@@ -136,7 +139,7 @@ class CowServiceTest extends IntegrationTestSupport {
     Pen pen = Pen.createPen("1번축사");
     penRepository.save(pen);
     Cow cow = createCow("1111");
-    cow.registerPen(pen);
+    cow.registerUpperGroup(pen);
     cowRepository.save(cow);
 
     //when
@@ -146,6 +149,30 @@ class CowServiceTest extends IntegrationTestSupport {
     assertThatThrownBy(() -> cowRepository.findById(cow.getId()).orElseThrow())
         .isInstanceOf(NoSuchElementException.class);
     assertThat(pen.getCows()).isEmpty();
+  }
+
+  @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
+  @Test
+  void createCowWithEmptyBarnId() {
+    //given // when //then
+    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_EMPTY,Gender.FEMALE,null,null)).isInstanceOf(StringException.class)
+            .hasMessage(COMMON_BLANK_STRING.getMessage());
+  }
+
+  @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
+  @Test
+  void createCowWithOnlySpaceBarnId() {
+    //given // when //then
+    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_ONLY_SPACE,Gender.FEMALE,null,null)).isInstanceOf(StringException.class)
+            .hasMessage(COMMON_BLANK_STRING.getMessage());
+  }
+
+  @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
+  @Test
+  void createCowWithOver10Size() {
+    //given // when //then
+    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_OVER_10,Gender.FEMALE,null,null)).isInstanceOf(StringException.class)
+            .hasMessage(COMMON_STRING_OVER_10.getMessage());
   }
 
 }
