@@ -20,6 +20,8 @@ public enum Exceptions {
   DOMAIN_NEGATIVE_ERROR("음수 입력 시 예외 발생" ),
   //record
   DOMAIN_NO_COW_OR_PEN_OR_BARN("축사 || 축사칸 || 소 미입력"),
+  //noteParser
+  DOMAIN_NOTE_FORMAT("유효하지 않은 노트 형식 : %s"),
 
 
   BUSINESS_ONLY_SLAUGHTERED_ERROR("도축된 소만 입력이 가능합니다.");
@@ -32,5 +34,8 @@ public enum Exceptions {
 
   public String formatMessage(Class<? extends Mockjang> mockjang) {
     return String.format(getMessage(),mockjang.getSimpleName());
+  }
+  public String formatMessage(String content) {
+    return String.format(getMessage(),content);
   }
 }

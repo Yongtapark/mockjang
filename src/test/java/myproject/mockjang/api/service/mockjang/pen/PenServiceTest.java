@@ -105,7 +105,7 @@ class PenServiceTest extends IntegrationTestSupport {
   @Test
   void createBarnWithOver10Size() {
     //given // when //then
-    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY,null)).isInstanceOf(StringException.class)
+    assertThatThrownBy(() -> penService.createPen(STRING_OVER_10,null)).isInstanceOf(StringException.class)
             .hasMessage(COMMON_STRING_OVER_10.getMessage());
   }
 

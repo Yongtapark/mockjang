@@ -1,11 +1,9 @@
 package myproject.mockjang;
 
 import jakarta.transaction.Transactional;
-import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
-import myproject.mockjang.exception.Exceptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -23,6 +21,19 @@ public abstract class IntegrationTestSupport {
   //feed
   protected static final double INITIALIZE_DAILY_CONSUMPTION_TO_ZERO = 0.0;
   protected static final double NEGATIVE_NUMBER = -5.0;
+  //noteParser
+  protected static final String PARSER_BARN_CODE_ID_1 = "1번축사";
+  protected static final String PARSER_BARN_NOTE_1 = "1번축사 입력 테스트";
+  protected static final String PARSER_BARN_CODE_ID_2 = "2번축사";
+  protected static final String PARSER_BARN_NOTE_2 = "2번축사 입력 테스트";
+  protected static final String PARSER_PEN_CODE_ID_1 = "1-1";
+  protected static final String PARSER_PEN_NOTE_1 = "1-1 축사칸 입력 테스트";
+  protected static final String PARSER_PEN_CODE_ID_2 = "1-2";
+  protected static final String PARSER_PEN_NOTE_2 = "1-2 축사칸 입력 테스트";
+  protected static final String PARSER_COW_CODE_ID_1 = "0001";
+  protected static final String PARSER_COW_NOTE_1 = "0001 소 입력 테스트";
+  protected static final String PARSER_COW_CODE_ID_2 = "0002";
+  protected static final String PARSER_COW_NOTE_2 = "0002 소 입력 테스트";
 
   public Cow createCow(String number) {
     return Cow.builder().cowId(number).build();

@@ -18,10 +18,6 @@ public class FeedService {
   private final FeedRepository feedRepository;
   private final FeedConsumptionRepository feedConsumptionRepository;
 
- /* public Feed findByFeedId() {
-    feedRepository.findAl
-  }*/
-
   public List<Feed> findUsingFeeds() {
     return feedRepository.findAllByUsageStatus(FeedUsageStatus.USING);
   }
