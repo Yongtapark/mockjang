@@ -15,8 +15,8 @@ public class NoteContainer {
 
   public void putNotes(NoteRegex regex, List<NoteAndId> noteAndIds) {
     if (container.containsKey(regex)) {
-      List<NoteAndId> noteAndIds1 = container.get(regex);
-      noteAndIds1.addAll(noteAndIds);
+      List<NoteAndId> currentNoteAndIds = container.get(regex);
+      currentNoteAndIds.addAll(noteAndIds);
       return;
     }
     container.put(regex, noteAndIds);
