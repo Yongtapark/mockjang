@@ -3,32 +3,36 @@ package myproject.mockjang.domain.note_parser;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NoteContainer {
-    HashMap<NoteRegex, NoteAndIdList> container;
 
-    public NoteContainer() {
-        this.container = new HashMap<>();
-    }
+  HashMap<NoteRegex, List<NoteAndId>> container;
 
-    public void putNotes(NoteRegex regex, NoteAndIdList noteAndIdList){
-        container.put(regex, noteAndIdList);
-    }
+  public NoteContainer() {
+    this.container = new HashMap<>();
+  }
 
-    public NoteAndIdList getNotes(NoteRegex regex){
-       return container.get(regex);
+  public void putNotes(NoteRegex regex, List<NoteAndId> noteAndIds) {
+    if (container.containsKey(regex)) {
+      List<NoteAndId> currentHashMap = container.get(regex);
+      currentHashMap.addAll(noteAndIds);
+      return;
     }
+    container.put(regex, noteAndIds);
+  }
 
-    public Collection<NoteAndIdList> values(){
-        return container.values();
-    }
+  public List<NoteAndId> getNotes(NoteRegex regex) {
+    return container.get(regex);
+  }
 
-    public Map<NoteRegex, NoteAndIdList> getImmutableMap() {
-        Map<NoteRegex, NoteAndIdList> immutableMap = new HashMap<>();
-        for (Map.Entry<NoteRegex, NoteAndIdList> entry : container.entrySet()) {
-            immutableMap.put(entry.getKey(), entry.getValue().getImmutableNoteAndIdList());
-        }
-        return Collections.unmodifiableMap(immutableMap);
-    }
+  public Collection<List<NoteAndId>> values() {
+    return container.values();
+  }
+
+  public Map<NoteRegex, List<NoteAndId>> getImmutableMap() {
+    Map<NoteRegex, List<NoteAndId>> immutableMap = new HashMap<>(container);
+    return Collections.unmodifiableMap(immutableMap);
+  }
 }
