@@ -2,7 +2,6 @@ package myproject.mockjang.domain.note_parser;
 
 
 import static myproject.mockjang.exception.Exceptions.DOMAIN_NOTE_FORMAT;
-import static myproject.mockjang.exception.Exceptions.valueOf;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +10,11 @@ import myproject.mockjang.exception.note_parser.NoteFormatException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NoteParserV0 implements NoteParser{
+public class NoteParserV0 implements NoteParser {
 
   @Override
   public NoteContainer extractAndSaveNotes(NoteContainer noteContainer, String content) {
     String[] split = content.split(System.lineSeparator());
-    NoteAndIdList noteAndIdList = new NoteAndIdList(new ArrayList<>());
     for (String eachContent : split) {
       Matcher extractIdAndNote = NoteRegex.getNoteFormMatcher(eachContent);
       if (extractIdAndNote.matches()) {
@@ -24,7 +22,7 @@ public class NoteParserV0 implements NoteParser{
         String note = extractIdAndNote.group(2);
         String[] idArray = ids.split(",");
 
-        findEachRegexAndSaveNotes(noteContainer, ids, idArray, noteAndIdList, note);
+        findEachRegexAndSaveNotes(noteContainer, ids, idArray, note);
         checkDissmatchIds(eachContent, idArray);
       } else {
         throw new NoteFormatException(DOMAIN_NOTE_FORMAT, content);
@@ -34,21 +32,22 @@ public class NoteParserV0 implements NoteParser{
   }
 
   private void findEachRegexAndSaveNotes(NoteContainer noteContainer, String ids, String[] idArray,
-      NoteAndIdList noteAndIdList, String note) {
+      String note) {
     for (NoteRegex regex : NoteRegex.values()) {
       Matcher regexMatcher = regex.getCompile().matcher(ids);
-      saveIfRegexMatch(noteContainer, idArray, noteAndIdList, note, regex, regexMatcher);
+      saveIfRegexMatch(noteContainer, idArray, note, regex, regexMatcher);
     }
   }
 
   private void saveIfRegexMatch(NoteContainer noteContainer, String[] idArray,
-      NoteAndIdList noteAndIdList, String note, NoteRegex regex, Matcher regexMatcher) {
+       String note, NoteRegex regex, Matcher regexMatcher) {
+    ArrayList<NoteAndId> noteAndIds = new ArrayList<>();
     if (regexMatcher.matches()) {
       for (int i = 0; i < idArray.length; i++) {
-        noteAndIdList.add(new NoteAndId(idArray[i], note));
+        noteAndIds.add(new NoteAndId(idArray[i], note));
         idArray[i] = null;
       }
-      noteContainer.putNotes(regex, noteAndIdList.getImmutableNoteAndIdList());
+      noteContainer.putNotes(regex, noteAndIds);
     }
   }
 
