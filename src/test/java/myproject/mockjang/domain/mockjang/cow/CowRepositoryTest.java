@@ -2,9 +2,7 @@ package myproject.mockjang.domain.mockjang.cow;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.persistence.EntityManager;
 import java.util.List;
-import java.util.Optional;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -157,14 +155,8 @@ class CowRepositoryTest extends IntegrationTestSupport {
     cowRepository.delete(cow2);
 
     //then
-    List<Cow> cows = cowRepository.findAll();
-    List<Cow> allContainsDeletedCows = cowRepository.findAllContainsDeleted();
-
-    assertThat(cows).hasSize(1);
-    assertThat(cows).containsOnly(cow1);
-    assertThat(allContainsDeletedCows).hasSize(1);
-    assertThat(allContainsDeletedCows).contains(cow2);
-
-
+    List<Cow> deletedCow = cowRepository.findAllWhereDeletedTrue();
+    assertThat(deletedCow).hasSize(1);
+    assertThat(deletedCow).containsOnly(cow2);
   }
 }
