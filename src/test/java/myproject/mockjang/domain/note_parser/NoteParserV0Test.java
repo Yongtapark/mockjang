@@ -4,7 +4,7 @@ import static myproject.mockjang.domain.note_parser.NoteRegex.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import myproject.mockjang.IntegrationTestSupport;
@@ -222,22 +222,60 @@ class NoteParserV0Test extends IntegrationTestSupport {
   }
 
   @Test
-  @DisplayName("같은 NoteRegex에 대해 서로 다른 두 줄이 독립적으로 처리되는지 검증한다.")
-  void test5_separateProcessing_forSameNoteRegex() {
-    final String ID1 = "1번축사";
-    final String NOTE1 = "첫 번째 노트 내용";
-    final String NOTE2 = "두 번째 노트 내용";
+  @DisplayName("NoteContainer 해시맵 필드를 조작하면 예외를 발생시킨다.")
+  void extractAndSaveNoteWithModificationNoteContainer() {
+    //given
     NoteParserV0 noteParserV0 = new NoteParserV0();
     NoteContainer noteContainer = new NoteContainer();
 
-    String combinedNotes = "[[" + ID1 + "]] " + NOTE1 + System.lineSeparator() +
-        "[[" + ID1 + "]] " + NOTE2;
+    //when
+    noteContainer = noteParserV0.extractAndSaveNotes(noteContainer,
+            "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
+                    "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
+
+    //then
+    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
+
+    assertThatThrownBy(()->immutableMap.put(COW, new ArrayList<NoteAndId>())).isInstanceOf(UnsupportedOperationException.class);
+  }
+
+  @Test
+  @DisplayName("NoteContainer 내부 해시맵에 저장되어있는 리스트를 수정하면 예외를 발생시킨다.")
+  void extractAndSaveNoteWithModificationNoteAndIds() {
+    //given
+    NoteParserV0 noteParserV0 = new NoteParserV0();
+    NoteContainer noteContainer = new NoteContainer();
+
+    //when
+    noteContainer = noteParserV0.extractAndSaveNotes(noteContainer,
+            "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
+                    "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
+
+    //then
+    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndId> noteAndIdList1 = immutableMap.get(BARN);
+
+    assertThatThrownBy(()->noteAndIdList1.add(new NoteAndId("sd","ds"))).isInstanceOf(UnsupportedOperationException.class);
+  }
+
+  @Test
+  @DisplayName("같은 NoteRegex에 대해 서로 다른 두 줄이 독립적으로 처리되는지 검증한다.")
+  void extractAndSaveNotesWithOneCodeIdAndMultiNotes() {
+    //given
+    NoteParserV0 noteParserV0 = new NoteParserV0();
+    NoteContainer noteContainer = new NoteContainer();
+
+    String combinedNotes = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_2;
+
+    //when
     noteContainer = noteParserV0.extractAndSaveNotes(noteContainer, combinedNotes);
 
+    //then
     List<NoteAndId> notes = noteContainer.getNotes(BARN);
     Assertions.assertThat(notes).hasSize(2);
-    Assertions.assertThat(notes.get(0).note()).isEqualTo(NOTE1);
-    Assertions.assertThat(notes.get(1).note()).isEqualTo(NOTE2);
+    Assertions.assertThat(notes.get(0).note()).isEqualTo(PARSER_BARN_NOTE_1);
+    Assertions.assertThat(notes.get(1).note()).isEqualTo(PARSER_BARN_NOTE_2);
   }
 
 }
