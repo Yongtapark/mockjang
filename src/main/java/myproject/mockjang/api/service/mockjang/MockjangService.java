@@ -5,10 +5,9 @@ import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.StringException;
 
 public abstract class MockjangService {
+    static final int MAXIMUM_LENGTH = 10;
 
     protected void codeIdFilter(String codeId) {
-        final int MAXIMUM_LENGTH = 10;
-
         if (codeId.isBlank()) {
             throw new StringException(Exceptions.COMMON_BLANK_STRING);
         }
