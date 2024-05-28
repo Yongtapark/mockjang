@@ -24,22 +24,32 @@ import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.records.PenRecord;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE pen SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   private String codeId;
+
   @ManyToOne(fetch = FetchType.LAZY)
   private Barn barn;
+
   @OneToMany(mappedBy = "pen")
   private List<Cow> cows = new ArrayList<>();
+
   @OneToMany(mappedBy = "pen")
   private List<PenRecord> records = new ArrayList<>();
+
+  private boolean deleted = false;
 
   @Builder
   private Pen(String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {

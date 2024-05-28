@@ -9,10 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE pen_record SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class PenRecord extends Records{
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -20,6 +24,8 @@ public class PenRecord extends Records{
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Barn barn;
+
+  private boolean deleted = false;
 
   @Builder
   private PenRecord(Barn barn,Pen pen) {

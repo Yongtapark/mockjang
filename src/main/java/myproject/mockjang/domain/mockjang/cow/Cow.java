@@ -29,11 +29,15 @@ import myproject.mockjang.domain.records.CowRecord;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import myproject.mockjang.exception.cow.CowStatusException;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE cow SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang {
 
   @Id
@@ -74,6 +78,8 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   private List<CowRecord> records = new ArrayList<>();
 
   private Integer unitPrice;
+
+  private boolean deleted = false;
 
   @Builder
   private Cow(String codeId, LocalDateTime birthDate, Gender gender, Barn barn, Pen pen, CowStatus cowStatus,

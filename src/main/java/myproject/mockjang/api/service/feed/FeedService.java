@@ -18,6 +18,12 @@ public class FeedService {
   private final FeedRepository feedRepository;
   private final FeedConsumptionRepository feedConsumptionRepository;
 
+  public void createFeed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate, Double amount, String description) {
+    Feed feed = Feed.createFeed(codeId, name, storeDate, expirationDate, amount, description);
+    feed.registerUsageStatus(FeedUsageStatus.USING);
+    feedRepository.save(feed);
+  }
+
   public List<Feed> findUsingFeeds() {
     return feedRepository.findAllByUsageStatus(FeedUsageStatus.USING);
   }

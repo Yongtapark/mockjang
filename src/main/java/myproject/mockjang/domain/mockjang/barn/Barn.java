@@ -19,11 +19,15 @@
   import myproject.mockjang.domain.records.BarnRecord;
   import myproject.mockjang.exception.Exceptions;
   import myproject.mockjang.exception.common.ThereIsNoGroupException;
+  import org.hibernate.annotations.SQLDelete;
+  import org.hibernate.annotations.Where;
   import org.springframework.data.jpa.domain.AbstractAuditable;
 
   @Entity
   @Getter
   @NoArgsConstructor(access = AccessLevel.PROTECTED)
+  @SQLDelete(sql = "UPDATE barn SET deleted = true WHERE id = ?")
+  @Where(clause = "deleted = false")
   public class Barn extends AbstractAuditable<YongTaPark,Long> implements Mockjang {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +40,8 @@
 
     @OneToMany(mappedBy ="barn")
     private final List<BarnRecord> records = new ArrayList<>();
+
+    private boolean deleted = false;
 
     @Builder
     private Barn(String codeId) {

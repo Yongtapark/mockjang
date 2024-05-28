@@ -13,10 +13,14 @@ import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.exception.record.RecordException;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SQLDelete(sql = "UPDATE cow_record SET deleted = true WHERE id = ?")
+@Where(clause = "deleted = false")
 public class CowRecord extends Records{
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -27,6 +31,8 @@ public class CowRecord extends Records{
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Barn barn;
+
+  private boolean deleted = false;
 
   @Builder
   private CowRecord(Cow cow, Pen pen, Barn barn) {
