@@ -14,6 +14,7 @@ import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 class FeedServiceTest extends IntegrationTestSupport {
 
@@ -34,11 +35,11 @@ class FeedServiceTest extends IntegrationTestSupport {
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
     LocalDate eatDate1 = LocalDate.of(2024, 4, 23);
 
-    Feed hay = Feed.builder().name("건초").description("마른건초").purchaseDate(purchaseDate)
+    Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(purchaseDate)
         .expirationDate(expireDate).usageStatus(USING).build();
-    Feed corn = Feed.builder().name("옥수수").description("옥수수사료").purchaseDate(purchaseDate)
+    Feed corn = Feed.builder().name("옥수수").description("옥수수사료").storeDate(purchaseDate)
         .expirationDate(expireDate).usageStatus(USING).build();
-    Feed feed = Feed.builder().name("사료").description("고기사료").purchaseDate(purchaseDate)
+    Feed feed = Feed.builder().name("사료").description("고기사료").storeDate(purchaseDate)
         .expirationDate(expireDate).usageStatus(USING).build();
 
     feedRepository.save(hay);
@@ -82,14 +83,37 @@ class FeedServiceTest extends IntegrationTestSupport {
 
     //when
     feedService.calculateMultiDailyConsumption(eatDate1, List.of(hay,corn,feed));
+
+    //then
     Feed findHay = feedRepository.findById(hay.getId()).orElseThrow();
     Feed findCorn = feedRepository.findById(corn.getId()).orElseThrow();
     Feed findFeed = feedRepository.findById(feed.getId()).orElseThrow();
 
-    //then
     assertThat(findHay.getDailyConsumption()).isEqualTo(
         hayConsumption1.getDailyConsumptionAmount() + hayConsumption2.getDailyConsumptionAmount());
     assertThat(findCorn.getDailyConsumption()).isEqualTo(cornConsumption1.getDailyConsumptionAmount() + cornConsumption2.getDailyConsumptionAmount());
     assertThat(findFeed.getDailyConsumption()).isEqualTo(feedConsumption1.getDailyConsumptionAmount() + feedConsumption2.getDailyConsumptionAmount());
   }
+
+  @DisplayName("일일 먹이 소비량으로 예상 소비날짜를 구한다.")
+  @Test
+  void calculateExpectedDepletionDate() {
+    //given
+    LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
+    LocalDate expireDate = LocalDate.of(2024, 5, 1);
+    LocalDate eatDate = LocalDate.of(2024, 4, 23);
+    LocalDate expectedDepletionDate = LocalDate.of(2024, 4, 23).plusDays(6);
+
+    Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(purchaseDate)
+            .expirationDate(expireDate).usageStatus(USING).amount(70000.0).dailyConsumption(10000.0).build();
+    feedRepository.save(hay);
+
+    //when
+    feedService.calculateLeftStockDay(hay,eatDate);
+
+    //then
+    Feed findHay = feedRepository.findById(hay.getId()).orElseThrow();
+    assertThat(findHay.getExpectedDepletionDate()).isEqualTo(expectedDepletionDate);
+  }
+
 }
