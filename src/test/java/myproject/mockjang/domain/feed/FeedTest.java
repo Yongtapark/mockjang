@@ -6,7 +6,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
+import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
+import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.exception.feed.NegativeNumberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +22,10 @@ class FeedTest extends IntegrationTestSupport {
     final double ADD_FEED_AMOUNT = 5.0;
     final int TOTAL_FEED_AMOUNT = 10;
     //given
-    LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
+    LocalDate storeDate = LocalDate.of(2024, 1, 1);
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
 
-    Feed hay = Feed.builder().name("건초").description("마른건초").purchaseDate(purchaseDate)
+    Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(storeDate)
         .expirationDate(expireDate).usageStatus(USING).dailyConsumption(0.0).build();
 
     //when
@@ -37,10 +40,10 @@ class FeedTest extends IntegrationTestSupport {
   @Test
   void addDailyConsumptionAmountWithMinus() {
     //given
-    LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
+    LocalDate storeDate = LocalDate.of(2024, 1, 1);
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
 
-    Feed hay = Feed.builder().name("건초").description("마른건초").purchaseDate(purchaseDate)
+    Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(storeDate)
         .expirationDate(expireDate).usageStatus(USING)
         .dailyConsumption(INITIALIZE_DAILY_CONSUMPTION_TO_ZERO).build();
 
@@ -53,14 +56,14 @@ class FeedTest extends IntegrationTestSupport {
   @Test
   void resetDailyConsumption() {
     //given
-    LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
+    LocalDate storeDate = LocalDate.of(2024, 1, 1);
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
 
-    Feed hay = Feed.builder().name("건초").description("마른건초").purchaseDate(purchaseDate)
+    Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(storeDate)
         .expirationDate(expireDate).usageStatus(USING).build();
-    Feed corn = Feed.builder().name("옥수수").description("옥수수사료").purchaseDate(purchaseDate)
+    Feed corn = Feed.builder().name("옥수수").description("옥수수사료").storeDate(storeDate)
         .expirationDate(expireDate).usageStatus(USING).build();
-    Feed feed = Feed.builder().name("사료").description("고기사료").purchaseDate(purchaseDate)
+    Feed feed = Feed.builder().name("사료").description("고기사료").storeDate(storeDate)
         .expirationDate(expireDate).usageStatus(USING).build();
 
     //when
@@ -72,6 +75,25 @@ class FeedTest extends IntegrationTestSupport {
     assertThat(hay.getDailyConsumption()).isEqualTo(0);
     assertThat(corn.getDailyConsumption()).isEqualTo(0);
     assertThat(feed.getDailyConsumption()).isEqualTo(0);
+  }
+
+  @DisplayName("일일 먹이 소비량으로 예상 소비날짜를 구한다.")
+  @Test
+  void calculateExpectedDepletionDate() {
+    //given
+    LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
+    LocalDate expireDate = LocalDate.of(2024, 5, 1);
+    LocalDate eatDate = LocalDate.of(2024, 4, 23);
+    LocalDate expectedDepletionDate = LocalDate.of(2024, 4, 23).plusDays(2);
+
+    Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(purchaseDate)
+            .expirationDate(expireDate).usageStatus(USING).amount(30000.0).dailyConsumption(10000.0).build();
+
+    //when
+    hay.calculateExpectedDepletionDate(eatDate);
+
+    //then
+    assertThat(hay.getExpectedDepletionDate()).isEqualTo(expectedDepletionDate);
   }
 
 }
