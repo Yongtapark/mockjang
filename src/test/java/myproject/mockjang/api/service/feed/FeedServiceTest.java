@@ -45,8 +45,8 @@ class FeedServiceTest extends IntegrationTestSupport {
     feedRepository.save(corn);
     feedRepository.save(feed);
 
-    Cow cow1 = Cow.builder().cowId("1111").build();
-    Cow cow2 = Cow.builder().cowId("1112").build();
+    Cow cow1 = Cow.builder().codeId("1111").build();
+    Cow cow2 = Cow.builder().codeId("1112").build();
 
     cowRepository.save(cow1);
     cowRepository.save(cow2);

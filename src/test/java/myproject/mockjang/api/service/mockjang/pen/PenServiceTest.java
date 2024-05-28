@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
-import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
 import myproject.mockjang.exception.common.StringException;
@@ -42,7 +41,7 @@ class PenServiceTest extends IntegrationTestSupport {
 
     //then
     assertThat(pen.getBarn()).isEqualTo(barn);
-    assertThat(pen.getPenId()).isEqualTo(penId);
+    assertThat(pen.getCodeId()).isEqualTo(penId);
   }
 
   @DisplayName("해당 축사칸을 제거하고 축사의 축사칸 리스트에서 제거한다.")

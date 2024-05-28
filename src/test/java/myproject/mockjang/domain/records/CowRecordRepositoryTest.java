@@ -28,20 +28,20 @@ class CowRecordRepositoryTest extends IntegrationTestSupport {
   @Test
   void writeOneRecord() {
     //given
-    Barn barn = Barn.builder().barnId("1번축사").build();
+    Barn barn = Barn.builder().codeId("1번축사").build();
     barnRepository.save(barn);
-    Pen pen = Pen.builder().penId("1-1").barn(barn).build();
+    Pen pen = Pen.builder().codeId("1-1").barn(barn).build();
     penRepository.save(pen);
-    Cow cow = Cow.builder().cowId("1111").build();
+    Cow cow = Cow.builder().codeId("1111").build();
     cow.registerUpperGroup(pen);
     cow.registerBarn(barn);
     cowRepository.save(cow);
-    CowRecord cowRecord1 = CowRecord.createMemo(cow);
-    CowRecord cowRecord2 = CowRecord.createMemo(cow);
+    CowRecord cowRecord1 = CowRecord.createRecord(cow);
+    CowRecord cowRecord2 = CowRecord.createRecord(cow);
 
     //when
-    cowRecord1.writeDownMemo("test1");
-    cowRecord2.writeDownMemo("test2");
+    cowRecord1.writeNote("test1");
+    cowRecord2.writeNote("test2");
     cowRecordRepository.save(cowRecord1);
     cowRecordRepository.save(cowRecord2);
     Cow findCow = cowRepository.findById(cow.getId()).orElseThrow();
@@ -50,6 +50,32 @@ class CowRecordRepositoryTest extends IntegrationTestSupport {
     //then
     assertThat(records).hasSize(2);
     assertThat(records).contains(cowRecord1, cowRecord2);
+  }
+
+  @DisplayName("해당 이름을 가진 축사의 기록리스트를 반환한다.")
+  @Test
+  void findAllByBarn_CodeId() {
+    Barn barn = Barn.builder().codeId("1번축사").build();
+    barnRepository.save(barn);
+    Pen pen = Pen.builder().codeId("1-1").barn(barn).build();
+    penRepository.save(pen);
+    Cow cow = Cow.builder().codeId("1111").build();
+    cow.registerUpperGroup(pen);
+    cow.registerBarn(barn);
+    cowRepository.save(cow);
+    CowRecord cowRecord1 = CowRecord.createRecord(cow);
+    CowRecord cowRecord2 = CowRecord.createRecord(cow);
+    cowRecord1.writeNote("test1");
+    cowRecord2.writeNote("test2");
+    cowRecordRepository.save(cowRecord1);
+    cowRecordRepository.save(cowRecord2);
+
+    //when
+    List<CowRecord> allByCowCodeId = cowRecordRepository.findAllByCow_CodeId("1111");
+
+    //then
+    assertThat(allByCowCodeId).hasSize(2);
+    assertThat(allByCowCodeId).contains(cowRecord1, cowRecord2);
   }
 
 }

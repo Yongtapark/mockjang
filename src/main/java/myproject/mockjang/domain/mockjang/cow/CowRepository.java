@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CowRepository extends JpaRepository<Cow, Long> {
 
-  Cow findByCowId(String cowId);
+  Cow findByCodeId(String codeId);
   List<Cow> findAllByCowStatus(CowStatus cowStatus);
 
 }

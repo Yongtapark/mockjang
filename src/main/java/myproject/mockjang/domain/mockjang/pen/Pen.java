@@ -33,7 +33,7 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String penId;
+  private String codeId;
   @ManyToOne(fetch = FetchType.LAZY)
   private Barn barn;
   @OneToMany(mappedBy = "pen")
@@ -42,8 +42,8 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang 
   private List<PenRecord> records = new ArrayList<>();
 
   @Builder
-  private Pen(String penId, Barn barn, List<Cow> cows, List<PenRecord> records) {
-    this.penId = penId;
+  private Pen(String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {
+    this.codeId = codeId;
     this.barn = barn;
     if(cows!=null){
       this.cows = cows;
@@ -55,7 +55,7 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang 
 
   public static Pen createPen(String penId) {
     return Pen.builder()
-        .penId(penId)
+        .codeId(penId)
         .build();
   }
 

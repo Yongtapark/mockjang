@@ -29,7 +29,7 @@
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String BarnId;
+    private String codeId;
 
     @OneToMany(mappedBy = "barn")
     private final List<Pen> pens = new ArrayList<>();
@@ -38,12 +38,12 @@
     private final List<BarnRecord> records = new ArrayList<>();
 
     @Builder
-    private Barn(String barnId) {
-      BarnId = barnId;
+    private Barn(String codeId) {
+      this.codeId = codeId;
     }
 
-    public static Barn createBarn(String barnId) {
-      return Barn.builder().barnId(barnId).build();
+    public static Barn createBarn(String codeId) {
+      return Barn.builder().codeId(codeId).build();
     }
 
     public void addPen(Pen pen) {

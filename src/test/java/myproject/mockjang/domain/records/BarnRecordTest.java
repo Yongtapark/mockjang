@@ -14,13 +14,13 @@ class BarnRecordTest extends IntegrationTestSupport {
   @Test
   void writeOneRecord() {
     //given
-    Barn barn = Barn.builder().barnId("1번축사").build();
-    BarnRecord barnRecord1 = BarnRecord.creatMemo(barn);
-    BarnRecord barnRecord2 = BarnRecord.creatMemo(barn);
+    Barn barn = Barn.builder().codeId("1번축사").build();
+    BarnRecord barnRecord1 = BarnRecord.creatRecord(barn);
+    BarnRecord barnRecord2 = BarnRecord.creatRecord(barn);
 
     //when
-    barnRecord1.writeDownMemo("test1");
-    barnRecord2.writeDownMemo("test2");
+    barnRecord1.writeNote("test1");
+    barnRecord2.writeNote("test2");
     List<BarnRecord> records = barn.getRecords();
 
     //then

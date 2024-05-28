@@ -26,22 +26,22 @@ class PenRecordRepositoryTest extends IntegrationTestSupport {
   @Test
   void writeOneRecord() {
     //given
-    Barn barn = Barn.builder().barnId("1번축사").build();
+    Barn barn = Barn.builder().codeId("1번축사").build();
     barnRepository.save(barn);
 
     Pen pen = Pen.builder()
-        .penId("1-1")
+        .codeId("1-1")
         .build();
 
     pen.registerUpperGroup(barn);
     penRepository.save(pen);
 
-    PenRecord penRecord1 = PenRecord.createMemo(pen);
-    PenRecord penRecord2 = PenRecord.createMemo(pen);
+    PenRecord penRecord1 = PenRecord.createRecord(pen);
+    PenRecord penRecord2 = PenRecord.createRecord(pen);
 
     //when
-    penRecord1.writeDownMemo("test1");
-    penRecord2.writeDownMemo("test2");
+    penRecord1.writeNote("test1");
+    penRecord2.writeNote("test2");
     penRecordRepository.saveAll(List.of(penRecord1, penRecord2));
     Pen findPen = penRepository.findById(pen.getId()).orElseThrow();
     List<PenRecord> records = findPen.getRecords();

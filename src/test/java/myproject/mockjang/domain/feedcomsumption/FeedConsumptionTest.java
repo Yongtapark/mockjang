@@ -27,7 +27,7 @@ class FeedConsumptionTest extends IntegrationTestSupport {
     Feed feed = Feed.builder().name("사료").description("고기사료").purchaseDate(purchaseDate)
         .expirationDate(expireDate).build();
 
-    Cow cow = Cow.builder().cowId("1111").build();
+    Cow cow = Cow.builder().codeId("1111").build();
 
     FeedConsumption consumption1 = FeedConsumption.builder().feed(hay)
         .dailyConsumptionAmount(5000.0).cow(cow).date(eatDate).build();

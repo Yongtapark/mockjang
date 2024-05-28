@@ -28,11 +28,11 @@ class NoteParserV0Test extends IntegrationTestSupport {
         "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1);
 
     //then
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
-    List<NoteAndId> noteAndIdList = immutableMap.get(BARN);
-    NoteAndId noteAndId = noteAndIdList.get(0);
-    Assertions.assertThat(PARSER_BARN_CODE_ID_1).isEqualTo(noteAndId.codeId());
-    Assertions.assertThat(PARSER_BARN_NOTE_1).isEqualTo(noteAndId.note());
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndCodeId> noteAndCodeIdList = immutableMap.get(BARN);
+    NoteAndCodeId noteAndCodeId = noteAndCodeIdList.get(0);
+    Assertions.assertThat(PARSER_BARN_CODE_ID_1).isEqualTo(noteAndCodeId.codeId());
+    Assertions.assertThat(PARSER_BARN_NOTE_1).isEqualTo(noteAndCodeId.note());
   }
 
   @Test
@@ -47,11 +47,11 @@ class NoteParserV0Test extends IntegrationTestSupport {
         "[[" + PARSER_PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1);
 
     //then
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
-    List<NoteAndId> noteAndIdList = immutableMap.get(PEN);
-    NoteAndId noteAndId = noteAndIdList.get(0);
-    Assertions.assertThat(noteAndId.codeId()).isEqualTo(PARSER_PEN_CODE_ID_1);
-    Assertions.assertThat(noteAndId.note()).isEqualTo(PARSER_PEN_NOTE_1);
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndCodeId> noteAndCodeIdList = immutableMap.get(PEN);
+    NoteAndCodeId noteAndCodeId = noteAndCodeIdList.get(0);
+    Assertions.assertThat(noteAndCodeId.codeId()).isEqualTo(PARSER_PEN_CODE_ID_1);
+    Assertions.assertThat(noteAndCodeId.note()).isEqualTo(PARSER_PEN_NOTE_1);
   }
 
   @Test
@@ -66,12 +66,12 @@ class NoteParserV0Test extends IntegrationTestSupport {
         "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
-    List<NoteAndId> noteAndIdList = immutableMap.get(COW);
-    NoteAndId noteAndId = noteAndIdList.get(0);
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndCodeId> noteAndCodeIdList = immutableMap.get(COW);
+    NoteAndCodeId noteAndCodeId = noteAndCodeIdList.get(0);
 
-    Assertions.assertThat(noteAndId.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
-    Assertions.assertThat(noteAndId.note()).isEqualTo(PARSER_COW_NOTE_1);
+    Assertions.assertThat(noteAndCodeId.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
+    Assertions.assertThat(noteAndCodeId.note()).isEqualTo(PARSER_COW_NOTE_1);
   }
 
   @Test
@@ -143,16 +143,16 @@ class NoteParserV0Test extends IntegrationTestSupport {
     noteContainer = noteParserV0.extractAndSaveNotes(noteContainer,
         "[[" + PARSER_BARN_CODE_ID_1 + "," + PARSER_BARN_CODE_ID_2 + "]] " + PARSER_BARN_NOTE_1);
 
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
-    List<NoteAndId> noteAndIdList = immutableMap.get(BARN);
-    NoteAndId noteAndId1 = noteAndIdList.get(0);
-    NoteAndId noteAndId2 = noteAndIdList.get(1);
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndCodeId> noteAndCodeIdList = immutableMap.get(BARN);
+    NoteAndCodeId noteAndCodeId1 = noteAndCodeIdList.get(0);
+    NoteAndCodeId noteAndCodeId2 = noteAndCodeIdList.get(1);
 
     //then
-    Assertions.assertThat(noteAndId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
-    Assertions.assertThat(noteAndId2.codeId()).isEqualTo(PARSER_BARN_CODE_ID_2);
-    Assertions.assertThat(noteAndId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
-    Assertions.assertThat(noteAndId2.note()).isEqualTo(PARSER_BARN_NOTE_1);
+    Assertions.assertThat(noteAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    Assertions.assertThat(noteAndCodeId2.codeId()).isEqualTo(PARSER_BARN_CODE_ID_2);
+    Assertions.assertThat(noteAndCodeId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
+    Assertions.assertThat(noteAndCodeId2.note()).isEqualTo(PARSER_BARN_NOTE_1);
   }
 
   @Test
@@ -183,15 +183,15 @@ class NoteParserV0Test extends IntegrationTestSupport {
             "[[" + PARSER_BARN_CODE_ID_2 + "]] " + PARSER_BARN_NOTE_2);
 
     //then
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
-    List<NoteAndId> noteAndIdList = immutableMap.get(BARN);
-    NoteAndId noteAndId1 = noteAndIdList.get(0);
-    NoteAndId noteAndId2 = noteAndIdList.get(1);
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndCodeId> noteAndCodeIdList = immutableMap.get(BARN);
+    NoteAndCodeId noteAndCodeId1 = noteAndCodeIdList.get(0);
+    NoteAndCodeId noteAndCodeId2 = noteAndCodeIdList.get(1);
 
-    assertThat(noteAndId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
-    assertThat(noteAndId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
-    assertThat(noteAndId2.codeId()).isEqualTo(PARSER_BARN_CODE_ID_2);
-    assertThat(noteAndId2.note()).isEqualTo(PARSER_BARN_NOTE_2);
+    assertThat(noteAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    assertThat(noteAndCodeId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(noteAndCodeId2.codeId()).isEqualTo(PARSER_BARN_CODE_ID_2);
+    assertThat(noteAndCodeId2.note()).isEqualTo(PARSER_BARN_NOTE_2);
   }
 
   @Test
@@ -207,18 +207,18 @@ class NoteParserV0Test extends IntegrationTestSupport {
             "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
-    List<NoteAndId> noteAndIdList1 = immutableMap.get(BARN);
-    List<NoteAndId> noteAndIdList2 = immutableMap.get(COW);
-    NoteAndId noteAndId1 = noteAndIdList1.get(0);
-    NoteAndId noteAndId2 = noteAndIdList2.get(0);
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndCodeId> noteAndCodeIdList1 = immutableMap.get(BARN);
+    List<NoteAndCodeId> noteAndCodeIdList2 = immutableMap.get(COW);
+    NoteAndCodeId noteAndCodeId1 = noteAndCodeIdList1.get(0);
+    NoteAndCodeId noteAndCodeId2 = noteAndCodeIdList2.get(0);
 
-    assertThat(noteAndIdList1).hasSize(1);
-    assertThat(noteAndIdList2).hasSize(1);
-    assertThat(noteAndId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
-    assertThat(noteAndId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
-    assertThat(noteAndId2.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
-    assertThat(noteAndId2.note()).isEqualTo(PARSER_COW_NOTE_1);
+    assertThat(noteAndCodeIdList1).hasSize(1);
+    assertThat(noteAndCodeIdList2).hasSize(1);
+    assertThat(noteAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    assertThat(noteAndCodeId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(noteAndCodeId2.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
+    assertThat(noteAndCodeId2.note()).isEqualTo(PARSER_COW_NOTE_1);
   }
 
   @Test
@@ -234,9 +234,9 @@ class NoteParserV0Test extends IntegrationTestSupport {
                     "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
 
-    assertThatThrownBy(()->immutableMap.put(COW, new ArrayList<NoteAndId>())).isInstanceOf(UnsupportedOperationException.class);
+    assertThatThrownBy(()->immutableMap.put(COW, new ArrayList<NoteAndCodeId>())).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
@@ -252,10 +252,10 @@ class NoteParserV0Test extends IntegrationTestSupport {
                     "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
-    Map<NoteRegex, List<NoteAndId>> immutableMap = noteContainer.getImmutableMap();
-    List<NoteAndId> noteAndIdList1 = immutableMap.get(BARN);
+    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
+    List<NoteAndCodeId> noteAndCodeIdList1 = immutableMap.get(BARN);
 
-    assertThatThrownBy(()->noteAndIdList1.add(new NoteAndId("sd","ds"))).isInstanceOf(UnsupportedOperationException.class);
+    assertThatThrownBy(()-> noteAndCodeIdList1.add(new NoteAndCodeId("sd","ds"))).isInstanceOf(UnsupportedOperationException.class);
   }
 
   @Test
@@ -272,7 +272,7 @@ class NoteParserV0Test extends IntegrationTestSupport {
     noteContainer = noteParserV0.extractAndSaveNotes(noteContainer, combinedNotes);
 
     //then
-    List<NoteAndId> notes = noteContainer.getNotes(BARN);
+    List<NoteAndCodeId> notes = noteContainer.getNotes(BARN);
     Assertions.assertThat(notes).hasSize(2);
     Assertions.assertThat(notes.get(0).note()).isEqualTo(PARSER_BARN_NOTE_1);
     Assertions.assertThat(notes.get(1).note()).isEqualTo(PARSER_BARN_NOTE_2);

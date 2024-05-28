@@ -4,7 +4,6 @@ package myproject.mockjang.domain.note_parser;
 import static myproject.mockjang.exception.Exceptions.DOMAIN_NOTE_FORMAT;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import myproject.mockjang.exception.note_parser.NoteFormatException;
 import org.springframework.stereotype.Component;
@@ -41,13 +40,13 @@ public class NoteParserV0 implements NoteParser {
 
   private void saveIfRegexMatch(NoteContainer noteContainer, String[] idArray,
        String note, NoteRegex regex, Matcher regexMatcher) {
-    ArrayList<NoteAndId> noteAndIds = new ArrayList<>();
+    ArrayList<NoteAndCodeId> noteAndCodeIds = new ArrayList<>();
     if (regexMatcher.matches()) {
       for (int i = 0; i < idArray.length; i++) {
-        noteAndIds.add(new NoteAndId(idArray[i], note));
+        noteAndCodeIds.add(new NoteAndCodeId(idArray[i], note));
         idArray[i] = null;
       }
-      noteContainer.putNotes(regex, noteAndIds);
+      noteContainer.putNotes(regex, noteAndCodeIds);
     }
   }
 

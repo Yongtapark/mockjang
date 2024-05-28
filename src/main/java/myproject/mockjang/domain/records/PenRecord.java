@@ -27,11 +27,11 @@ public class PenRecord extends Records{
     this.barn =barn;
   }
 
-  public static PenRecord createMemo(Pen pen) {
+  public static PenRecord createRecord(Pen pen) {
     return PenRecord.builder().pen(pen).barn(pen.getBarn()).build();
   }
 
-  public void writeDownMemo(String memo) {
+  public void writeNote(String memo) {
     writeMemo(memo);
     pen.registerDailyRecord(this);
   }

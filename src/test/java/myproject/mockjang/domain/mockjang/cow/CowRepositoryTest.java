@@ -23,12 +23,12 @@ class CowRepositoryTest extends IntegrationTestSupport {
 
   @DisplayName("cowId로 소를 검색")
   @Test
-  void findByCowId() {
+  void findByCodeId() {
     //given
     Cow cow = createCow("0001", Gender.FEMALE);
     //when
     Cow savedCow = cowRepository.save(cow);
-    Cow findCow = cowRepository.findByCowId(cow.getCowId());
+    Cow findCow = cowRepository.findByCodeId(cow.getCodeId());
 
     //then
     assertThat(savedCow).isEqualTo(findCow);
@@ -49,7 +49,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
     cowRepository.flush();
 
     //when
-    Cow findCow = cowRepository.findByCowId(child.getCowId());
+    Cow findCow = cowRepository.findByCodeId(child.getCodeId());
 
     //then
     assertThat(findCow).isEqualTo(child);
@@ -79,7 +79,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
 
     cowRepository.save(mom);
     //when
-    Cow findMomCow = cowRepository.findByCowId(mom.getCowId());
+    Cow findMomCow = cowRepository.findByCodeId(mom.getCodeId());
 
     //then
     assertThat(findMomCow).isEqualTo(mom);

@@ -40,7 +40,7 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String cowId;
+  private String codeId;
 
   private LocalDateTime birthDate;
 
@@ -76,10 +76,10 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   private Integer unitPrice;
 
   @Builder
-  private Cow(String cowId, LocalDateTime birthDate, Gender gender, Barn barn, Pen pen, CowStatus cowStatus,
-      List<FeedConsumption> feedConsumptions, List<CowRecord> records, Integer unitPrice) {
+  private Cow(String codeId, LocalDateTime birthDate, Gender gender, Barn barn, Pen pen, CowStatus cowStatus,
+              List<FeedConsumption> feedConsumptions, List<CowRecord> records, Integer unitPrice) {
 
-    this.cowId = cowId;
+    this.codeId = codeId;
     this.birthDate = birthDate;
     this.gender = gender;
     this.barn = barn;
@@ -97,7 +97,7 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   public static Cow createCow(String cowId,Gender gender,CowStatus cowStatus,
       LocalDateTime birthDate) {
     return Cow.builder()
-        .cowId(cowId)
+        .codeId(cowId)
         .birthDate(birthDate)
         .gender(gender)
         .cowStatus(cowStatus)

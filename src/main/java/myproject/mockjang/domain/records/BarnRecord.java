@@ -22,11 +22,11 @@ public class BarnRecord extends Records{
     this.barn = barn;
   }
 
-  public static BarnRecord creatMemo(Barn barn) {
+  public static BarnRecord creatRecord(Barn barn) {
     return BarnRecord.builder().barn(barn).build();
   }
 
-  public void writeDownMemo(String memo) {
+  public void writeNote(String memo) {
     if(barn==null) {
       throw new RuntimeException("there is no barn or cow");
     }

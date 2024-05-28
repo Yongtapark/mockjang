@@ -15,14 +15,14 @@ class PenRecordTest extends IntegrationTestSupport {
   @Test
   void writeOneRecord() {
     //given
-    Barn barn = Barn.builder().barnId("1번축사").build();
-    Pen pen = Pen.builder().penId("1-1").barn(barn).build();
-    PenRecord penRecord1 = PenRecord.createMemo(pen);
-    PenRecord penRecord2 = PenRecord.createMemo(pen);
+    Barn barn = Barn.builder().codeId("1번축사").build();
+    Pen pen = Pen.builder().codeId("1-1").barn(barn).build();
+    PenRecord penRecord1 = PenRecord.createRecord(pen);
+    PenRecord penRecord2 = PenRecord.createRecord(pen);
 
     //when
-    penRecord1.writeDownMemo("test1");
-    penRecord2.writeDownMemo("test2");
+    penRecord1.writeNote("test1");
+    penRecord2.writeNote("test2");
     List<PenRecord> records = pen.getRecords();
 
     //then

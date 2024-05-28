@@ -36,14 +36,14 @@ public abstract class IntegrationTestSupport {
   protected static final String PARSER_COW_NOTE_2 = "0002 소 입력 테스트";
 
   public Cow createCow(String number) {
-    return Cow.builder().cowId(number).build();
+    return Cow.builder().codeId(number).build();
   }
 
   protected static Cow createCow(String cowId, Gender gender) {
-    return Cow.builder().cowId(cowId).gender(gender).build();
+    return Cow.builder().codeId(cowId).gender(gender).build();
   }
 
   protected static Cow createCow(String cowId, Gender gender, CowStatus cowStatus) {
-    return Cow.builder().cowId(cowId).gender(gender).cowStatus(cowStatus).build();
+    return Cow.builder().codeId(cowId).gender(gender).cowStatus(cowStatus).build();
   }
 }

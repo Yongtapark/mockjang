@@ -16,18 +16,18 @@ class CowRecordTest extends IntegrationTestSupport {
   @Test
   void writeOneRecord() {
     //given
-    Barn barn = Barn.builder().barnId("1번축사").build();
-    Pen pen = Pen.builder().penId("1-1").barn(barn).build();
-    Cow cow = Cow.builder().cowId("1111").build();
+    Barn barn = Barn.builder().codeId("1번축사").build();
+    Pen pen = Pen.builder().codeId("1-1").barn(barn).build();
+    Cow cow = Cow.builder().codeId("1111").build();
     cow.registerUpperGroup(pen);
     cow.registerBarn(barn);
 
-    CowRecord cowRecord1 = CowRecord.createMemo(cow);
-    CowRecord cowRecord2 = CowRecord.createMemo(cow);;
+    CowRecord cowRecord1 = CowRecord.createRecord(cow);
+    CowRecord cowRecord2 = CowRecord.createRecord(cow);;
 
     //when
-    cowRecord1.writeDownMemo("test1");
-    cowRecord2.writeDownMemo("test2");
+    cowRecord1.writeNote("test1");
+    cowRecord2.writeNote("test2");
     List<CowRecord> records = cow.getRecords();
 
     //then

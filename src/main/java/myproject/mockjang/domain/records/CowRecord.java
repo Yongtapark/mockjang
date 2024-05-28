@@ -35,7 +35,7 @@ public class CowRecord extends Records{
     this.barn = barn;
   }
 
-  public static CowRecord createMemo(Cow cow) {
+  public static CowRecord createRecord(Cow cow) {
     return CowRecord.builder()
         .cow(cow)
         .pen(cow.getPen())
@@ -43,7 +43,7 @@ public class CowRecord extends Records{
         .build();
   }
 
-  public void writeDownMemo(String memo) {
+  public void writeNote(String memo) {
     if(barn==null || cow==null || pen==null) {
       throw new RecordException(DOMAIN_NO_COW_OR_PEN_OR_BARN);
     }
