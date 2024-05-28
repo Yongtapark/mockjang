@@ -190,4 +190,8 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   public void removeOneOfUnderGroups(Mockjang mockjang) {
     throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP,this);
   }
+
+  public boolean getDeleted() {
+    return deleted;
+  }
 }

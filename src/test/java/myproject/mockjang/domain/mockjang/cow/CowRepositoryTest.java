@@ -2,7 +2,9 @@ package myproject.mockjang.domain.mockjang.cow;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -140,5 +142,29 @@ class CowRepositoryTest extends IntegrationTestSupport {
     assertThat(cow.getPen()).isEqualTo(pen2);
     assertThat(cows1).isEmpty();
     assertThat(cows2).containsOnly(cow);
+  }
+
+  @DisplayName("소가 논리적 제거가 되는지 확인한다.")
+  @Test
+  void checkCowCanDeleteLogical() {
+    //given
+    Cow cow1 = createCow("0001", Gender.FEMALE);
+    Cow cow2 = createCow("0002", Gender.FEMALE);
+    cowRepository.save(cow1);
+    cowRepository.save(cow2);
+
+    //when
+    cowRepository.delete(cow2);
+
+    //then
+    List<Cow> cows = cowRepository.findAll();
+    List<Cow> allContainsDeletedCows = cowRepository.findAllContainsDeleted();
+
+    assertThat(cows).hasSize(1);
+    assertThat(cows).containsOnly(cow1);
+    assertThat(allContainsDeletedCows).hasSize(1);
+    assertThat(allContainsDeletedCows).contains(cow2);
+
+
   }
 }
