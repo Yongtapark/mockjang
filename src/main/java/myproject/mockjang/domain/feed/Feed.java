@@ -23,50 +23,59 @@ import org.springframework.data.jpa.domain.AbstractAuditable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Feed extends AbstractAuditable<YongTaPark, Long> {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String feedId;
+    private String feedId;
 
-  private String name;
+    private String name;
 
-  private LocalDate purchaseDate;
+    private LocalDate storeDate;
 
-  private LocalDate expirationDate;
+    private LocalDate expirationDate;
 
-  private Double amount;
+    private Double amount;
 
-  private String description;
-  private Double dailyConsumption;
-  private FeedUsageStatus usageStatus;
+    private LocalDate expectedDepletionDate;
 
-  @OneToMany(mappedBy = "feed")
-  private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
+    private String description;
+    private Double dailyConsumption;
+    private FeedUsageStatus usageStatus;
 
-  @Builder
-  private Feed(String feedId, String name, LocalDate purchaseDate, LocalDate expirationDate,
-      Double amount, String description, Double dailyConsumption,
-      List<FeedConsumption> feedConsumptions, FeedUsageStatus usageStatus) {
-    this.feedId = feedId;
-    this.name = name;
-    this.purchaseDate = purchaseDate;
-    this.expirationDate = expirationDate;
-    this.amount = amount;
-    this.description = description;
-    this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
-    this.usageStatus = usageStatus;
-  }
-  public void addDailyConsumptionAmount(Double dailyConsumptionAmount){
-    if(dailyConsumptionAmount<0){
-      throw new NegativeNumberException(Exceptions.DOMAIN_NEGATIVE_ERROR);
+    @OneToMany(mappedBy = "feed")
+    private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
+
+    @Builder
+    private Feed(String feedId, String name, LocalDate storeDate, LocalDate expirationDate,
+                 Double amount, String description, Double dailyConsumption,
+                 List<FeedConsumption> feedConsumptions, LocalDate expectedDepletionDate, FeedUsageStatus usageStatus) {
+        this.feedId = feedId;
+        this.name = name;
+        this.storeDate = storeDate;
+        this.expirationDate = expirationDate;
+        this.amount = amount;
+        this.description = description;
+        this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
+        this.expectedDepletionDate = expectedDepletionDate;
+        this.usageStatus = usageStatus;
     }
-    this.dailyConsumption+=dailyConsumptionAmount;
-  }
 
-  public void resetDailyConsumption() {
-    this.dailyConsumption=0.0;
-  }
+    public void addDailyConsumptionAmount(Double dailyConsumptionAmount) {
+        if (dailyConsumptionAmount < 0) {
+            throw new NegativeNumberException(Exceptions.DOMAIN_NEGATIVE_ERROR);
+        }
+        this.dailyConsumption += dailyConsumptionAmount;
+    }
+
+    public void resetDailyConsumption() {
+        this.dailyConsumption = 0.0;
+    }
+
+    public void calculateExpectedDepletionDate(LocalDate date) {
+        double leftDays = (this.amount - this.dailyConsumption) / this.dailyConsumption;
+        this.expectedDepletionDate=date.plusDays((long) Math.floor(leftDays));
+    }
 }
 
 
