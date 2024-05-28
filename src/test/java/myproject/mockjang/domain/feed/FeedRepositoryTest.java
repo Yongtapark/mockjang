@@ -22,7 +22,7 @@ class FeedRepositoryTest extends IntegrationTestSupport {
     Feed feed = Feed.builder()
         .feedId("xxxx")
         .name("건초")
-        .purchaseDate(purchaseDate)
+        .storeDate(purchaseDate)
         .expirationDate(expireDate)
         .build();
 

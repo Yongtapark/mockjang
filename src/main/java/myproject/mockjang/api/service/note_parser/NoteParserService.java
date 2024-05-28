@@ -1,4 +1,4 @@
-package myproject.mockjang.api.service.mockjang.note_parser;
+package myproject.mockjang.api.service.note_parser;
 
 import static myproject.mockjang.domain.note_parser.NoteRegex.*;
 

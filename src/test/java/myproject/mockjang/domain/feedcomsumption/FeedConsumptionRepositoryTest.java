@@ -28,16 +28,16 @@ class FeedConsumptionRepositoryTest extends IntegrationTestSupport {
   @Test
   void findAllByDate() {
     //given
-    LocalDate purchaseDate = LocalDate.of(2024, 1, 1);
+    LocalDate storeDate = LocalDate.of(2024, 1, 1);
     LocalDate expireDate = LocalDate.of(2024, 5, 1);
     LocalDate eatDate1 = LocalDate.of(2024, 4, 23);
     LocalDate eatDate2 = LocalDate.of(2024, 5, 23);
 
-    Feed hay = Feed.builder().name("건초").description("마른건초").purchaseDate(purchaseDate)
+    Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(storeDate)
         .expirationDate(expireDate).build();
-    Feed corn = Feed.builder().name("옥수수").description("옥수수사료").purchaseDate(purchaseDate)
+    Feed corn = Feed.builder().name("옥수수").description("옥수수사료").storeDate(storeDate)
         .expirationDate(expireDate).build();
-    Feed feed = Feed.builder().name("사료").description("고기사료").purchaseDate(purchaseDate)
+    Feed feed = Feed.builder().name("사료").description("고기사료").storeDate(storeDate)
         .expirationDate(expireDate).build();
 
     feedRepository.save(hay);

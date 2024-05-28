@@ -1,4 +1,4 @@
-package myproject.mockjang.api.service.mockjang.note_parser;
+package myproject.mockjang.api.service.note_parser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.api.service.note_parser.NoteParserService;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.cow.Cow;
