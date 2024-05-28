@@ -42,7 +42,9 @@ public class FeedService {
     }
   }
 
-  public void calculateLeftStockDay(Feed feed,LocalDate date) {
-    feed.calculateExpectedDepletionDate(date);
+  public void calculateLeftStocksDay(List<Feed> feeds,LocalDate date) {
+    for (Feed feed : feeds) {
+      feed.calculateExpectedDepletionDate(date);
+    }
   }
 }
