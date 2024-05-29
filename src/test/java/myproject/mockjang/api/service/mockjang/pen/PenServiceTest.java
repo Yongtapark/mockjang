@@ -46,7 +46,7 @@ class PenServiceTest extends IntegrationTestSupport {
 
   @DisplayName("해당 축사칸을 제거하고 축사의 축사칸 리스트에서 제거한다.")
   @Test
-  void deletePen() {
+  void delete() {
     //given
     String penId = "1-1";
     Barn barn = Barn.createBarn("1번축사");
@@ -54,7 +54,7 @@ class PenServiceTest extends IntegrationTestSupport {
     Pen pen = penService.createPen(penId, barn);
 
     //when
-    penService.deletePen(pen);
+    penService.delete(pen);
 
     //then
     assertThat(barn.getPens()).isEmpty();
@@ -75,7 +75,7 @@ class PenServiceTest extends IntegrationTestSupport {
     penRepository.save(pen);
 
     //when
-    pen.changeBarnTo(barn2);
+    pen.changeUpperGroup(barn2);
 
     //then
     assertThat(barn1.getPens()).isEmpty();
@@ -88,24 +88,27 @@ class PenServiceTest extends IntegrationTestSupport {
   @Test
   void createBarnWithEmptyBarnId() {
     //given // when //then
-    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY,null)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_BLANK_STRING.getMessage());
+    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY, null)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
   void createBarnWithOnlySpaceBarnId() {
     //given // when //then
-    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY,null)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_BLANK_STRING.getMessage());
+    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY, null)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
   @Test
   void createBarnWithOver10Size() {
     //given // when //then
-    assertThatThrownBy(() -> penService.createPen(STRING_OVER_10,null)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_STRING_OVER_10.getMessage());
+    assertThatThrownBy(() -> penService.createPen(STRING_OVER_10, null)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_STRING_OVER_10.getMessage());
   }
 
 

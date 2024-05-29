@@ -23,7 +23,8 @@ class CowRecordTest extends IntegrationTestSupport {
     cow.registerBarn(barn);
 
     CowRecord cowRecord1 = CowRecord.createRecord(cow);
-    CowRecord cowRecord2 = CowRecord.createRecord(cow);;
+    CowRecord cowRecord2 = CowRecord.createRecord(cow);
+    ;
 
     //when
     cowRecord1.writeNote("test1");

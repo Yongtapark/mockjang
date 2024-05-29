@@ -27,74 +27,87 @@ import org.springframework.data.jpa.domain.AbstractAuditable;
 @Where(clause = "deleted = false")
 public class Feed extends AbstractAuditable<YongTaPark, Long> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String codeId;
+  private String codeId;
 
-    private String name;
+  private String name;
 
-    private LocalDate storeDate;
+  private LocalDate storeDate;
 
-    private LocalDate expirationDate;
+  private LocalDate expirationDate;
 
-    private Double amount;
+  private LocalDate expectedDepletionDate;
 
-    private LocalDate expectedDepletionDate;
+  private Integer stock;
 
-    private String description;
+  private Double amountPerStock;
 
-    private Double dailyConsumption;
+  private Double amount;
 
-    private FeedUsageStatus usageStatus;
+  private String description;
 
-    private boolean deleted = false;
+  private Double dailyConsumption;
 
-    @OneToMany(mappedBy = "feed")
-    private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
+  private FeedUsageStatus usageStatus;
 
-    @Builder
-    private Feed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate, Double amount,
-                 String description, Double dailyConsumption, List<FeedConsumption> feedConsumptions,
-                 LocalDate expectedDepletionDate, FeedUsageStatus usageStatus) {
-        this.codeId = codeId;
-        this.name = name;
-        this.storeDate = storeDate;
-        this.expirationDate = expirationDate;
-        this.amount = amount;
-        this.description = description;
-        this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
-        this.expectedDepletionDate = expectedDepletionDate;
-        this.usageStatus = usageStatus;
+  private boolean deleted = false;
+
+  @OneToMany(mappedBy = "feed")
+  private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
+
+  @Builder
+  private Feed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate, Integer stock,
+      Double amountPerStock,
+      Double amount,
+      String description, Double dailyConsumption, List<FeedConsumption> feedConsumptions,
+      LocalDate expectedDepletionDate, FeedUsageStatus usageStatus) {
+    this.codeId = codeId;
+    this.name = name;
+    this.storeDate = storeDate;
+    this.expirationDate = expirationDate;
+    this.stock = stock;
+    this.amountPerStock = amountPerStock;
+    this.amount = amount;
+    this.description = description;
+    this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
+    this.expectedDepletionDate = expectedDepletionDate;
+    this.usageStatus = usageStatus;
+  }
+
+  public static Feed createFeed(String codeId, String name,Integer stock, Double amountPerStock,
+      LocalDate storeDate,
+      LocalDate expirationDate, String description) {
+    return Feed.builder().codeId(codeId).name(name).storeDate(storeDate)
+        .expirationDate(expirationDate)
+        .stock(stock)
+        .amountPerStock(amountPerStock)
+        .amount((stock*amountPerStock))
+        .description(description).build();
+
+  }
+
+  public void addDailyConsumptionAmount(Double dailyConsumptionAmount) {
+    if (dailyConsumptionAmount < 0) {
+      throw new NegativeNumberException(Exceptions.DOMAIN_NEGATIVE_ERROR);
     }
+    this.dailyConsumption += dailyConsumptionAmount;
+  }
 
-    public static Feed createFeed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate,
-                                  Double amount, String description) {
-        return Feed.builder().codeId(codeId).name(name).storeDate(storeDate).expirationDate(expirationDate)
-                .amount(amount).description(description).build();
+  public void resetDailyConsumption() {
+    this.dailyConsumption = 0.0;
+  }
 
-    }
+  public void calculateExpectedDepletionDate(LocalDate date) {
+    double leftDays = (this.amount - this.dailyConsumption) / this.dailyConsumption;
+    this.expectedDepletionDate = date.plusDays((long) Math.floor(leftDays));
+  }
 
-    public void addDailyConsumptionAmount(Double dailyConsumptionAmount) {
-        if (dailyConsumptionAmount < 0) {
-            throw new NegativeNumberException(Exceptions.DOMAIN_NEGATIVE_ERROR);
-        }
-        this.dailyConsumption += dailyConsumptionAmount;
-    }
-
-    public void resetDailyConsumption() {
-        this.dailyConsumption = 0.0;
-    }
-
-    public void calculateExpectedDepletionDate(LocalDate date) {
-        double leftDays = (this.amount - this.dailyConsumption) / this.dailyConsumption;
-        this.expectedDepletionDate = date.plusDays((long) Math.floor(leftDays));
-    }
-
-    public void registerUsageStatus(FeedUsageStatus usageStatus) {
-        this.usageStatus = usageStatus;
-    }
+  public void registerUsageStatus(FeedUsageStatus usageStatus) {
+    this.usageStatus = usageStatus;
+  }
 
 }
 

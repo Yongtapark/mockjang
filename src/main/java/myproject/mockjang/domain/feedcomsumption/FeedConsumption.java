@@ -51,7 +51,7 @@ public class FeedConsumption extends AbstractAuditable<YongTaPark, Long> {
     this.dailyConsumptionAmount = dailyConsumptionAmount;
   }
 
-  public void registerDailyCowConsumption(){
+  public void registerDailyCowConsumption() {
     cow.registerFeedConsumptions(this);
   }
 

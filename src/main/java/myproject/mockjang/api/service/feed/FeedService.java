@@ -15,11 +15,13 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class FeedService {
+
   private final FeedRepository feedRepository;
   private final FeedConsumptionRepository feedConsumptionRepository;
 
-  public void createFeed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate, Double amount, String description) {
-    Feed feed = Feed.createFeed(codeId, name, storeDate, expirationDate, amount, description);
+  public void createFeed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate,
+      Double amountPerStock, String description) {
+    Feed feed = Feed.createFeed(codeId, name, 1,amountPerStock, storeDate, expirationDate, description);
     feed.registerUsageStatus(FeedUsageStatus.USING);
     feedRepository.save(feed);
   }
@@ -32,7 +34,7 @@ public class FeedService {
     return feedRepository.findAll();
   }
 
-  public void calculateMultiDailyConsumption(LocalDate eatDate,List<Feed> feeds) {
+  public void calculateMultiDailyConsumption(LocalDate eatDate, List<Feed> feeds) {
     List<FeedConsumption> dailyConsumptions = feedConsumptionRepository.findAllByDate(eatDate);
     for (Feed feed : feeds) {
       feed.resetDailyConsumption();
@@ -48,7 +50,7 @@ public class FeedService {
     }
   }
 
-  public void calculateLeftStocksDay(List<Feed> feeds,LocalDate date) {
+  public void calculateLeftStocksDay(List<Feed> feeds, LocalDate date) {
     for (Feed feed : feeds) {
       feed.calculateExpectedDepletionDate(date);
     }

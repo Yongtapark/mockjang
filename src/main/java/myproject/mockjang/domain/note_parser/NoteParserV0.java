@@ -39,7 +39,7 @@ public class NoteParserV0 implements NoteParser {
   }
 
   private void saveIfRegexMatch(NoteContainer noteContainer, String[] idArray,
-       String note, NoteRegex regex, Matcher regexMatcher) {
+      String note, NoteRegex regex, Matcher regexMatcher) {
     ArrayList<NoteAndCodeId> noteAndCodeIds = new ArrayList<>();
     if (regexMatcher.matches()) {
       for (int i = 0; i < idArray.length; i++) {

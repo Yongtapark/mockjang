@@ -1,7 +1,9 @@
 package myproject.mockjang.domain.mockjang.cow;
 
-import static myproject.mockjang.exception.Exceptions.*;
+import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
+import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
 import static myproject.mockjang.exception.Exceptions.DOMAIN_BARN_ALREADY_EXIST;
+import static myproject.mockjang.exception.Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -82,8 +84,9 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   private boolean deleted = false;
 
   @Builder
-  private Cow(String codeId, LocalDateTime birthDate, Gender gender, Barn barn, Pen pen, CowStatus cowStatus,
-              List<FeedConsumption> feedConsumptions, List<CowRecord> records, Integer unitPrice) {
+  private Cow(String codeId, LocalDateTime birthDate, Gender gender, Barn barn, Pen pen,
+      CowStatus cowStatus,
+      List<FeedConsumption> feedConsumptions, List<CowRecord> records, Integer unitPrice) {
 
     this.codeId = codeId;
     this.birthDate = birthDate;
@@ -100,7 +103,7 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
     }
   }
 
-  public static Cow createCow(String cowId,Gender gender,CowStatus cowStatus,
+  public static Cow createCow(String cowId, Gender gender, CowStatus cowStatus,
       LocalDateTime birthDate) {
     return Cow.builder()
         .codeId(cowId)
@@ -112,32 +115,35 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
 
   public void registerBarn(Barn barn) {
     if (this.barn != null) {
-      throw new UpperGroupAlreadyExistException(barn,DOMAIN_BARN_ALREADY_EXIST);
+      throw new UpperGroupAlreadyExistException(barn, DOMAIN_BARN_ALREADY_EXIST);
     }
-    this.barn=barn;
+    this.barn = barn;
   }
 
   private void changeBarn(Barn barn) {
-    this.barn=null;
-    this.barn =barn;
+    this.barn = null;
+    this.barn = barn;
   }
 
   @Override
   public void registerUpperGroup(Mockjang upperGroup) {
-    if(upperGroup instanceof Pen pen){
+    if (upperGroup instanceof Pen pen) {
       if (this.pen != null) {
-        throw new UpperGroupAlreadyExistException(pen,DOMAIN_BARN_ALREADY_EXIST);
+        throw new UpperGroupAlreadyExistException(pen, DOMAIN_BARN_ALREADY_EXIST);
       }
       this.pen = pen;
       pen.addCow(this);
     }
   }
 
-  public void changePen(Pen pen) {
-    this.pen.deleteCow(this);
-    this.pen=null;
-    changeBarn(pen.getBarn());
-    registerUpperGroup(pen);
+  @Override
+  public void changeUpperGroup(Mockjang mockjang) {
+    if (mockjang instanceof Pen pen) {
+      this.pen.deleteCow(this);
+      this.pen = null;
+      changeBarn(pen.getBarn());
+      registerUpperGroup(pen);
+    }
   }
 
   public void registerAllChildren(List<Cow> children) {
@@ -163,10 +169,6 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
     feedConsumptions.add(feedConsumption);
   }
 
-  public void changeSlaughterStatus(CowStatus cowStatus) {
-    this.cowStatus = cowStatus;
-  }
-
   public void changeCowStatus(CowStatus cowStatus) {
     this.cowStatus = cowStatus;
   }
@@ -180,18 +182,15 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
 
   @Override
   public Mockjang getUpperGroup() {
-    if(pen==null){
-      throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP,this);
+    if (pen == null) {
+      throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP, this);
     }
     return pen;
   }
 
   @Override
   public void removeOneOfUnderGroups(Mockjang mockjang) {
-    throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP,this);
+    throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
   }
 
-  public boolean getDeleted() {
-    return deleted;
-  }
 }

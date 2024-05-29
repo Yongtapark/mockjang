@@ -17,7 +17,7 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE pen_record SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class PenRecord extends Records{
+public class PenRecord extends Records {
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Pen pen;
@@ -28,9 +28,9 @@ public class PenRecord extends Records{
   private boolean deleted = false;
 
   @Builder
-  private PenRecord(Barn barn,Pen pen) {
+  private PenRecord(Barn barn, Pen pen) {
     this.pen = pen;
-    this.barn =barn;
+    this.barn = barn;
   }
 
   public static PenRecord createRecord(Pen pen) {

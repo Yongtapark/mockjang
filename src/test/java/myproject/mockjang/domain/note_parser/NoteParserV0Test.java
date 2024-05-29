@@ -1,6 +1,8 @@
 package myproject.mockjang.domain.note_parser;
 
-import static myproject.mockjang.domain.note_parser.NoteRegex.*;
+import static myproject.mockjang.domain.note_parser.NoteRegex.BARN;
+import static myproject.mockjang.domain.note_parser.NoteRegex.COW;
+import static myproject.mockjang.domain.note_parser.NoteRegex.PEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -230,13 +232,14 @@ class NoteParserV0Test extends IntegrationTestSupport {
 
     //when
     noteContainer = noteParserV0.extractAndSaveNotes(noteContainer,
-            "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
-                    "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
+            "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
     Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
 
-    assertThatThrownBy(()->immutableMap.put(COW, new ArrayList<NoteAndCodeId>())).isInstanceOf(UnsupportedOperationException.class);
+    assertThatThrownBy(() -> immutableMap.put(COW, new ArrayList<NoteAndCodeId>())).isInstanceOf(
+        UnsupportedOperationException.class);
   }
 
   @Test
@@ -248,14 +251,15 @@ class NoteParserV0Test extends IntegrationTestSupport {
 
     //when
     noteContainer = noteParserV0.extractAndSaveNotes(noteContainer,
-            "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
-                    "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
+            "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
     Map<NoteRegex, List<NoteAndCodeId>> immutableMap = noteContainer.getImmutableMap();
     List<NoteAndCodeId> noteAndCodeIdList1 = immutableMap.get(BARN);
 
-    assertThatThrownBy(()-> noteAndCodeIdList1.add(new NoteAndCodeId("sd","ds"))).isInstanceOf(UnsupportedOperationException.class);
+    assertThatThrownBy(() -> noteAndCodeIdList1.add(new NoteAndCodeId("sd", "ds"))).isInstanceOf(
+        UnsupportedOperationException.class);
   }
 
   @Test
@@ -265,8 +269,9 @@ class NoteParserV0Test extends IntegrationTestSupport {
     NoteParserV0 noteParserV0 = new NoteParserV0();
     NoteContainer noteContainer = new NoteContainer();
 
-    String combinedNotes = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
-        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_2;
+    String combinedNotes =
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
+            "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_2;
 
     //when
     noteContainer = noteParserV0.extractAndSaveNotes(noteContainer, combinedNotes);

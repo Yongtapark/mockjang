@@ -86,4 +86,23 @@ class FeedConsumptionRepositoryTest extends IntegrationTestSupport {
     assertThat(allByDate).hasSize(3);
     assertThat(allByDate).contains(hayConsumption1, cornConsumption1, feedConsumption1);
   }
+
+  @DisplayName("건초소비기록이 논리적 제거가 되는지 확인한다.")
+  @Test
+  void checkFeedConsumptionCanDeleteLogical() {
+    //given
+    FeedConsumption consumption1 = FeedConsumption.builder().dailyConsumptionAmount(1.0).build();
+    FeedConsumption consumption2 = FeedConsumption.builder().dailyConsumptionAmount(1.0).build();
+    feedConsumptionRepository.save(consumption1);
+    feedConsumptionRepository.save(consumption2);
+    feedConsumptionRepository.delete(consumption2);
+    List<FeedConsumption> feedConsumptions = feedConsumptionRepository.findAll();
+
+    //when
+    List<FeedConsumption> deletedFeedConsumptions = feedConsumptionRepository.findAllWhereDeletedTrue();
+
+    //then
+    assertThat(feedConsumptions).containsOnly(consumption1);
+    assertThat(deletedFeedConsumptions).containsOnly(consumption2);
+  }
 }

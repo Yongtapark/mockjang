@@ -1,6 +1,7 @@
 package myproject.mockjang.domain.mockjang.cow;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CowRepository extends JpaRepository<Cow, Long> {
 
-  Cow findByCodeId(String codeId);
+  Optional<Cow> findByCodeId(String codeId);
 
   List<Cow> findAllByCowStatus(CowStatus cowStatus);
 

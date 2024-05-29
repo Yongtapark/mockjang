@@ -28,7 +28,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
     Cow cow = createCow("0001", Gender.FEMALE);
     //when
     Cow savedCow = cowRepository.save(cow);
-    Cow findCow = cowRepository.findByCodeId(cow.getCodeId());
+    Cow findCow = cowRepository.findByCodeId(cow.getCodeId()).orElseThrow();
 
     //then
     assertThat(savedCow).isEqualTo(findCow);
@@ -49,7 +49,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
     cowRepository.flush();
 
     //when
-    Cow findCow = cowRepository.findByCodeId(child.getCodeId());
+    Cow findCow = cowRepository.findByCodeId(child.getCodeId()).orElseThrow();
 
     //then
     assertThat(findCow).isEqualTo(child);
@@ -79,7 +79,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
 
     cowRepository.save(mom);
     //when
-    Cow findMomCow = cowRepository.findByCodeId(mom.getCodeId());
+    Cow findMomCow = cowRepository.findByCodeId(mom.getCodeId()).orElseThrow();
 
     //then
     assertThat(findMomCow).isEqualTo(mom);
@@ -110,7 +110,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
 
   @DisplayName("축사칸을 변경 할 수 있다.")
   @Test
-  void changePen() {
+  void changeUpperGroup() {
     //given
     Barn barn1 = Barn.createBarn("1번축사");
     Barn barn2 = Barn.createBarn("2번축사");
@@ -130,7 +130,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
     cowRepository.save(cow);
 
     //when
-    cow.changePen(pen2);
+    cow.changeUpperGroup(pen2);
 
     List<Cow> cows1 = penRepository.findById(pen1.getId()).orElseThrow().getCows();
     List<Cow> cows2 = penRepository.findById(pen2.getId()).orElseThrow().getCows();

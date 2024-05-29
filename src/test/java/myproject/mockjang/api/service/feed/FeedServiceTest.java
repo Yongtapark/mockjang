@@ -14,8 +14,8 @@ import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+
 class FeedServiceTest extends IntegrationTestSupport {
 
   @Autowired
@@ -82,7 +82,7 @@ class FeedServiceTest extends IntegrationTestSupport {
     feedConsumptionRepository.save(feedConsumption2);
 
     //when
-    feedService.calculateMultiDailyConsumption(eatDate1, List.of(hay,corn,feed));
+    feedService.calculateMultiDailyConsumption(eatDate1, List.of(hay, corn, feed));
 
     //then
     Feed findHay = feedRepository.findById(hay.getId()).orElseThrow();
@@ -91,8 +91,12 @@ class FeedServiceTest extends IntegrationTestSupport {
 
     assertThat(findHay.getDailyConsumption()).isEqualTo(
         hayConsumption1.getDailyConsumptionAmount() + hayConsumption2.getDailyConsumptionAmount());
-    assertThat(findCorn.getDailyConsumption()).isEqualTo(cornConsumption1.getDailyConsumptionAmount() + cornConsumption2.getDailyConsumptionAmount());
-    assertThat(findFeed.getDailyConsumption()).isEqualTo(feedConsumption1.getDailyConsumptionAmount() + feedConsumption2.getDailyConsumptionAmount());
+    assertThat(findCorn.getDailyConsumption()).isEqualTo(
+        cornConsumption1.getDailyConsumptionAmount()
+            + cornConsumption2.getDailyConsumptionAmount());
+    assertThat(findFeed.getDailyConsumption()).isEqualTo(
+        feedConsumption1.getDailyConsumptionAmount()
+            + feedConsumption2.getDailyConsumptionAmount());
   }
 
   @DisplayName("일일 먹이 소비량으로 예상 소비날짜를 구한다.")
@@ -105,11 +109,12 @@ class FeedServiceTest extends IntegrationTestSupport {
     LocalDate expectedDepletionDate = LocalDate.of(2024, 4, 23).plusDays(6);
 
     Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(purchaseDate)
-            .expirationDate(expireDate).usageStatus(USING).amount(70000.0).dailyConsumption(10000.0).build();
+        .expirationDate(expireDate).usageStatus(USING).amount(70000.0).dailyConsumption(10000.0)
+        .build();
     feedRepository.save(hay);
 
     //when
-    feedService.calculateLeftStocksDay(List.of(hay),eatDate);
+    feedService.calculateLeftStocksDay(List.of(hay), eatDate);
 
     //then
     Feed findHay = feedRepository.findById(hay.getId()).orElseThrow();

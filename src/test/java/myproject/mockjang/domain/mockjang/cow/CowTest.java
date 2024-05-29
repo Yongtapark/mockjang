@@ -1,6 +1,9 @@
 package myproject.mockjang.domain.mockjang.cow;
 
-import static myproject.mockjang.exception.Exceptions.*;
+import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
+import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
+import static myproject.mockjang.exception.Exceptions.DOMAIN_BARN_ALREADY_EXIST;
+import static myproject.mockjang.exception.Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -45,7 +48,7 @@ class CowTest extends IntegrationTestSupport {
 
   @DisplayName("축사칸을 변경 할 수 있다.")
   @Test
-  void changePen() {
+  void changeUpperGroup() {
     //given
     Barn barn1 = Barn.createBarn("1번축사");
     Barn barn2 = Barn.createBarn("2번축사");
@@ -58,7 +61,7 @@ class CowTest extends IntegrationTestSupport {
     cow.registerUpperGroup(pen1);
 
     //when
-    cow.changePen(pen2);
+    cow.changeUpperGroup(pen2);
     List<Cow> cows1 = pen1.getCows();
     List<Cow> cows2 = pen2.getCows();
 
@@ -125,12 +128,12 @@ class CowTest extends IntegrationTestSupport {
 
   @DisplayName("소의 도축상태를 변경한다.")
   @Test
-  void changeSlaughterStatus() {
+  void changeCowStatus() {
     //given
     Cow cow = createCow("0001", Gender.MALE);
 
     //when
-    cow.changeSlaughterStatus(CowStatus.SLAUGHTERED);
+    cow.changeCowStatus(CowStatus.SLAUGHTERED);
 
     //then
     assertThat(cow.getCowStatus()).isEqualTo(CowStatus.SLAUGHTERED);
@@ -183,7 +186,8 @@ class CowTest extends IntegrationTestSupport {
 
     //when //then
     assertThatThrownBy(() -> cow.registerBarn(barn2)).isInstanceOf(
-        UpperGroupAlreadyExistException.class).hasMessage(DOMAIN_BARN_ALREADY_EXIST.formatMessage(Barn.class));
+            UpperGroupAlreadyExistException.class)
+        .hasMessage(DOMAIN_BARN_ALREADY_EXIST.formatMessage(Barn.class));
   }
 
   @DisplayName("호출 시점에 상위 그룹이 존재하지 않을 시 예외를 발생시킨다.")
@@ -193,7 +197,8 @@ class CowTest extends IntegrationTestSupport {
     Cow cow = createCow("0001", Gender.MALE);
 
     //when //then
-    assertThatThrownBy(cow::getUpperGroup).isInstanceOf(ThereIsNoGroupException.class).hasMessage(COMMON_NO_UPPER_GROUP.formatMessage(Cow.class));
+    assertThatThrownBy(cow::getUpperGroup).isInstanceOf(ThereIsNoGroupException.class)
+        .hasMessage(COMMON_NO_UPPER_GROUP.formatMessage(Cow.class));
   }
 
   @DisplayName("호출 시점에 하위 그룹 리스트가 비어있다면 예외를 발생시킨다.")
@@ -203,6 +208,7 @@ class CowTest extends IntegrationTestSupport {
     Cow cow = createCow("0001", Gender.MALE);
 
     //when //then
-    assertThatThrownBy(()->cow.removeOneOfUnderGroups(null)).isInstanceOf(ThereIsNoGroupException.class).hasMessage(COMMON_NO_UNDER_GROUP.formatMessage(Cow.class));
+    assertThatThrownBy(() -> cow.removeOneOfUnderGroups(null)).isInstanceOf(
+        ThereIsNoGroupException.class).hasMessage(COMMON_NO_UNDER_GROUP.formatMessage(Cow.class));
   }
 }

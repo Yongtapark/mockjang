@@ -9,15 +9,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.creater.YongTaPark;
 import org.springframework.data.jpa.domain.AbstractAuditable;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Records extends AbstractAuditable<YongTaPark,Long> {
+public abstract class Records extends AbstractAuditable<YongTaPark, Long> {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String memo;
+
   protected void writeMemo(String memo) {
-    this.memo=memo;
+    this.memo = memo;
   }
 }

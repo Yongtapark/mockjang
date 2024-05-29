@@ -9,7 +9,7 @@ public class NoteFormatException extends IllegalArgumentException {
   }
 
   public NoteFormatException(Exceptions exception, String content) {
-    super(String.format(exception.getMessage(),content));
+    super(String.format(exception.getMessage(), content));
   }
 
 }

@@ -6,10 +6,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDate;
-import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
-import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.exception.feed.NegativeNumberException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,7 +84,8 @@ class FeedTest extends IntegrationTestSupport {
     LocalDate expectedDepletionDate = LocalDate.of(2024, 4, 23).plusDays(2);
 
     Feed hay = Feed.builder().name("건초").description("마른건초").storeDate(purchaseDate)
-            .expirationDate(expireDate).usageStatus(USING).amount(30000.0).dailyConsumption(10000.0).build();
+        .expirationDate(expireDate).usageStatus(USING).amount(30000.0).dailyConsumption(10000.0)
+        .build();
 
     //when
     hay.calculateExpectedDepletionDate(eatDate);

@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 class CowRecordRepositoryTest extends IntegrationTestSupport {
+
   @Autowired
   private BarnRepository barnRepository;
   @Autowired

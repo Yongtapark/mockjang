@@ -37,7 +37,7 @@ class BarnServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사를 제거한다.")
   @Test
-  void test() {
+  void delete() {
     //given
     String barnId1 = "1번축사";
     String barnId2 = "2번축사";
@@ -62,24 +62,45 @@ class BarnServiceTest extends IntegrationTestSupport {
   @Test
   void createBarnWithEmptyBarnId() {
     //given // when //then
-    assertThatThrownBy(() -> barnService.createBarn(STRING_EMPTY)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_BLANK_STRING.getMessage());
+    assertThatThrownBy(() -> barnService.createBarn(STRING_EMPTY)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
   void createBarnWithOnlySpaceBarnId() {
     //given // when //then
-    assertThatThrownBy(() -> barnService.createBarn(STRING_ONLY_SPACE)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_BLANK_STRING.getMessage());
+    assertThatThrownBy(() -> barnService.createBarn(STRING_ONLY_SPACE)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
   @Test
   void createBarnWithOver10Size() {
     //given // when //then
-    assertThatThrownBy(() -> barnService.createBarn(STRING_OVER_10)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_STRING_OVER_10.getMessage());
+    assertThatThrownBy(() -> barnService.createBarn(STRING_OVER_10)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_STRING_OVER_10.getMessage());
+  }
+
+  @DisplayName("축사 리스트를 조회한다.")
+  @Test
+  void findAll() {
+    //given
+    Barn barn1 = Barn.createBarn("1번축사");
+    Barn barn2 = Barn.createBarn("2번축사");
+    Barn barn3 = Barn.createBarn("3번축사");
+    barnRepository.save(barn1);
+    barnRepository.save(barn2);
+    barnRepository.save(barn3);
+
+    //when
+    List<Barn> barns = barnService.findAll();
+
+    //then
+    assertThat(barns).containsExactly(barn1, barn2, barn3);
   }
 
 }

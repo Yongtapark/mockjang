@@ -16,7 +16,7 @@ import org.hibernate.annotations.Where;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE barn_record SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class BarnRecord extends Records{
+public class BarnRecord extends Records {
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Barn barn;
@@ -33,7 +33,7 @@ public class BarnRecord extends Records{
   }
 
   public void writeNote(String memo) {
-    if(barn==null) {
+    if (barn == null) {
       throw new RuntimeException("there is no barn or cow");
     }
     writeMemo(memo);

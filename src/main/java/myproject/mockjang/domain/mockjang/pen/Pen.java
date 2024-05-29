@@ -33,7 +33,8 @@ import org.springframework.data.jpa.domain.AbstractAuditable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE pen SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang {
+public class Pen extends AbstractAuditable<YongTaPark, Long> implements Mockjang {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -55,10 +56,10 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang 
   private Pen(String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {
     this.codeId = codeId;
     this.barn = barn;
-    if(cows!=null){
+    if (cows != null) {
       this.cows = cows;
     }
-    if(records !=null){
+    if (records != null) {
       this.records = records;
     }
   }
@@ -71,19 +72,22 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang 
 
   @Override
   public void registerUpperGroup(Mockjang mockjang) {
-    if(mockjang instanceof Barn barn){
+    if (mockjang instanceof Barn barn) {
       if (this.barn != null) {
-        throw new UpperGroupAlreadyExistException(barn,DOMAIN_BARN_ALREADY_EXIST);
+        throw new UpperGroupAlreadyExistException(barn, DOMAIN_BARN_ALREADY_EXIST);
       }
       barn.addPen(this);
       this.barn = barn;
     }
   }
 
-  public void changeBarnTo(Barn barn) {
-    this.barn.deletePen(this);
-    this.barn = null;
-    registerUpperGroup(barn);
+  @Override
+  public void changeUpperGroup(Mockjang mockjang) {
+    if (mockjang instanceof Barn barn) {
+      this.barn.deletePen(this);
+      this.barn = null;
+      registerUpperGroup(barn);
+    }
   }
 
   public void addCow(Cow cow) {
@@ -106,19 +110,19 @@ public class Pen extends AbstractAuditable<YongTaPark,Long> implements Mockjang 
 
   @Override
   public Mockjang getUpperGroup() {
-    if(barn==null){
-      throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP,this);
+    if (barn == null) {
+      throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP, this);
     }
     return barn;
   }
 
   @Override
   public void removeOneOfUnderGroups(Mockjang mockjang) {
-    if(cows.isEmpty()){
-      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP,this);
+    if (cows.isEmpty()) {
+      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
     }
-    if(!cows.remove(mockjang)){
-      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP,this);
+    if (!cows.remove(mockjang)) {
+      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
     }
   }
 }

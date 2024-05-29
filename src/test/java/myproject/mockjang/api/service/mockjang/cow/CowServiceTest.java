@@ -100,7 +100,7 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사칸을 변경 할 수 있다.")
   @Test
-  void changePen() {
+  void changeUpperGroup() {
     //given
     Barn barn1 = Barn.createBarn("1번축사");
     Barn barn2 = Barn.createBarn("2번축사");
@@ -120,7 +120,7 @@ class CowServiceTest extends IntegrationTestSupport {
     cowRepository.save(cow);
 
     //when
-    cow.changePen(pen2);
+    cow.changeUpperGroup(pen2);
 
     List<Cow> cows1 = penRepository.findById(pen1.getId()).orElseThrow().getCows();
     List<Cow> cows2 = penRepository.findById(pen2.getId()).orElseThrow().getCows();
@@ -134,7 +134,7 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("소를 제거하면 축사칸의 리스트에서도 제거된다.")
   @Test
-  void deleteCow() {
+  void delete() {
     //given
     Pen pen = Pen.createPen("1번축사");
     penRepository.save(pen);
@@ -143,7 +143,7 @@ class CowServiceTest extends IntegrationTestSupport {
     cowRepository.save(cow);
 
     //when
-    cowService.deleteCow(cow);
+    cowService.delete(cow);
 
     //then
     assertThatThrownBy(() -> cowRepository.findById(cow.getId()).orElseThrow())
@@ -155,24 +155,54 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void createCowWithEmptyBarnId() {
     //given // when //then
-    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_EMPTY,Gender.FEMALE,null,null)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_BLANK_STRING.getMessage());
+    assertThatThrownBy(
+        () -> cowService.createRaisingCow(STRING_EMPTY, Gender.FEMALE, null, null)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
   void createCowWithOnlySpaceBarnId() {
     //given // when //then
-    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_ONLY_SPACE,Gender.FEMALE,null,null)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_BLANK_STRING.getMessage());
+    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_ONLY_SPACE, Gender.FEMALE, null,
+        null)).isInstanceOf(StringException.class)
+        .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
   @Test
   void createCowWithOver10Size() {
     //given // when //then
-    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_OVER_10,Gender.FEMALE,null,null)).isInstanceOf(StringException.class)
-            .hasMessage(COMMON_STRING_OVER_10.getMessage());
+    assertThatThrownBy(
+        () -> cowService.createRaisingCow(STRING_OVER_10, Gender.FEMALE, null, null)).isInstanceOf(
+            StringException.class)
+        .hasMessage(COMMON_STRING_OVER_10.getMessage());
+  }
+
+  @DisplayName("소의 부모를 등록하면, 소의 엄마, 아빠 필드에 부모가, 부모의 자식 필드에 자식들이 등록된다.")
+  @Test
+  void registerParents() {
+    //given
+    LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
+    Cow cow = Cow.createCow("0001", Gender.FEMALE, CowStatus.RAISING, birthDate);
+    Cow mom = Cow.createCow("0002", Gender.FEMALE, CowStatus.RAISING, birthDate);
+    Cow dad = Cow.createCow("0003", Gender.MALE, CowStatus.RAISING, birthDate);
+    cowRepository.save(cow);
+    cowRepository.save(mom);
+    cowRepository.save(dad);
+
+    //when
+    cowService.registerParents(cow, List.of(mom, dad));
+
+    //then
+    Cow savedCow = cowRepository.findById(cow.getId()).orElseThrow();
+    Cow savedMom = cowRepository.findById(mom.getId()).orElseThrow();
+    Cow savedDad = cowRepository.findById(dad.getId()).orElseThrow();
+    assertThat(savedCow.getMom()).isEqualTo(mom);
+    assertThat(savedCow.getDad()).isEqualTo(dad);
+    assertThat(savedMom.getChildren()).containsOnly(cow);
+    assertThat(savedDad.getChildren()).containsOnly(cow);
   }
 
 }
