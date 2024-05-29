@@ -1,6 +1,6 @@
 package myproject.mockjang.api.service.mockjang.pen;
 
-import static myproject.mockjang.exception.Exceptions.*;
+import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -10,7 +10,6 @@ import myproject.mockjang.api.service.mockjang.MockjangServiceInterface;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
-import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.springframework.stereotype.Service;
 
