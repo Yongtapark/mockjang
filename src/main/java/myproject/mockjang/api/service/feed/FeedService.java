@@ -20,8 +20,8 @@ public class FeedService {
   private final FeedConsumptionRepository feedConsumptionRepository;
 
   public void createFeed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate,
-      Double amountPerStock, String description) {
-    Feed feed = Feed.createFeed(codeId, name, 1,amountPerStock, storeDate, expirationDate, description);
+      Integer stock,Double amountPerStock, String description) {
+    Feed feed = Feed.createFeed(codeId, name, stock,amountPerStock, storeDate, expirationDate, description);
     feed.registerUsageStatus(FeedUsageStatus.USING);
     feedRepository.save(feed);
   }
