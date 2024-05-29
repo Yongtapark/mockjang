@@ -1,6 +1,7 @@
 package myproject.mockjang.api.service.mockjang.barn;
 
 import static myproject.mockjang.exception.Exceptions.COMMON_BLANK_STRING;
+import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 import static myproject.mockjang.exception.Exceptions.COMMON_STRING_OVER_10;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -9,6 +10,7 @@ import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
+import myproject.mockjang.exception.common.NotExistException;
 import myproject.mockjang.exception.common.StringException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,7 +30,7 @@ class BarnServiceTest extends IntegrationTestSupport {
     String barnId = "1번축사";
 
     //when
-    Barn barn = barnService.createBarn(barnId);
+    Barn barn = barnService.createBarn(PARSER_BARN_CODE_ID_1);
     Barn savedBarn = barnRepository.findById(barn.getId()).orElseThrow();
 
     //then
@@ -39,17 +41,15 @@ class BarnServiceTest extends IntegrationTestSupport {
   @Test
   void delete() {
     //given
-    String barnId1 = "1번축사";
-    String barnId2 = "2번축사";
 
-    Barn barn1 = barnService.createBarn(barnId1);
-    Barn barn2 = barnService.createBarn(barnId2);
+    Barn barn1 = barnService.createBarn(PARSER_BARN_CODE_ID_1);
+    Barn barn2 = barnService.createBarn(PARSER_BARN_CODE_ID_2);
 
     Barn savedBarn1 = barnRepository.findById(barn1.getId()).orElseThrow();
     Barn savedBarn2 = barnRepository.findById(barn2.getId()).orElseThrow();
 
     //when
-    barnRepository.delete(savedBarn1);
+    barnService.delete(savedBarn1);
     List<Barn> barns = barnRepository.findAll();
 
     //then
@@ -89,18 +89,37 @@ class BarnServiceTest extends IntegrationTestSupport {
   @Test
   void findAll() {
     //given
-    Barn barn1 = Barn.createBarn("1번축사");
-    Barn barn2 = Barn.createBarn("2번축사");
-    Barn barn3 = Barn.createBarn("3번축사");
+    Barn barn1 = Barn.createBarn(PARSER_BARN_CODE_ID_1);
+    Barn barn2 = Barn.createBarn(PARSER_BARN_CODE_ID_2);
     barnRepository.save(barn1);
     barnRepository.save(barn2);
-    barnRepository.save(barn3);
 
     //when
     List<Barn> barns = barnService.findAll();
 
     //then
-    assertThat(barns).containsExactly(barn1, barn2, barn3);
+    assertThat(barns).containsExactly(barn1, barn2);
   }
 
+  @DisplayName("축사를 단일 조회한다.")
+  @Test
+  void findByCodeId() {
+    //given
+    Barn barn = Barn.createBarn(PARSER_BARN_CODE_ID_1);
+    barnRepository.save(barn);
+
+    //when
+    Barn findBarn = barnService.findByCodeId(PARSER_BARN_CODE_ID_1);
+
+    //then
+    assertThat(barn).isEqualTo(findBarn);
+  }
+
+  @DisplayName("없는 축사를 단일 조회할 시 예외를 발생시킨다.")
+  @Test
+  void findByCodeIdWithNoData() {
+    //given //when //then
+    assertThatThrownBy(()->barnService.findByCodeId(PARSER_BARN_CODE_ID_1)).isInstanceOf(NotExistException.class)
+        .hasMessage(COMMON_NOT_EXIST.formatMessage(PARSER_BARN_CODE_ID_1));
+  }
 }

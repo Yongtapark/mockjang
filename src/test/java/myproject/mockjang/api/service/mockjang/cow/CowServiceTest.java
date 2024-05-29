@@ -2,6 +2,7 @@ package myproject.mockjang.api.service.mockjang.cow;
 
 import static myproject.mockjang.exception.Exceptions.BUSINESS_ONLY_SLAUGHTERED_ERROR;
 import static myproject.mockjang.exception.Exceptions.COMMON_BLANK_STRING;
+import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 import static myproject.mockjang.exception.Exceptions.COMMON_STRING_OVER_10;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -18,6 +19,7 @@ import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.exception.common.NotExistException;
 import myproject.mockjang.exception.common.StringException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.junit.jupiter.api.DisplayName;
@@ -39,15 +41,16 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void createRaisingCow() {
     //given
-    Barn barn = Barn.createBarn("1번축사");
+    Barn barn = Barn.createBarn(PARSER_BARN_CODE_ID_1);
     barnRepository.save(barn);
-    Pen pen = Pen.createPen("1-1");
+    Pen pen = Pen.createPen(PARSER_PEN_CODE_ID_1);
     pen.registerUpperGroup(barn);
     penRepository.save(pen);
     LocalDateTime birthDate = LocalDateTime.of(2024, 5, 25, 0, 0);
 
     //when
-    Cow raisingCow = cowService.createRaisingCow("0001", Gender.FEMALE, pen, birthDate);
+    Cow raisingCow = cowService.createRaisingCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, pen,
+        birthDate);
     Cow findRasisingCow = cowRepository.findById(raisingCow.getId()).orElseThrow();
 
     //then
@@ -60,7 +63,7 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void changeCowStatus() {
     //given
-    Cow cow = createCow("0001", Gender.FEMALE);
+    Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE);
     cowRepository.save(cow);
 
     //when
@@ -74,7 +77,7 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void registerUnitPrice() {
     //given
-    Cow cow = createCow("0001", Gender.FEMALE, CowStatus.SLAUGHTERED);
+    Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.SLAUGHTERED);
     cowRepository.save(cow);
 
     //when
@@ -88,7 +91,7 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void registerUnitPriceWithNotSlaughtered() {
     //given
-    Cow cow = createCow("0001", Gender.FEMALE);
+    Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE);
     cowRepository.save(cow);
 
     //when //then
@@ -102,20 +105,20 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void changeUpperGroup() {
     //given
-    Barn barn1 = Barn.createBarn("1번축사");
-    Barn barn2 = Barn.createBarn("2번축사");
+    Barn barn1 = Barn.createBarn(PARSER_BARN_CODE_ID_1);
+    Barn barn2 = Barn.createBarn(PARSER_BARN_CODE_ID_2);
 
     barnRepository.save(barn1);
     barnRepository.save(barn2);
 
-    Pen pen1 = Pen.createPen("1-1");
-    Pen pen2 = Pen.createPen("1-2");
+    Pen pen1 = Pen.createPen(PARSER_PEN_CODE_ID_1);
+    Pen pen2 = Pen.createPen(PARSER_PEN_CODE_ID_2);
     pen1.registerUpperGroup(barn1);
     pen2.registerUpperGroup(barn2);
     penRepository.save(pen1);
     penRepository.save(pen2);
 
-    Cow cow = createCow("0001", Gender.FEMALE);
+    Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE);
     cow.registerUpperGroup(pen1);
     cowRepository.save(cow);
 
@@ -136,9 +139,9 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void delete() {
     //given
-    Pen pen = Pen.createPen("1번축사");
+    Pen pen = Pen.createPen(PARSER_BARN_CODE_ID_1);
     penRepository.save(pen);
-    Cow cow = createCow("1111");
+    Cow cow = createCow(PARSER_COW_CODE_ID_1);
     cow.registerUpperGroup(pen);
     cowRepository.save(cow);
 
@@ -185,8 +188,8 @@ class CowServiceTest extends IntegrationTestSupport {
   void registerParents() {
     //given
     LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
-    Cow cow = Cow.createCow("0001", Gender.FEMALE, CowStatus.RAISING, birthDate);
-    Cow mom = Cow.createCow("0002", Gender.FEMALE, CowStatus.RAISING, birthDate);
+    Cow cow = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, birthDate);
+    Cow mom = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
     Cow dad = Cow.createCow("0003", Gender.MALE, CowStatus.RAISING, birthDate);
     cowRepository.save(cow);
     cowRepository.save(mom);
@@ -203,6 +206,47 @@ class CowServiceTest extends IntegrationTestSupport {
     assertThat(savedCow.getDad()).isEqualTo(dad);
     assertThat(savedMom.getChildren()).containsOnly(cow);
     assertThat(savedDad.getChildren()).containsOnly(cow);
+  }
+
+  @DisplayName("소 리스트 조회")
+  @Test
+  void findAll() {
+    //given
+    LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
+    Cow cow1 = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, birthDate);
+    Cow cow2 = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
+    cowRepository.save(cow1);
+    cowRepository.save(cow2);
+
+    //when
+    List<Cow> cows = cowService.findAll();
+
+    //then
+    assertThat(cows).containsExactly(cow1, cow2);
+  }
+
+  @DisplayName("소를 단일 조회한다.")
+  @Test
+  void findByCodeId() {
+    //given
+    LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
+    Cow cow = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, birthDate);
+    cowRepository.save(cow);
+
+    //when
+    Cow findCow = cowService.findByCodeId(PARSER_COW_CODE_ID_1);
+
+    //then
+    assertThat(cow).isEqualTo(findCow);
+  }
+
+  @DisplayName("없는 소를 단일 조회할 시 예외를 발생시킨다.")
+  @Test
+  void findByCodeIdWithNoData() {
+    //given //when //then
+    assertThatThrownBy(()->cowService.findByCodeId(PARSER_COW_CODE_ID_1)).isInstanceOf(
+        NotExistException.class)
+        .hasMessage(COMMON_NOT_EXIST.formatMessage(PARSER_COW_CODE_ID_1));
   }
 
 }
