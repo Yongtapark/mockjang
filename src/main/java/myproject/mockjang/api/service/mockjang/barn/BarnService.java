@@ -4,9 +4,11 @@ import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
-import myproject.mockjang.api.service.mockjang.MockjangServiceInterface;
+import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.barn.response.BarnResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.exception.common.NotExistException;
@@ -15,27 +17,30 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class BarnService extends MockjangServiceAbstract implements MockjangServiceInterface<Barn> {
+public class BarnService extends MockjangServiceAbstract {
 
   private final BarnRepository barnRepository;
 
-  public Barn createBarn(String barnId) {
+  public BarnResponse createBarn(BarnCreateServiceRequest request) {
+    String barnId = request.getCodeId();
     codeIdFilter(barnId);
     Barn barn = Barn.createBarn(barnId);
-    return barnRepository.save(barn);
+    Barn savedBarn = barnRepository.save(barn);
+    return BarnResponse.of(savedBarn);
   }
 
-  @Override
-  public List<Barn> findAll() {
-    return barnRepository.findAll();
+  public List<BarnResponse> findAll() {
+    List<Barn> barns = barnRepository.findAll();
+    return barns.stream().map(BarnResponse::of)
+        .collect(Collectors.toList());
   }
 
-  @Override
-  public Barn findByCodeId(String codId) {
-      return barnRepository.findByCodeId(codId).orElseThrow(()-> new NotExistException(COMMON_NOT_EXIST, codId));
+  public BarnResponse findByCodeId(String codeId) {
+    Barn barn = barnRepository.findByCodeId(codeId)
+        .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId));
+    return BarnResponse.of(barn);
   }
 
-  @Override
   public void delete(Barn barn) {
     barnRepository.delete(barn);
   }

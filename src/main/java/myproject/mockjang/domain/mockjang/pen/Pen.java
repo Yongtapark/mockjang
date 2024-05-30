@@ -2,7 +2,7 @@ package myproject.mockjang.domain.mockjang.pen;
 
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
-import static myproject.mockjang.exception.Exceptions.DOMAIN_BARN_ALREADY_EXIST;
+import static myproject.mockjang.exception.Exceptions.COMMON_ALREADY_EXIST;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -74,7 +74,7 @@ public class Pen extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   public void registerUpperGroup(Mockjang mockjang) {
     if (mockjang instanceof Barn barn) {
       if (this.barn != null) {
-        throw new UpperGroupAlreadyExistException(barn, DOMAIN_BARN_ALREADY_EXIST);
+        throw new UpperGroupAlreadyExistException(barn, COMMON_ALREADY_EXIST);
       }
       barn.addPen(this);
       this.barn = barn;

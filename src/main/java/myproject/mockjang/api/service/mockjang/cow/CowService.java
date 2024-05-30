@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
-import myproject.mockjang.api.service.mockjang.MockjangServiceInterface;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CowService extends MockjangServiceAbstract implements MockjangServiceInterface<Cow> {
+public class CowService extends MockjangServiceAbstract {
 
   private final CowRepository cowRepository;
 
@@ -54,18 +53,15 @@ public class CowService extends MockjangServiceAbstract implements MockjangServi
     cow.changeCowStatus(cowStatus);
   }
 
-  @Override
   public List<Cow> findAll() {
     return cowRepository.findAll();
   }
 
-  @Override
   public Cow findByCodeId(String codeId) {
     return cowRepository.findByCodeId(codeId)
         .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId));
   }
 
-  @Override
   public void delete(Cow cow) {
     unlinkUpperGroup(cow);
     cowRepository.delete(cow);

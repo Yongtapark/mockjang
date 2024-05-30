@@ -12,10 +12,11 @@ public enum Exceptions {
   COMMON_STRING_OVER_10("문자열은 10자리를 초과할 수 없음"),
   COMMON_NOT_EXIST("%s(을)를 찾을 수 없음"),
   COMMON_EMPTY_LIST("조회 가능한 데이터 없음"),
+  COMMON_ALREADY_EXIST("%s(이)가 이미 존재함"),
   //barn
-  DOMAIN_BARN_ALREADY_EXIST("%s(이)가 이미 존재함"),
+  //COMMON_ALREADY_EXIST("%s(이)가 이미 존재함"),
   //pen
-  DOMAIN_PEN_ALREADY_EXIST("%s(이)가 이미 존재함"),
+  //COMMON_ALREADY_EXIST("%s(이)가 이미 존재함"),
   //cow,
   DOMAIN_ONLY_SLAUGHTERED_ERROR("cowStatus.slaughtered 이외 설정 시 예외"),
   //feed
@@ -25,8 +26,8 @@ public enum Exceptions {
   //noteParser
   DOMAIN_NOTE_FORMAT("유효하지 않은 노트 형식 : %s"),
 
+  BUSINESS_ONLY_SLAUGHTERED_ERROR("도축된 소만 입력 가능");
 
-  BUSINESS_ONLY_SLAUGHTERED_ERROR("도축된 소만 입력이 가능합니다.");
 
   final String message;
 

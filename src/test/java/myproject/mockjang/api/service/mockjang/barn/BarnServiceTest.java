@@ -8,6 +8,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.barn.request.BarnFindByCodeIdServiceRequest;
+import myproject.mockjang.api.service.mockjang.barn.response.BarnResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.exception.common.NotExistException;
@@ -27,26 +30,31 @@ class BarnServiceTest extends IntegrationTestSupport {
   @Test
   void createBarn() {
     //given
-    String barnId = "1번축사";
 
+    BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
+        .codeId(PARSER_BARN_CODE_ID_1).build();
     //when
-    Barn barn = barnService.createBarn(PARSER_BARN_CODE_ID_1);
-    Barn savedBarn = barnRepository.findById(barn.getId()).orElseThrow();
+    BarnResponse barnResponse = barnService.createBarn(request);
+    Barn savedBarn = barnRepository.findById(barnResponse.getId()).orElseThrow();
 
     //then
-    assertThat(barn).isEqualTo(savedBarn);
+    assertThat(barnResponse.getCodeId()).isEqualTo(savedBarn.getCodeId());
   }
 
   @DisplayName("축사를 제거한다.")
   @Test
   void delete() {
     //given
+    BarnCreateServiceRequest request1 = BarnCreateServiceRequest.builder()
+        .codeId(PARSER_BARN_CODE_ID_1).build();
+    BarnCreateServiceRequest request2 = BarnCreateServiceRequest.builder()
+        .codeId(PARSER_BARN_CODE_ID_2).build();
 
-    Barn barn1 = barnService.createBarn(PARSER_BARN_CODE_ID_1);
-    Barn barn2 = barnService.createBarn(PARSER_BARN_CODE_ID_2);
+    BarnResponse barnResponse1 = barnService.createBarn(request1);
+    BarnResponse barnResponse2 = barnService.createBarn(request2);
 
-    Barn savedBarn1 = barnRepository.findById(barn1.getId()).orElseThrow();
-    Barn savedBarn2 = barnRepository.findById(barn2.getId()).orElseThrow();
+    Barn savedBarn1 = barnRepository.findById(barnResponse1.getId()).orElseThrow();
+    Barn savedBarn2 = barnRepository.findById(barnResponse2.getId()).orElseThrow();
 
     //when
     barnService.delete(savedBarn1);
@@ -61,8 +69,11 @@ class BarnServiceTest extends IntegrationTestSupport {
   @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
   @Test
   void createBarnWithEmptyBarnId() {
-    //given // when //then
-    assertThatThrownBy(() -> barnService.createBarn(STRING_EMPTY)).isInstanceOf(
+    //given
+    BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
+        .codeId(STRING_EMPTY).build();
+    //when //then
+    assertThatThrownBy(() -> barnService.createBarn(request)).isInstanceOf(
             StringException.class)
         .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
@@ -70,8 +81,12 @@ class BarnServiceTest extends IntegrationTestSupport {
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
   void createBarnWithOnlySpaceBarnId() {
-    //given // when //then
-    assertThatThrownBy(() -> barnService.createBarn(STRING_ONLY_SPACE)).isInstanceOf(
+    //given
+    BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
+        .codeId(STRING_ONLY_SPACE).build();
+
+    //when //then
+    assertThatThrownBy(() -> barnService.createBarn(request)).isInstanceOf(
             StringException.class)
         .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
@@ -79,8 +94,12 @@ class BarnServiceTest extends IntegrationTestSupport {
   @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
   @Test
   void createBarnWithOver10Size() {
-    //given // when //then
-    assertThatThrownBy(() -> barnService.createBarn(STRING_OVER_10)).isInstanceOf(
+    //given
+    BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
+        .codeId(STRING_OVER_10).build();
+
+    //when //then
+    assertThatThrownBy(() -> barnService.createBarn(request)).isInstanceOf(
             StringException.class)
         .hasMessage(COMMON_STRING_OVER_10.getMessage());
   }
@@ -95,10 +114,11 @@ class BarnServiceTest extends IntegrationTestSupport {
     barnRepository.save(barn2);
 
     //when
-    List<Barn> barns = barnService.findAll();
+    List<BarnResponse> response = barnService.findAll();
 
     //then
-    assertThat(barns).containsExactly(barn1, barn2);
+    List<String> codeIdList = response.stream().map(BarnResponse::getCodeId).toList();
+    assertThat(codeIdList).isEqualTo(List.of(barn1.getCodeId(),barn2.getCodeId()));
   }
 
   @DisplayName("축사를 단일 조회한다.")
@@ -109,10 +129,10 @@ class BarnServiceTest extends IntegrationTestSupport {
     barnRepository.save(barn);
 
     //when
-    Barn findBarn = barnService.findByCodeId(PARSER_BARN_CODE_ID_1);
+    BarnResponse response = barnService.findByCodeId(PARSER_BARN_CODE_ID_1);
 
     //then
-    assertThat(barn).isEqualTo(findBarn);
+    assertThat(barn.getId()).isEqualTo(response.getId());
   }
 
   @DisplayName("없는 축사를 단일 조회할 시 예외를 발생시킨다.")

@@ -18,7 +18,7 @@ public class NoteParserController {
 
   private final NoteParserService noteParserService;
 
-  @PostMapping("api/v0/notes/daily/new")
+  @PostMapping("/api/v0/notes/daily/new")
   public ApiResponse<NoteParserResponse> createNote(@Valid @RequestBody NoteParserCreateRequest request) {
     return ApiResponse.ok(noteParserService.parseNoteAndSaveRecord(request.toServiceRequest(new HashMap<>())));
   }

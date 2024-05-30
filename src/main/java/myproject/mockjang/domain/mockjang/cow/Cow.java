@@ -2,7 +2,7 @@ package myproject.mockjang.domain.mockjang.cow;
 
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
-import static myproject.mockjang.exception.Exceptions.DOMAIN_BARN_ALREADY_EXIST;
+import static myproject.mockjang.exception.Exceptions.COMMON_ALREADY_EXIST;
 import static myproject.mockjang.exception.Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR;
 
 import jakarta.persistence.Entity;
@@ -115,7 +115,7 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
 
   public void registerBarn(Barn barn) {
     if (this.barn != null) {
-      throw new UpperGroupAlreadyExistException(barn, DOMAIN_BARN_ALREADY_EXIST);
+      throw new UpperGroupAlreadyExistException(barn, COMMON_ALREADY_EXIST);
     }
     this.barn = barn;
   }
@@ -129,7 +129,7 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
   public void registerUpperGroup(Mockjang upperGroup) {
     if (upperGroup instanceof Pen pen) {
       if (this.pen != null) {
-        throw new UpperGroupAlreadyExistException(pen, DOMAIN_BARN_ALREADY_EXIST);
+        throw new UpperGroupAlreadyExistException(pen, COMMON_ALREADY_EXIST);
       }
       this.pen = pen;
       pen.addCow(this);

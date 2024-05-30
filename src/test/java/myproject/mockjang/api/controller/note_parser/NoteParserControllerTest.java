@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.HashMap;
 import java.util.Optional;
+import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.note_parser.request.NoteParserCreateRequest;
 import myproject.mockjang.api.service.note_parser.NoteParserService;
 import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServiceRequest;
@@ -24,19 +25,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-@WebMvcTest(controllers = NoteParserController.class)
-class NoteParserControllerTest {
-
-  @Autowired
-  private MockMvc mockMvc;
-
-  @Autowired
-  private ObjectMapper objectMapper;
-
-  @MockBean
-  private NoteParserService noteParserService;
-  protected static final String PARSER_BARN_CODE_ID_1 = "1번축사";
-  protected static final String PARSER_BARN_NOTE_1 = "1번축사 입력 테스트";
+class NoteParserControllerTest extends ControllerTestSupport {
 
   @DisplayName("신규 일지를 저장한다.")
   @Test

@@ -2,7 +2,7 @@ package myproject.mockjang.domain.mockjang.cow;
 
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
-import static myproject.mockjang.exception.Exceptions.DOMAIN_BARN_ALREADY_EXIST;
+import static myproject.mockjang.exception.Exceptions.COMMON_ALREADY_EXIST;
 import static myproject.mockjang.exception.Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -187,7 +187,7 @@ class CowTest extends IntegrationTestSupport {
     //when //then
     assertThatThrownBy(() -> cow.registerBarn(barn2)).isInstanceOf(
             UpperGroupAlreadyExistException.class)
-        .hasMessage(DOMAIN_BARN_ALREADY_EXIST.formatMessage(Barn.class));
+        .hasMessage(COMMON_ALREADY_EXIST.formatMessage(Barn.class));
   }
 
   @DisplayName("호출 시점에 상위 그룹이 존재하지 않을 시 예외를 발생시킨다.")
