@@ -9,7 +9,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceRequest;
-import myproject.mockjang.api.service.mockjang.barn.request.BarnFindByCodeIdServiceRequest;
 import myproject.mockjang.api.service.mockjang.barn.response.BarnResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
