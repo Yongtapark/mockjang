@@ -2,8 +2,11 @@ package myproject.mockjang;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import myproject.mockjang.api.controller.mockjang.barn.BarnController;
+import myproject.mockjang.api.controller.mockjang.pen.PenController;
 import myproject.mockjang.api.controller.note_parser.NoteParserController;
 import myproject.mockjang.api.service.mockjang.barn.BarnService;
+import myproject.mockjang.api.service.mockjang.cow.CowService;
+import myproject.mockjang.api.service.mockjang.pen.PenService;
 import myproject.mockjang.api.service.note_parser.NoteParserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,9 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 
 @WebMvcTest(controllers = {
-        NoteParserController.class,
-        BarnController.class
-    })
+    NoteParserController.class,
+    BarnController.class,
+    PenController.class
+})
 public abstract class ControllerTestSupport {
 
   @Autowired
@@ -28,6 +32,12 @@ public abstract class ControllerTestSupport {
 
   @MockBean
   protected BarnService barnService;
+
+  @MockBean
+  protected PenService penService;
+
+  @MockBean
+  protected CowService cowService;
 
   //common
   protected final String STRING_ONLY_SPACE = " ";

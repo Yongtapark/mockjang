@@ -23,7 +23,8 @@ public class PenController {
 
   @PostMapping("/api/v0/pens/new")
   public ApiResponse<PenResponse> createPen(@Valid @RequestBody PenCreateRequest request){
-    return ApiResponse.ok(penService.createPen(request.toServiceRequest()));
+    ApiResponse<PenResponse> ok = ApiResponse.ok(penService.createPen(request.toServiceRequest()));
+    return ok;
   }
 
   @GetMapping("/api/v0/pens")
