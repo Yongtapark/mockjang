@@ -4,8 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServiceRequest;
+import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServiceRequest.NoteParserCreateServiceRequestBuilder;
+import myproject.mockjang.api.service.note_parser.response.NoteParserResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.cow.Cow;
@@ -20,6 +25,7 @@ import myproject.mockjang.domain.records.CowRecord;
 import myproject.mockjang.domain.records.CowRecordRepository;
 import myproject.mockjang.domain.records.PenRecord;
 import myproject.mockjang.domain.records.PenRecordRepository;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +79,9 @@ class NoteParserServiceTest extends IntegrationTestSupport {
             "[[" + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
 
     //when
-    noteParserService.parseNoteAndSaveRecord(context);
+    NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
+        .names(new HashMap<>()).context(context).build();
+    NoteParserResponse response = noteParserService.parseNoteAndSaveRecord(request);
 
     //then
     List<BarnRecord> allByBarnCodeId = barnRecordRepository.findAllByBarn_CodeId(
@@ -99,7 +107,46 @@ class NoteParserServiceTest extends IntegrationTestSupport {
     assertThat(allByCowCodeId2).hasSize(1);
     assertThat(allByCowCodeId2.getFirst().getCow()).isEqualTo(cow2);
     assertThat(allByCowCodeId2.getFirst().getMemo()).isEqualTo(PARSER_COW_NOTE_2);
+  }
 
+  @DisplayName("엔터로 구분한 문자열을 입력받으면 작업 완료 후 이름들을 반환한다.")
+  @Test
+  void parseNoteAndSaveRecordWithEnterReturnNames() {
+    LocalDateTime dateTime = LocalDateTime.of(2024, 5, 28, 12, 43);
+    Barn barn = Barn.createBarn(PARSER_BARN_CODE_ID_1);
+    barnRepository.save(barn);
+
+    Pen pen = Pen.createPen(PARSER_PEN_CODE_ID_1);
+    pen.registerUpperGroup(barn);
+    penRepository.save(pen);
+
+    Cow cow1 = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, dateTime);
+    cow1.registerUpperGroup(pen);
+    cow1.registerBarn(barn);
+    cowRepository.save(cow1);
+    Cow cow2 = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, dateTime);
+    cow2.registerUpperGroup(pen);
+    cow2.registerBarn(barn);
+    cowRepository.save(cow2);
+    //given
+    String context =
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
+            "[[" + PARSER_PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1 + System.lineSeparator() +
+            "[[" + PARSER_PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1 + System.lineSeparator() +
+            "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1 + System.lineSeparator() +
+            "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_2 + System.lineSeparator() +
+            "[[" + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
+
+    //when
+    NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
+        .names(new HashMap<>()).context(context).build();
+    NoteParserResponse response = noteParserService.parseNoteAndSaveRecord(request);
+
+    //then
+    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_1,2);
+    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2,1);
+    assertThat(response.getNames()).containsEntry(PARSER_PEN_CODE_ID_1,2);
+    assertThat(response.getNames()).containsEntry(PARSER_BARN_CODE_ID_1,1);
   }
 
   @DisplayName("',' 구분한 문자열을 입력받으면 각 regex에 해당되는 저장소에 저장된다.")
@@ -132,7 +179,9 @@ class NoteParserServiceTest extends IntegrationTestSupport {
             "[[" + PARSER_COW_CODE_ID_1 + "," + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_1;
 
     //when
-    noteParserService.parseNoteAndSaveRecord(context);
+    NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
+        .names(new HashMap<>()).context(context).build();
+    noteParserService.parseNoteAndSaveRecord(request);
 
     //then
     List<BarnRecord> allByBarnCodeId = barnRecordRepository.findAllByBarn_CodeId(

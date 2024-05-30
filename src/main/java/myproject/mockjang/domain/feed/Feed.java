@@ -67,7 +67,6 @@ public class Feed extends AbstractAuditable<YongTaPark, Long> {
     this.codeId = codeId;
     this.name = name;
     this.storeDate = storeDate;
-    this.expirationDate = expirationDate;
     this.stock = stock;
     this.amountPerStock = amountPerStock;
     this.amount = amount;

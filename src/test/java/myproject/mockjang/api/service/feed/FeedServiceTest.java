@@ -114,7 +114,7 @@ class FeedServiceTest extends IntegrationTestSupport {
     feedRepository.save(hay);
 
     //when
-    feedService.calculateLeftStocksDay(List.of(hay), eatDate);
+    feedService.calculateExpectedDepletionDate(List.of(hay), eatDate);
 
     //then
     Feed findHay = feedRepository.findById(hay.getId()).orElseThrow();

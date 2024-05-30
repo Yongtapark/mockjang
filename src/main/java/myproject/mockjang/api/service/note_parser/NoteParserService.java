@@ -7,9 +7,14 @@ import static myproject.mockjang.domain.note_parser.NoteRegex.values;
 import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
+import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServiceRequest;
+import myproject.mockjang.api.service.note_parser.response.NoteParserResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.cow.Cow;
@@ -18,6 +23,7 @@ import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
 import myproject.mockjang.domain.note_parser.NoteAndCodeId;
 import myproject.mockjang.domain.note_parser.NoteContainer;
+import myproject.mockjang.domain.note_parser.NoteParser;
 import myproject.mockjang.domain.note_parser.NoteParserV0;
 import myproject.mockjang.domain.note_parser.NoteRegex;
 import myproject.mockjang.domain.records.BarnRecord;
@@ -30,9 +36,9 @@ import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
 @Transactional
+@Service
 public class NoteParserService {
 
   private final BarnRepository barnRepository;
@@ -42,28 +48,32 @@ public class NoteParserService {
   private final BarnRecordRepository barnRecordRepository;
   private final PenRecordRepository penRecordRepository;
   private final CowRecordRepository cowRecordRepository;
-  private final NoteParserV0 noteParserV0;
+  private final NoteParser noteParserV0;
 
-  public void parseNoteAndSaveRecord(String context) {
+  public NoteParserResponse parseNoteAndSaveRecord(NoteParserCreateServiceRequest request) {
+    String context = request.getContext();
+    HashMap<String,Integer> names = request.getNames();
     Map<NoteRegex, List<NoteAndCodeId>> immutableMap = parseNote(context);
     NoteRegex[] regexes = values();
     for (NoteRegex regex : regexes) {
       if (regex.equals(BARN) && immutableMap.containsKey(regex)) {
-        saveBarnRecord(regex, immutableMap);
+        saveBarnRecord(regex, immutableMap,names);
       }
       if (regex.equals(PEN) && immutableMap.containsKey(regex)) {
-        savePenRecord(regex, immutableMap);
+        savePenRecord(regex, immutableMap,names);
       }
       if (regex.equals(COW) && immutableMap.containsKey(regex)) {
-        saveCowRecord(regex, immutableMap);
+        saveCowRecord(regex, immutableMap,names);
       }
     }
+    return NoteParserResponse.of(names);
   }
 
-  private void saveCowRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap) {
+  private void saveCowRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap, HashMap<String,Integer> names) {
     List<NoteAndCodeId> noteAndCodeIds;
     noteAndCodeIds = immutableMap.get(regex);
     for (NoteAndCodeId noteAndCodeId : noteAndCodeIds) {
+      names.merge(noteAndCodeId.codeId(),1,Integer::sum);
       Cow findCow = cowRepository.findByCodeId(noteAndCodeId.codeId())
           .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, noteAndCodeId.codeId()));
       CowRecord cowRecord = CowRecord.createRecord(findCow);
@@ -72,10 +82,11 @@ public class NoteParserService {
     }
   }
 
-  private void savePenRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap) {
+  private void savePenRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap, HashMap<String,Integer> names) {
     List<NoteAndCodeId> noteAndCodeIds;
     noteAndCodeIds = immutableMap.get(regex);
     for (NoteAndCodeId noteAndCodeId : noteAndCodeIds) {
+      names.merge(noteAndCodeId.codeId(),1,Integer::sum);
       Pen findPen = penRepository.findByCodeId(noteAndCodeId.codeId())
           .orElseThrow(() -> new NotExistException(
               COMMON_NOT_EXIST, noteAndCodeId.codeId()));
@@ -85,10 +96,11 @@ public class NoteParserService {
     }
   }
 
-  private void saveBarnRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap) {
+  private void saveBarnRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap, HashMap<String,Integer> names) {
     List<NoteAndCodeId> noteAndCodeIds;
     noteAndCodeIds = immutableMap.get(regex);
     for (NoteAndCodeId noteAndCodeId : noteAndCodeIds) {
+      names.merge(noteAndCodeId.codeId(),1,Integer::sum);
       Barn findBarn = barnRepository.findByCodeId(noteAndCodeId.codeId())
           .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, noteAndCodeId.codeId()));
       BarnRecord barnRecord = BarnRecord.creatRecord(findBarn);
@@ -104,3 +116,4 @@ public class NoteParserService {
   }
 
 }
+

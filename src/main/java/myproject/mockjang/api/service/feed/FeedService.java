@@ -1,14 +1,19 @@
 package myproject.mockjang.api.service.feed;
 
+import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
+
 import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import myproject.mockjang.api.service.feed.request.FeedCreateServiceRequest;
+import myproject.mockjang.api.service.feed.response.FeedResponse;
 import myproject.mockjang.domain.feed.Feed;
 import myproject.mockjang.domain.feed.FeedRepository;
 import myproject.mockjang.domain.feed.FeedUsageStatus;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumptionRepository;
+import myproject.mockjang.exception.common.NotExistException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,19 +24,24 @@ public class FeedService {
   private final FeedRepository feedRepository;
   private final FeedConsumptionRepository feedConsumptionRepository;
 
-  public void createFeed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate,
-      Integer stock,Double amountPerStock, String description) {
-    Feed feed = Feed.createFeed(codeId, name, stock,amountPerStock, storeDate, expirationDate, description);
+  public FeedResponse createFeed(FeedCreateServiceRequest request) {
+    Feed feed = request.toEntity();
     feed.registerUsageStatus(FeedUsageStatus.USING);
-    feedRepository.save(feed);
-  }
-
-  public List<Feed> findUsingFeeds() {
-    return feedRepository.findAllByUsageStatus(FeedUsageStatus.USING);
+    Feed savedFeed = feedRepository.save(feed);
+    return FeedResponse.of(savedFeed);
   }
 
   public List<Feed> findAll() {
     return feedRepository.findAll();
+  }
+
+  public Feed findByCodeId(String codId) {
+    return feedRepository.findByCodeId(codId)
+        .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codId));
+  }
+
+  public void delete(Feed feed) {
+    feedRepository.delete(feed);
   }
 
   public void calculateMultiDailyConsumption(LocalDate eatDate, List<Feed> feeds) {
@@ -50,7 +60,7 @@ public class FeedService {
     }
   }
 
-  public void calculateLeftStocksDay(List<Feed> feeds, LocalDate date) {
+  public void calculateExpectedDepletionDate(List<Feed> feeds, LocalDate date) {
     for (Feed feed : feeds) {
       feed.calculateExpectedDepletionDate(date);
     }
