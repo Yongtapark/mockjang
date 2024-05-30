@@ -6,9 +6,13 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
+import myproject.mockjang.api.service.mockjang.pen.request.PenCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.pen.response.PenResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
+import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +22,32 @@ import org.springframework.stereotype.Service;
 public class PenService extends MockjangServiceAbstract {
 
   private final PenRepository penRepository;
+  private final BarnRepository barnRepository;
 
-  public Pen createPen(String penId, Barn barn) {
-    codeIdFilter(penId);
-    Pen pen = Pen.createPen(penId);
+  public PenResponse createPen(PenCreateServiceRequest request) {
+    String penCodeId = request.getPenCodeId();
+    String barnCodeId = request.getBarnCodeId();
+    codeIdFilter(penCodeId);
+
+    Pen pen = Pen.createPen(penCodeId);
+    Barn barn = barnRepository.findByCodeId(barnCodeId)
+        .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST.formatMessage(Barn.class)));
     pen.registerUpperGroup(barn);
-    return penRepository.save(pen);
+    return PenResponse.of(penRepository.save(pen));
   }
 
   public void changeUpperGroup(Pen pen, Barn barn) {
     pen.changeUpperGroup(barn);
   }
 
-  public List<Pen> findAll() {
-    return penRepository.findAll();
+  public List<PenResponse> findAll() {
+    List<Pen> pens = penRepository.findAll();
+    return pens.stream().map(PenResponse::of).toList();
   }
 
-  public Pen findByCodeId(String codeId) {
-    return penRepository.findByCodeId(codeId).orElseThrow(()->new NotExistException(COMMON_NOT_EXIST,codeId));
+  public PenResponse findByCodeId(String codeId) {
+    return PenResponse.of(penRepository.findByCodeId(codeId)
+        .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId)));
   }
 
   public void delete(Pen pen) {

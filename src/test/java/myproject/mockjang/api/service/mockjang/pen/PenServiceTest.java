@@ -10,6 +10,9 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.pen.request.PenCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.pen.response.PenResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.pen.Pen;
@@ -37,13 +40,15 @@ class PenServiceTest extends IntegrationTestSupport {
     //given
     Barn barn = Barn.createBarn(PARSER_BARN_CODE_ID_1);
     barnRepository.save(barn);
+    PenCreateServiceRequest request = PenCreateServiceRequest.builder()
+        .penCodeId(PARSER_PEN_CODE_ID_1).barnCodeId(PARSER_BARN_CODE_ID_1).build();
 
     //when
-    Pen pen = penService.createPen(PARSER_PEN_CODE_ID_1, barn);
+    PenResponse response = penService.createPen(request);
 
     //then
-    assertThat(pen.getBarn()).isEqualTo(barn);
-    assertThat(pen.getCodeId()).isEqualTo(PARSER_PEN_CODE_ID_1);
+    assertThat(response.getBarn()).isEqualTo(barn);
+    assertThat(response.getCodeId()).isEqualTo(PARSER_PEN_CODE_ID_1);
   }
 
   @DisplayName("해당 축사칸을 제거하고 축사의 축사칸 리스트에서 제거한다.")
@@ -52,14 +57,16 @@ class PenServiceTest extends IntegrationTestSupport {
     //given
     Barn barn = Barn.createBarn(PARSER_BARN_CODE_ID_1);
     barnRepository.save(barn);
-    Pen pen = penService.createPen(PARSER_PEN_CODE_ID_1, barn);
+
+    Pen pen = Pen.createPen(PARSER_PEN_CODE_ID_1);
+    pen.registerUpperGroup(barn);
 
     //when
     penService.delete(pen);
 
     //then
     assertThat(barn.getPens()).isEmpty();
-    assertThatThrownBy(() -> penRepository.findById(pen.getId()).orElseThrow()).isInstanceOf(
+    assertThatThrownBy(() -> penRepository.findByCodeId(pen.getCodeId()).orElseThrow()).isInstanceOf(
         NoSuchElementException.class);
   }
 
@@ -87,24 +94,33 @@ class PenServiceTest extends IntegrationTestSupport {
   @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
   @Test
   void createBarnWithEmptyBarnId() {
-    //given // when //then
-    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY, null)).isInstanceOf(
+    //given
+    PenCreateServiceRequest request = PenCreateServiceRequest.builder()
+        .penCodeId(STRING_EMPTY).build();
+    //when //then
+    assertThatThrownBy(() -> penService.createPen(request)).isInstanceOf(
         StringException.class).hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
   void createBarnWithOnlySpaceBarnId() {
-    //given // when //then
-    assertThatThrownBy(() -> penService.createPen(STRING_EMPTY, null)).isInstanceOf(
+    //given
+    PenCreateServiceRequest request = PenCreateServiceRequest.builder()
+        .penCodeId(STRING_ONLY_SPACE).build();
+    //when //then
+    assertThatThrownBy(() -> penService.createPen(request)).isInstanceOf(
         StringException.class).hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
   @Test
   void createBarnWithOver10Size() {
-    //given // when //then
-    assertThatThrownBy(() -> penService.createPen(STRING_OVER_10, null)).isInstanceOf(
+    //given
+    PenCreateServiceRequest request = PenCreateServiceRequest.builder()
+        .penCodeId(STRING_OVER_10).build();
+    // when //then
+    assertThatThrownBy(() -> penService.createPen(request)).isInstanceOf(
         StringException.class).hasMessage(COMMON_STRING_OVER_10.getMessage());
   }
 
@@ -118,10 +134,10 @@ class PenServiceTest extends IntegrationTestSupport {
     penRepository.save(pen2);
 
     //when
-    List<Pen> pens = penService.findAll();
-
+    List<PenResponse> responses = penService.findAll();
+    List<Long> penIdList = responses.stream().map(PenResponse::getId).toList();
     //then
-    assertThat(pens).containsExactly(pen1, pen2);
+    assertThat(penIdList).containsExactly(pen1.getId(), pen2.getId());
   }
 
   @DisplayName("축사칸을 단일 조회한다.")
@@ -132,10 +148,10 @@ class PenServiceTest extends IntegrationTestSupport {
     penRepository.save(pen);
 
     //when
-    Pen findPen = penService.findByCodeId(PARSER_PEN_CODE_ID_1);
+    PenResponse response = penService.findByCodeId(PARSER_PEN_CODE_ID_1);
 
     //then
-    assertThat(findPen).isEqualTo(pen);
+    assertThat(response.getId()).isEqualTo(pen.getId());
   }
 
   @DisplayName("없는 축사칸을 단일 조회할 시 예외를 발생시킨다.")
