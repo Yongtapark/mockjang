@@ -61,7 +61,7 @@ class PenControllerTest extends ControllerTestSupport {
 
   @DisplayName("입력 없이 축사칸 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createPenWithNoInput() throws Exception {
+  void createPenWithEmpty() throws Exception {
     //given
     PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
         .penCodeId(STRING_EMPTY).build();

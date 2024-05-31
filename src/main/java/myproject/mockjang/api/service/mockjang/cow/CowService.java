@@ -8,11 +8,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
+import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
+import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.domain.mockjang.pen.PenRepository;
 import myproject.mockjang.exception.common.NotExistException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.springframework.stereotype.Service;
@@ -23,13 +27,22 @@ import org.springframework.stereotype.Service;
 public class CowService extends MockjangServiceAbstract {
 
   private final CowRepository cowRepository;
+  private final PenRepository penRepository;
 
-  public Cow createRaisingCow(String cowId, Gender gender, Pen pen, LocalDateTime birthDate) {
+  public CowResponse createRaisingCow(CowCreateServiceRequest request) {
+    String cowId = request.getCowId();
     codeIdFilter(cowId);
-    Cow rasingCow = Cow.createCow(cowId, gender, CowStatus.RAISING, birthDate);
+    String penId = request.getPenId();
+    Pen pen = penRepository.findByCodeId(penId)
+        .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST.formatMessage(
+            Pen.class)));
+    Cow rasingCow = Cow.createCow(cowId, request.getGender(), CowStatus.RAISING,
+        request.getBirthDate());
     rasingCow.registerUpperGroup(pen);
     rasingCow.registerBarn(pen.getBarn());
-    return cowRepository.save(rasingCow);
+    Cow savedCow = cowRepository.save(rasingCow);
+    return CowResponse.of(savedCow);
+
   }
 
   public void changeUpperGroup(Cow cow, Pen pen) {
@@ -53,13 +66,15 @@ public class CowService extends MockjangServiceAbstract {
     cow.changeCowStatus(cowStatus);
   }
 
-  public List<Cow> findAll() {
-    return cowRepository.findAll();
+  public List<CowResponse> findAll() {
+    List<Cow> cows = cowRepository.findAll();
+    return cows.stream().map(CowResponse::of).toList();
   }
 
-  public Cow findByCodeId(String codeId) {
-    return cowRepository.findByCodeId(codeId)
+  public CowResponse findByCodeId(String codeId) {
+    Cow cow = cowRepository.findByCodeId(codeId)
         .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId));
+    return CowResponse.of(cow);
   }
 
   public void delete(Cow cow) {

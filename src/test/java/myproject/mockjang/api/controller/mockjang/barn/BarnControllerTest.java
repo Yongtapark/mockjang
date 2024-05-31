@@ -60,7 +60,7 @@ class BarnControllerTest extends ControllerTestSupport {
 
   @DisplayName("입력 없이 축사 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createBarnWithNoInput() throws Exception {
+  void createBarnWithEmpty() throws Exception {
     //given
     BarnCreateRequest request = BarnCreateRequest.builder().codeId(STRING_EMPTY).build();
 

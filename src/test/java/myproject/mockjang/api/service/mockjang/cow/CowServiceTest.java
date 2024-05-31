@@ -10,7 +10,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.cow.Cow;
@@ -47,11 +50,16 @@ class CowServiceTest extends IntegrationTestSupport {
     pen.registerUpperGroup(barn);
     penRepository.save(pen);
     LocalDateTime birthDate = LocalDateTime.of(2024, 5, 25, 0, 0);
+    CowCreateServiceRequest request = CowCreateServiceRequest.builder()
+        .cowId(PARSER_COW_CODE_ID_1)
+        .gender(Gender.FEMALE)
+        .penId(pen.getCodeId())
+        .birthDate(birthDate)
+        .build();
 
     //when
-    Cow raisingCow = cowService.createRaisingCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, pen,
-        birthDate);
-    Cow findRasisingCow = cowRepository.findById(raisingCow.getId()).orElseThrow();
+    CowResponse response = cowService.createRaisingCow(request);
+    Cow findRasisingCow = cowRepository.findById(response.getId()).orElseThrow();
 
     //then
     assertThat(findRasisingCow.getBarn()).isEqualTo(barn);
@@ -157,9 +165,14 @@ class CowServiceTest extends IntegrationTestSupport {
   @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
   @Test
   void createCowWithEmptyBarnId() {
-    //given // when //then
+    //given
+    CowCreateServiceRequest request = CowCreateServiceRequest.builder()
+        .cowId(STRING_EMPTY)
+        .gender(Gender.FEMALE)
+        .build();
+    //when //then
     assertThatThrownBy(
-        () -> cowService.createRaisingCow(STRING_EMPTY, Gender.FEMALE, null, null)).isInstanceOf(
+        () -> cowService.createRaisingCow(request)).isInstanceOf(
             StringException.class)
         .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
@@ -167,18 +180,27 @@ class CowServiceTest extends IntegrationTestSupport {
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
   void createCowWithOnlySpaceBarnId() {
-    //given // when //then
-    assertThatThrownBy(() -> cowService.createRaisingCow(STRING_ONLY_SPACE, Gender.FEMALE, null,
-        null)).isInstanceOf(StringException.class)
+    //given
+    CowCreateServiceRequest request = CowCreateServiceRequest.builder()
+        .cowId(STRING_ONLY_SPACE)
+        .gender(Gender.FEMALE)
+        .build();
+    // when //then
+    assertThatThrownBy(() -> cowService.createRaisingCow(request)).isInstanceOf(StringException.class)
         .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
   @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
   @Test
   void createCowWithOver10Size() {
-    //given // when //then
+    //given
+    CowCreateServiceRequest request = CowCreateServiceRequest.builder()
+        .cowId(STRING_OVER_10)
+        .gender(Gender.FEMALE)
+        .build();
+    //when //then
     assertThatThrownBy(
-        () -> cowService.createRaisingCow(STRING_OVER_10, Gender.FEMALE, null, null)).isInstanceOf(
+        () -> cowService.createRaisingCow(request)).isInstanceOf(
             StringException.class)
         .hasMessage(COMMON_STRING_OVER_10.getMessage());
   }
@@ -219,10 +241,11 @@ class CowServiceTest extends IntegrationTestSupport {
     cowRepository.save(cow2);
 
     //when
-    List<Cow> cows = cowService.findAll();
+    List<CowResponse> cows = cowService.findAll();
+    Stream<Long> ids = cows.stream().map(CowResponse::getId);
 
     //then
-    assertThat(cows).containsExactly(cow1, cow2);
+    assertThat(ids).containsExactly(cow1.getId(), cow2.getId());
   }
 
   @DisplayName("소를 단일 조회한다.")
@@ -234,10 +257,10 @@ class CowServiceTest extends IntegrationTestSupport {
     cowRepository.save(cow);
 
     //when
-    Cow findCow = cowService.findByCodeId(PARSER_COW_CODE_ID_1);
+    CowResponse response = cowService.findByCodeId(PARSER_COW_CODE_ID_1);
 
     //then
-    assertThat(cow).isEqualTo(findCow);
+    assertThat(cow.getId()).isEqualTo(response.getId());
   }
 
   @DisplayName("없는 소를 단일 조회할 시 예외를 발생시킨다.")

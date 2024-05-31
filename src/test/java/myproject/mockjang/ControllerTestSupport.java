@@ -2,6 +2,7 @@ package myproject.mockjang;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import myproject.mockjang.api.controller.mockjang.barn.BarnController;
+import myproject.mockjang.api.controller.mockjang.cow.CowController;
 import myproject.mockjang.api.controller.mockjang.pen.PenController;
 import myproject.mockjang.api.controller.note_parser.NoteParserController;
 import myproject.mockjang.api.service.mockjang.barn.BarnService;
@@ -17,7 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest(controllers = {
     NoteParserController.class,
     BarnController.class,
-    PenController.class
+    PenController.class,
+    CowController.class
 })
 public abstract class ControllerTestSupport {
 
