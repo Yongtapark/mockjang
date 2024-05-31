@@ -10,17 +10,17 @@ import myproject.mockjang.domain.mockjang.pen.Pen;
 @Getter
 @NoArgsConstructor
 public class CowCreateServiceRequest {
-  private String cowId;
+  private String cowCode;
   private Gender gender;
-  private String penId;
+  private String penCode;
   private LocalDateTime birthDate;
 
   @Builder
-  public CowCreateServiceRequest(String cowId, Gender gender, String penId,
+  public CowCreateServiceRequest(String cowCode, Gender gender, String penCode,
       LocalDateTime birthDate) {
-    this.cowId = cowId;
+    this.cowCode = cowCode;
     this.gender = gender;
-    this.penId = penId;
+    this.penCode = penCode;
     this.birthDate = birthDate;
   }
 }

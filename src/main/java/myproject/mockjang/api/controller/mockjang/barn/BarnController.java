@@ -20,12 +20,12 @@ public class BarnController {
   private final BarnService barnService;
 
   @PostMapping("/api/v0/barns/new")
-  public ApiResponse<BarnResponse> createBarn(@Valid @RequestBody BarnCreateRequest request){
+  public ApiResponse<BarnResponse> create(@Valid @RequestBody BarnCreateRequest request){
     return ApiResponse.ok(barnService.createBarn(request.toServiceRequest()));
   }
 
   @GetMapping("/api/v0/barns")
-  public ApiResponse<List<BarnResponse>> createBarn(){
+  public ApiResponse<List<BarnResponse>> findAll(){
     return ApiResponse.ok(barnService.findAll());
   }
 

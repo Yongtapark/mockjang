@@ -1,7 +1,10 @@
 package myproject.mockjang.api;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
 public class ApiResponse<T> {
@@ -27,5 +30,9 @@ public class ApiResponse<T> {
 
   public static <T>  ApiResponse<T> ok(T data) {
     return of(HttpStatus.OK,data);
+  }
+
+  public static <T>  ApiResponse<T> noContent() {
+    return of(HttpStatus.NO_CONTENT,null);
   }
 }

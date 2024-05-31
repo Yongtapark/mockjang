@@ -8,6 +8,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Optional;
 import myproject.mockjang.ControllerTestSupport;
@@ -17,6 +18,7 @@ import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServic
 import myproject.mockjang.api.service.note_parser.response.NoteParserResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
+import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,9 @@ class NoteParserControllerTest extends ControllerTestSupport {
 
   @DisplayName("신규 일지를 저장한다.")
   @Test
-  void createNote() throws Exception {
+  void createRecords() throws Exception {
     // given
+    LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
     HashMap<String, Integer> names = new HashMap<>();
     names.put(PARSER_BARN_CODE_ID_1, 1);
     NoteParserResponse response = NoteParserResponse.builder().names(names).build();
@@ -39,12 +42,14 @@ class NoteParserControllerTest extends ControllerTestSupport {
     String context = "[["+PARSER_BARN_CODE_ID_1+"]] "+PARSER_BARN_NOTE_1;
     NoteParserCreateRequest request = NoteParserCreateRequest.builder()
         .context(context)
+        .date(date)
+        .recordType(RecordType.DAILY)
         .build();
 
     // when // then
     when(noteParserService.parseNoteAndSaveRecord(any())).thenReturn(response);
     mockMvc.perform(
-            post("/api/v0/notes/daily/new")
+            post("/api/v0/records/new")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())

@@ -2,6 +2,7 @@ package myproject.mockjang.domain.records;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
@@ -26,18 +27,20 @@ class PenRecordRepositoryTest extends IntegrationTestSupport {
   @Test
   void writeOneRecord() {
     //given
-    Barn barn = Barn.builder().codeId("1번축사").build();
+    LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
+
+    Barn barn = Barn.builder().codeId(PARSER_BARN_CODE_ID_1).build();
     barnRepository.save(barn);
 
     Pen pen = Pen.builder()
-        .codeId("1-1")
+        .codeId(PARSER_PEN_CODE_ID_1)
         .build();
 
     pen.registerUpperGroup(barn);
     penRepository.save(pen);
 
-    PenRecord penRecord1 = PenRecord.createRecord(pen);
-    PenRecord penRecord2 = PenRecord.createRecord(pen);
+    PenRecord penRecord1 = PenRecord.createRecord(pen,RecordType.DAILY,date);
+    PenRecord penRecord2 = PenRecord.createRecord(pen,RecordType.DAILY,date);
 
     //when
     penRecord1.writeNote("test1");

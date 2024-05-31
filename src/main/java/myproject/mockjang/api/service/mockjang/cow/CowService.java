@@ -30,13 +30,13 @@ public class CowService extends MockjangServiceAbstract {
   private final PenRepository penRepository;
 
   public CowResponse createRaisingCow(CowCreateServiceRequest request) {
-    String cowId = request.getCowId();
-    codeIdFilter(cowId);
-    String penId = request.getPenId();
-    Pen pen = penRepository.findByCodeId(penId)
+    String cowCode = request.getCowCode();
+    codeIdFilter(cowCode);
+    String penCode = request.getPenCode();
+    Pen pen = penRepository.findByCodeId(penCode)
         .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST.formatMessage(
             Pen.class)));
-    Cow rasingCow = Cow.createCow(cowId, request.getGender(), CowStatus.RAISING,
+    Cow rasingCow = Cow.createCow(cowCode, request.getGender(), CowStatus.RAISING,
         request.getBirthDate());
     rasingCow.registerUpperGroup(pen);
     rasingCow.registerBarn(pen.getBarn());

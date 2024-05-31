@@ -51,9 +51,9 @@ class CowServiceTest extends IntegrationTestSupport {
     penRepository.save(pen);
     LocalDateTime birthDate = LocalDateTime.of(2024, 5, 25, 0, 0);
     CowCreateServiceRequest request = CowCreateServiceRequest.builder()
-        .cowId(PARSER_COW_CODE_ID_1)
+        .cowCode(PARSER_COW_CODE_ID_1)
         .gender(Gender.FEMALE)
-        .penId(pen.getCodeId())
+        .penCode(pen.getCodeId())
         .birthDate(birthDate)
         .build();
 
@@ -164,10 +164,10 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
   @Test
-  void createCowWithEmptyBarnId() {
+  void createCowWithEmptybarnCode() {
     //given
     CowCreateServiceRequest request = CowCreateServiceRequest.builder()
-        .cowId(STRING_EMPTY)
+        .cowCode(STRING_EMPTY)
         .gender(Gender.FEMALE)
         .build();
     //when //then
@@ -179,10 +179,10 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
-  void createCowWithOnlySpaceBarnId() {
+  void createCowWithOnlySpacebarnCode() {
     //given
     CowCreateServiceRequest request = CowCreateServiceRequest.builder()
-        .cowId(STRING_ONLY_SPACE)
+        .cowCode(STRING_ONLY_SPACE)
         .gender(Gender.FEMALE)
         .build();
     // when //then
@@ -195,7 +195,7 @@ class CowServiceTest extends IntegrationTestSupport {
   void createCowWithOver10Size() {
     //given
     CowCreateServiceRequest request = CowCreateServiceRequest.builder()
-        .cowId(STRING_OVER_10)
+        .cowCode(STRING_OVER_10)
         .gender(Gender.FEMALE)
         .build();
     //when //then

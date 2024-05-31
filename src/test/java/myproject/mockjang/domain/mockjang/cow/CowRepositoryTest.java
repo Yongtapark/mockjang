@@ -21,7 +21,7 @@ class CowRepositoryTest extends IntegrationTestSupport {
   @Autowired
   private CowRepository cowRepository;
 
-  @DisplayName("cowId로 소를 검색")
+  @DisplayName("cowCode로 소를 검색")
   @Test
   void findByCodeId() {
     //given

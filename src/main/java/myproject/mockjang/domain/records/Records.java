@@ -2,12 +2,14 @@ package myproject.mockjang.domain.records;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import myproject.mockjang.domain.creater.YongTaPark;
 import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Getter
+@MappedSuperclass
 public abstract class Records extends AbstractAuditable<YongTaPark, Long> {
 
   private String memo;

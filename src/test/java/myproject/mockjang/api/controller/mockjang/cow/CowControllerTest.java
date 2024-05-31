@@ -26,7 +26,7 @@ class CowControllerTest extends ControllerTestSupport {
 
   @DisplayName("신규 소를 등록한다")
   @Test
-  void createCow() throws Exception {
+  void create() throws Exception {
     //given
     CowCreateRequest request = createRequest(PARSER_COW_CODE_ID_1);
 
@@ -44,7 +44,7 @@ class CowControllerTest extends ControllerTestSupport {
 
   @DisplayName("null 값으로 소 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createCowWithCodeIdNull() throws Exception {
+  void createWithCodeIdNull() throws Exception {
     //given
     CowCreateRequest request = createRequest(null);
 
@@ -63,7 +63,7 @@ class CowControllerTest extends ControllerTestSupport {
 
   @DisplayName("입력 없이 소 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createCowWithEmpty() throws Exception {
+  void createWithEmpty() throws Exception {
     //given
     CowCreateRequest request = createRequest(STRING_EMPTY);
 
@@ -82,7 +82,7 @@ class CowControllerTest extends ControllerTestSupport {
 
   @DisplayName("공백으로 소 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createCowWithBlank() throws Exception {
+  void createWithBlank() throws Exception {
     //given
     CowCreateRequest request = createRequest(STRING_ONLY_SPACE);
     //when //then
@@ -135,10 +135,10 @@ class CowControllerTest extends ControllerTestSupport {
   }
 
 
-  private  CowCreateRequest createRequest(String cowId) {
+  private  CowCreateRequest createRequest(String cowCode) {
     LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
-    return CowCreateRequest.builder().cowId(cowId)
-        .penId(PARSER_PEN_CODE_ID_1)
+    return CowCreateRequest.builder().cowCode(cowCode)
+        .penCode(PARSER_PEN_CODE_ID_1)
         .birthDate(date)
         .gender(Gender.FEMALE)
         .build();

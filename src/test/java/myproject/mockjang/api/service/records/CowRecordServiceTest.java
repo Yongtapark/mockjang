@@ -1,14 +1,14 @@
 package myproject.mockjang.api.service.records;
 
-import static org.assertj.core.api.Java6Assertions.*;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.api.controller.records.request.CowRecordCreateRequest;
-import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.api.service.records.request.CowRecordCreateServiceRequest;
+import myproject.mockjang.api.service.records.request.CowRecordFindAllByCodeIdAndRecordTypeServiceRequest;
+import myproject.mockjang.api.service.records.request.CowRecordRemoveServiceRequest;
 import myproject.mockjang.api.service.records.response.CowRecordResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -18,12 +18,12 @@ import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.domain.records.CowRecord;
 import myproject.mockjang.domain.records.CowRecordRepository;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import myproject.mockjang.exception.record.RecordException;
-import org.assertj.core.api.Java6Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,5 +194,69 @@ class CowRecordServiceTest extends IntegrationTestSupport {
     List<String> memos = responses.stream().map(CowRecordResponse::getMemo).toList();
     assertThat(memos).contains(request1.getMemo(), request2.getMemo());
   }
+
+  @DisplayName("id 값으로 소 기록을 제거한다.")
+  @Test
+  void remove() {
+    //given
+    Cow cow = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
+    cowRepository.save(cow);
+    CowRecord cowRecord1 = CowRecord.builder().cow(cow).build();
+    CowRecord cowRecord2 = CowRecord.builder().cow(cow).build();
+    cowRecord1.recordMemo(MEMO_1);
+    cowRecord2.recordMemo(MEMO_2);
+    CowRecord savedRecord1 = cowRecordRepository.save(cowRecord1);
+    CowRecord savedRecord2 = cowRecordRepository.save(cowRecord2);
+
+    CowRecordRemoveServiceRequest request = CowRecordRemoveServiceRequest.builder()
+        .id(savedRecord1.getId()).build();
+
+    //when
+    cowRecordService.remove(request);
+
+    //then
+    List<CowRecord> cowRecords = cowRecordRepository.findAllByCow_CodeId(cow.getCodeId());
+    assertThat(cowRecords).containsOnly(savedRecord2);
+    assertThat(cowRecords).doesNotContain(savedRecord1);
+  }
+
+  @DisplayName("소 번호와 기록타입으로 소 기록 목록을 조회한다.")
+  @Test
+  void findAllByCodeIdWhereRecordType() {
+    //given
+    Cow cow = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
+    cowRepository.save(cow);
+    CowRecord cowRecord1 = CowRecord.builder().cow(cow).build();
+    CowRecord cowRecord2 = CowRecord.builder().cow(cow).build();
+    cowRecord1.registerRecordType(RecordType.DAILY);
+    cowRecord2.registerRecordType(RecordType.HEALTH);
+    cowRecord1.recordMemo(MEMO_1);
+    cowRecord2.recordMemo(MEMO_2);
+    CowRecord savedRecord1 = cowRecordRepository.save(cowRecord1);
+    CowRecord savedRecord2 = cowRecordRepository.save(cowRecord2);
+
+    CowRecordFindAllByCodeIdAndRecordTypeServiceRequest request1 = CowRecordFindAllByCodeIdAndRecordTypeServiceRequest.builder()
+        .cowCode(savedRecord1.getCow().getCodeId()).recordType(RecordType.DAILY).build();
+
+    CowRecordFindAllByCodeIdAndRecordTypeServiceRequest request2 = CowRecordFindAllByCodeIdAndRecordTypeServiceRequest.builder()
+        .cowCode(savedRecord1.getCow().getCodeId()).recordType(RecordType.HEALTH).build();
+
+    //when
+    List<CowRecordResponse> allByCodeIdWhereRecordType1 = cowRecordService.findAllByCodeIdWhereRecordType(
+        request1);
+    List<CowRecordResponse> allByCodeIdWhereRecordType2 = cowRecordService.findAllByCodeIdWhereRecordType(
+        request2);
+
+
+    //then
+    List<String> dailyRecords = allByCodeIdWhereRecordType1.stream().map(CowRecordResponse::getMemo)
+        .toList();
+    List<String> healthRecords = allByCodeIdWhereRecordType2.stream().map(CowRecordResponse::getMemo)
+        .toList();
+    assertThat(dailyRecords).containsOnly(MEMO_1);
+    assertThat(healthRecords).containsOnly(MEMO_2);
+  }
+
+
 
 }

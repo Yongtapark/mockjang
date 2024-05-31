@@ -93,7 +93,7 @@ class PenServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
   @Test
-  void createBarnWithEmptyBarnId() {
+  void createBarnWithEmptybarnCode() {
     //given
     PenCreateServiceRequest request = PenCreateServiceRequest.builder()
         .penCodeId(STRING_EMPTY).build();
@@ -104,7 +104,7 @@ class PenServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
-  void createBarnWithOnlySpaceBarnId() {
+  void createBarnWithOnlySpacebarnCode() {
     //given
     PenCreateServiceRequest request = PenCreateServiceRequest.builder()
         .penCodeId(STRING_ONLY_SPACE).build();
@@ -135,9 +135,9 @@ class PenServiceTest extends IntegrationTestSupport {
 
     //when
     List<PenResponse> responses = penService.findAll();
-    List<Long> penIdList = responses.stream().map(PenResponse::getId).toList();
+    List<Long> penCodeList = responses.stream().map(PenResponse::getId).toList();
     //then
-    assertThat(penIdList).containsExactly(pen1.getId(), pen2.getId());
+    assertThat(penCodeList).containsExactly(pen1.getId(), pen2.getId());
   }
 
   @DisplayName("축사칸을 단일 조회한다.")

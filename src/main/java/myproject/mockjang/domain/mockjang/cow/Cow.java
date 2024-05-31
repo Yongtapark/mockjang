@@ -103,10 +103,10 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
     }
   }
 
-  public static Cow createCow(String cowId, Gender gender, CowStatus cowStatus,
+  public static Cow createCow(String cowCode, Gender gender, CowStatus cowStatus,
       LocalDateTime birthDate) {
     return Cow.builder()
-        .codeId(cowId)
+        .codeId(cowCode)
         .birthDate(birthDate)
         .gender(gender)
         .cowStatus(cowStatus)
@@ -161,7 +161,7 @@ public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang
     parent.children.add(this);
   }
 
-  public void registerDailyRecord(CowRecord record) {
+  public void registerRecord(CowRecord record) {
     records.add(record);
   }
 

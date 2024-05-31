@@ -21,7 +21,7 @@ class PenControllerTest extends ControllerTestSupport {
 
   @DisplayName("신규 축사칸을 등록한다")
   @Test
-  void createPen() throws Exception {
+  void create() throws Exception {
     //given
     PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
         .penCodeId(PARSER_PEN_CODE_ID_1).build();
@@ -40,7 +40,7 @@ class PenControllerTest extends ControllerTestSupport {
 
   @DisplayName("null 값으로 축사 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createPenWithCodeIdNull() throws Exception {
+  void createWithCodeIdNull() throws Exception {
     //given
     PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
         .penCodeId(null).build();
@@ -61,7 +61,7 @@ class PenControllerTest extends ControllerTestSupport {
 
   @DisplayName("입력 없이 축사칸 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createPenWithEmpty() throws Exception {
+  void createWithEmpty() throws Exception {
     //given
     PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
         .penCodeId(STRING_EMPTY).build();
@@ -82,7 +82,7 @@ class PenControllerTest extends ControllerTestSupport {
 
   @DisplayName("공백으로 축사칸 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createPenWithBlank() throws Exception {
+  void createWithBlank() throws Exception {
     //given
     PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
         .penCodeId(STRING_ONLY_SPACE).build();

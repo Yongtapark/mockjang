@@ -13,10 +13,6 @@ public enum Exceptions {
   COMMON_NOT_EXIST("%s(을)를 찾을 수 없음"),
   COMMON_EMPTY_LIST("조회 가능한 데이터 없음"),
   COMMON_ALREADY_EXIST("%s(이)가 이미 존재함"),
-  //barn
-  //COMMON_ALREADY_EXIST("%s(이)가 이미 존재함"),
-  //pen
-  //COMMON_ALREADY_EXIST("%s(이)가 이미 존재함"),
   //cow,
   DOMAIN_ONLY_SLAUGHTERED_ERROR("cowStatus.slaughtered 이외 설정 시 예외"),
   //feed
@@ -35,8 +31,8 @@ public enum Exceptions {
     this.message = message;
   }
 
-  public String formatMessage(Class<? extends Mockjang> mockjang) {
-    return String.format(getMessage(), mockjang.getSimpleName());
+  public String formatMessage(Class<?> clazz) {
+    return String.format(getMessage(), clazz.getSimpleName());
   }
 
   public String formatMessage(String content) {

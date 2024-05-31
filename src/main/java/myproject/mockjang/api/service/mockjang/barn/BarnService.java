@@ -22,9 +22,9 @@ public class BarnService extends MockjangServiceAbstract {
   private final BarnRepository barnRepository;
 
   public BarnResponse createBarn(BarnCreateServiceRequest request) {
-    String barnId = request.getCodeId();
-    codeIdFilter(barnId);
-    Barn barn = Barn.createBarn(barnId);
+    String barnCode = request.getCodeId();
+    codeIdFilter(barnCode);
+    Barn barn = Barn.createBarn(barnCode);
     Barn savedBarn = barnRepository.save(barn);
     return BarnResponse.of(savedBarn);
   }

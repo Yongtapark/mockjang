@@ -22,7 +22,7 @@ class BarnControllerTest extends ControllerTestSupport {
 
   @DisplayName("신규 축사를 등록한다")
   @Test
-  void createBarn() throws Exception {
+  void create() throws Exception {
     //given
     BarnCreateRequest request = BarnCreateRequest.builder().codeId(PARSER_BARN_CODE_ID_1).build();
 
@@ -41,7 +41,7 @@ class BarnControllerTest extends ControllerTestSupport {
 
   @DisplayName("null 값으로 축사 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createBarnWithCodeIdNull() throws Exception {
+  void createWithCodeIdNull() throws Exception {
     //given
     BarnCreateRequest request = BarnCreateRequest.builder().codeId(null).build();
 
@@ -60,7 +60,7 @@ class BarnControllerTest extends ControllerTestSupport {
 
   @DisplayName("입력 없이 축사 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createBarnWithEmpty() throws Exception {
+  void createWithEmpty() throws Exception {
     //given
     BarnCreateRequest request = BarnCreateRequest.builder().codeId(STRING_EMPTY).build();
 
@@ -79,7 +79,7 @@ class BarnControllerTest extends ControllerTestSupport {
 
   @DisplayName("공백으로 축사 생성을 시도하면 예외를 발생시킨다.")
   @Test
-  void createBarnWithBlank() throws Exception {
+  void createWithBlank() throws Exception {
     //given
     BarnCreateRequest request = BarnCreateRequest.builder().codeId(STRING_ONLY_SPACE).build();
 

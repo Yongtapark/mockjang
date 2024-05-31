@@ -3,6 +3,7 @@ package myproject.mockjang.domain.records;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,8 +29,11 @@ public class BarnRecord extends Records {
     this.barn = barn;
   }
 
-  public static BarnRecord creatRecord(Barn barn) {
-    return BarnRecord.builder().barn(barn).build();
+  public static BarnRecord creatRecord(Barn barn,RecordType recordType, LocalDateTime date) {
+    BarnRecord barnRecord = BarnRecord.builder().barn(barn).build();
+    barnRecord.registerRecordType(recordType);
+    barnRecord.registerDate(date);
+    return barnRecord;
   }
 
   public void writeNote(String memo) {

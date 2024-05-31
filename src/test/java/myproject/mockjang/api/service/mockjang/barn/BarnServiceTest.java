@@ -67,7 +67,7 @@ class BarnServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
   @Test
-  void createBarnWithEmptyBarnId() {
+  void createBarnWithEmptybarnCode() {
     //given
     BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
         .codeId(STRING_EMPTY).build();
@@ -79,7 +79,7 @@ class BarnServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
   @Test
-  void createBarnWithOnlySpaceBarnId() {
+  void createBarnWithOnlySpacebarnCode() {
     //given
     BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
         .codeId(STRING_ONLY_SPACE).build();

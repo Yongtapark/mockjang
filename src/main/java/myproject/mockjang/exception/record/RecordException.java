@@ -8,4 +8,8 @@ public class RecordException extends MockjangException {
   public RecordException(Exceptions exceptions) {
     super(exceptions.getMessage());
   }
+
+  public RecordException(String message) {
+    super(message);
+  }
 }

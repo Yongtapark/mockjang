@@ -64,9 +64,9 @@ public class Pen extends AbstractAuditable<YongTaPark, Long> implements Mockjang
     }
   }
 
-  public static Pen createPen(String penId) {
+  public static Pen createPen(String penCode) {
     return Pen.builder()
-        .codeId(penId)
+        .codeId(penCode)
         .build();
   }
 

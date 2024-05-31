@@ -1,10 +1,15 @@
 package myproject.mockjang.domain.records;
 
-import static myproject.mockjang.exception.Exceptions.DOMAIN_NO_COW_OR_PEN_OR_BARN;
+import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,6 +27,10 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE cow_record SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class CowRecord extends Records {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
   private Cow cow;
@@ -41,19 +50,43 @@ public class CowRecord extends Records {
     this.barn = barn;
   }
 
-  public static CowRecord createRecord(Cow cow) {
-    return CowRecord.builder()
+  public static CowRecord createRecord(Cow cow, RecordType recordType,LocalDateTime date) {
+    CowRecord cowRecord = CowRecord.builder()
         .cow(cow)
         .pen(cow.getPen())
         .barn(cow.getBarn())
         .build();
+    cowRecord.registerRecordType(recordType);
+    cowRecord.registerDate(date);
+    check(cowRecord);
+    return cowRecord;
   }
 
-  public void writeNote(String memo) {
-    if (barn == null || cow == null || pen == null) {
-      throw new RecordException(DOMAIN_NO_COW_OR_PEN_OR_BARN);
+  private static void check(CowRecord cowRecord) {
+    if (cowRecord.getBarn() == null ) {
+      throw new RecordException(COMMON_NOT_EXIST.formatMessage(Barn.class));
     }
+    if (cowRecord.getPen() == null) {
+      throw new RecordException(COMMON_NOT_EXIST.formatMessage(Pen.class));
+    }
+    if (cowRecord.getRecordType() == null) {
+      throw new RecordException(COMMON_NOT_EXIST.formatMessage(RecordType.class));
+    }
+    if (cowRecord.getDate() == null) {
+      throw new RecordException(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
+    }
+  }
+
+  public void registerRecordType(RecordType recordType) {
+    super.registerRecordType(recordType);
+  }
+
+  public void registerDate(LocalDateTime dateTime) {
+    super.registerDate(dateTime);
+  }
+
+  public void recordMemo(String memo) {
     writeMemo(memo);
-    cow.registerDailyRecord(this);
+    cow.registerRecord(this);
   }
 }
