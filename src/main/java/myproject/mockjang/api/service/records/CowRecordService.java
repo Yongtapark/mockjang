@@ -42,10 +42,9 @@ public class CowRecordService {
     return cowRecords.stream().map(CowRecordResponse::of).toList();
   }
 
-  public CowRecordResponse remove(CowRecordRemoveServiceRequest request) {
+  public void remove(CowRecordRemoveServiceRequest request) {
     CowRecord cowRecord = cowRecordRepository.findById(request.getId()).orElseThrow(
         () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(CowRecord.class)));
     cowRecordRepository.delete(cowRecord);
-    return CowRecordResponse.withMemo(cowRecord);
   }
 }

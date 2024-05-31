@@ -10,7 +10,6 @@ import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.records.request.CowRecordCreateRequest;
 import myproject.mockjang.api.controller.records.request.CowRecordFindAllByCodeIdAndRecordTypeRequest;
 import myproject.mockjang.api.controller.records.request.CowRecordRemoveRequest;
-import myproject.mockjang.api.service.records.request.CowRecordFindAllByCodeIdAndRecordTypeServiceRequest;
 import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
