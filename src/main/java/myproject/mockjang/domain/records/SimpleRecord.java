@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.exception.common.NotExistException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -44,6 +46,9 @@ public class SimpleRecord extends Records{
     }
 
     public void recordsNullCheck(SimpleRecord simpleRecord) {
+        if(codeId==null || codeId.isBlank()){
+            throw new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage("codeId"));
+        }
         basicNullCheck(simpleRecord);
     }
 }
