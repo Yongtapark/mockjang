@@ -23,7 +23,6 @@ import myproject.mockjang.domain.records.CowRecordRepository;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
-import myproject.mockjang.exception.record.RecordException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +77,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
 
     //when  //then
-    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(RecordException.class)
+    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
         .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(Barn.class));
   }
 
@@ -100,7 +99,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
 
     //when  //then
-    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(RecordException.class)
+    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
         .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(Pen.class));
   }
 
@@ -136,7 +135,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         .recordType(null).date(TEMP_DATE).memo(MEMO_1).build();
 
     //when  //then
-    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(RecordException.class)
+    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
         .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(RecordType.class));
   }
 
@@ -159,7 +158,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         .recordType(RecordType.DAILY).date(null).memo(MEMO_1).build();
 
     //when  //then
-    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(RecordException.class)
+    assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
         .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
   }
 

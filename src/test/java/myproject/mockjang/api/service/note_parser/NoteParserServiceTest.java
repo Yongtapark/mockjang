@@ -5,12 +5,10 @@ import static org.assertj.core.api.Assertions.not;
 
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServiceRequest;
-import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServiceRequest.NoteParserCreateServiceRequestBuilder;
 import myproject.mockjang.api.service.note_parser.response.NoteParserResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -27,7 +25,6 @@ import myproject.mockjang.domain.records.CowRecordRepository;
 import myproject.mockjang.domain.records.PenRecord;
 import myproject.mockjang.domain.records.PenRecordRepository;
 import myproject.mockjang.domain.records.RecordType;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,21 +91,21 @@ class NoteParserServiceTest extends IntegrationTestSupport {
 
     assertThat(allByBarnCodeId).hasSize(1);
     assertThat(allByBarnCodeId.getFirst().getBarn()).isEqualTo(barn);
-    assertThat(allByBarnCodeId.getFirst().getMemo()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(allByBarnCodeId.getFirst().getRecord()).isEqualTo(PARSER_BARN_NOTE_1);
 
     assertThat(allByPenCodeId).hasSize(2);
     assertThat(allByPenCodeId.getFirst().getPen()).isEqualTo(pen);
     assertThat(allByPenCodeId.getLast().getPen()).isEqualTo(pen);
-    assertThat(allByPenCodeId.getFirst().getMemo()).isEqualTo(PARSER_PEN_NOTE_1);
-    assertThat(allByPenCodeId.getLast().getMemo()).isEqualTo(PARSER_PEN_NOTE_1);
+    assertThat(allByPenCodeId.getFirst().getRecord()).isEqualTo(PARSER_PEN_NOTE_1);
+    assertThat(allByPenCodeId.getLast().getRecord()).isEqualTo(PARSER_PEN_NOTE_1);
 
     assertThat(allByCowCodeId1).hasSize(2);
     assertThat(allByCowCodeId1.getFirst().getCow()).isEqualTo(cow1);
-    assertThat(allByCowCodeId1.getFirst().getMemo()).isEqualTo(PARSER_COW_NOTE_1);
-    assertThat(allByCowCodeId1.getLast().getMemo()).isEqualTo(PARSER_COW_NOTE_2);
+    assertThat(allByCowCodeId1.getFirst().getRecord()).isEqualTo(PARSER_COW_NOTE_1);
+    assertThat(allByCowCodeId1.getLast().getRecord()).isEqualTo(PARSER_COW_NOTE_2);
     assertThat(allByCowCodeId2).hasSize(1);
     assertThat(allByCowCodeId2.getFirst().getCow()).isEqualTo(cow2);
-    assertThat(allByCowCodeId2.getFirst().getMemo()).isEqualTo(PARSER_COW_NOTE_2);
+    assertThat(allByCowCodeId2.getFirst().getRecord()).isEqualTo(PARSER_COW_NOTE_2);
   }
 
   @DisplayName("엔터로 구분한 문자열을 입력받으면 작업 완료 후 이름들을 반환한다.")
@@ -194,21 +191,21 @@ class NoteParserServiceTest extends IntegrationTestSupport {
 
     assertThat(allByBarnCodeId).hasSize(1);
     assertThat(allByBarnCodeId.getFirst().getBarn()).isEqualTo(barn);
-    assertThat(allByBarnCodeId.getFirst().getMemo()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(allByBarnCodeId.getFirst().getRecord()).isEqualTo(PARSER_BARN_NOTE_1);
 
     assertThat(allByPenCodeId1).hasSize(1);
     assertThat(allByPenCodeId1.getFirst().getPen()).isEqualTo(pen1);
-    assertThat(allByPenCodeId1.getFirst().getMemo()).isEqualTo(PARSER_PEN_NOTE_1);
+    assertThat(allByPenCodeId1.getFirst().getRecord()).isEqualTo(PARSER_PEN_NOTE_1);
     assertThat(allByPenCodeId1).hasSize(1);
     assertThat(allByPenCodeId2.getFirst().getPen()).isEqualTo(pen2);
-    assertThat(allByPenCodeId2.getFirst().getMemo()).isEqualTo(PARSER_PEN_NOTE_1);
+    assertThat(allByPenCodeId2.getFirst().getRecord()).isEqualTo(PARSER_PEN_NOTE_1);
 
     assertThat(allByCowCodeId1).hasSize(1);
     assertThat(allByCowCodeId1.getFirst().getCow()).isEqualTo(cow1);
-    assertThat(allByCowCodeId1.getFirst().getMemo()).isEqualTo(PARSER_COW_NOTE_1);
+    assertThat(allByCowCodeId1.getFirst().getRecord()).isEqualTo(PARSER_COW_NOTE_1);
     assertThat(allByCowCodeId2).hasSize(1);
     assertThat(allByCowCodeId2.getFirst().getCow()).isEqualTo(cow2);
-    assertThat(allByCowCodeId2.getFirst().getMemo()).isEqualTo(PARSER_COW_NOTE_1);
+    assertThat(allByCowCodeId2.getFirst().getRecord()).isEqualTo(PARSER_COW_NOTE_1);
 
   }
 

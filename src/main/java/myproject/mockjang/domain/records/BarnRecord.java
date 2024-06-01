@@ -40,7 +40,7 @@ public class BarnRecord extends Records {
     if (barn == null) {
       throw new RuntimeException("there is no barn or cow");
     }
-    writeMemo(memo);
+    registerRecord(memo);
     barn.registerDailyRecord(this);
   }
 }

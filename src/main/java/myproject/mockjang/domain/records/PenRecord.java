@@ -42,7 +42,7 @@ public class PenRecord extends Records {
   }
 
   public void writeNote(String memo) {
-    writeMemo(memo);
+    registerRecord(memo);
     pen.registerDailyRecord(this);
   }
 }

@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,7 +16,7 @@ import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import myproject.mockjang.exception.record.RecordException;
+import myproject.mockjang.exception.common.NotExistException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -58,22 +57,20 @@ public class CowRecord extends Records {
         .build();
     cowRecord.registerRecordType(recordType);
     cowRecord.registerDate(date);
-    check(cowRecord);
     return cowRecord;
   }
 
-  private static void check(CowRecord cowRecord) {
+  public void recordsNullCheck(CowRecord cowRecord) {
+    emptyRelationCheck(cowRecord);
+    basicNullCheck(cowRecord);
+  }
+
+  private void emptyRelationCheck(CowRecord cowRecord) {
     if (cowRecord.getBarn() == null ) {
-      throw new RecordException(COMMON_NOT_EXIST.formatMessage(Barn.class));
+      throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Barn.class));
     }
     if (cowRecord.getPen() == null) {
-      throw new RecordException(COMMON_NOT_EXIST.formatMessage(Pen.class));
-    }
-    if (cowRecord.getRecordType() == null) {
-      throw new RecordException(COMMON_NOT_EXIST.formatMessage(RecordType.class));
-    }
-    if (cowRecord.getDate() == null) {
-      throw new RecordException(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
+      throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Pen.class));
     }
   }
 
@@ -86,7 +83,7 @@ public class CowRecord extends Records {
   }
 
   public void recordMemo(String memo) {
-    writeMemo(memo);
+    registerRecord(memo);
     cow.registerRecord(this);
   }
 }

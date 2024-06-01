@@ -31,7 +31,7 @@ public class CowRecordResponse {
     return CowRecordResponse.builder()
         .id(record.getId())
         .cow(record.getCow())
-        .memo(record.getMemo())
+        .memo(record.getRecord())
         .date(record.getDate())
         .recordType(record.getRecordType())
         .build();
@@ -39,7 +39,7 @@ public class CowRecordResponse {
 
   public static CowRecordResponse withMemo(CowRecord record) {
     return CowRecordResponse.builder()
-        .memo(record.getMemo())
+        .memo(record.getRecord())
         .build();
   }
 
