@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.barn;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

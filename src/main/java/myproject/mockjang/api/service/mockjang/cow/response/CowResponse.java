@@ -1,11 +1,5 @@
 package myproject.mockjang.api.service.mockjang.cow.response;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +12,7 @@ import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import myproject.mockjang.domain.records.CowRecord;
+import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 
 @NoArgsConstructor
 @Getter

@@ -1,4 +1,4 @@
-package myproject.mockjang.api.service.records.request;
+package myproject.mockjang.api.service.records.mockjang.cow.request;
 
 import lombok.Builder;
 import lombok.Getter;

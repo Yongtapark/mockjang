@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.cow;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,6 +10,7 @@ import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

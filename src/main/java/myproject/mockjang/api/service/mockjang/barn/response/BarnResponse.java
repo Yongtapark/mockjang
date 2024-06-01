@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import myproject.mockjang.domain.records.BarnRecord;
+import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
 
 @Getter
 public class BarnResponse {

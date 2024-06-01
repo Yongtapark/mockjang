@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.barn;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

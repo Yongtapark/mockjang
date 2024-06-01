@@ -1,11 +1,11 @@
-package myproject.mockjang.api.service.records.response;
+package myproject.mockjang.api.service.records.mockjang.cow.response;
 
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.cow.Cow;
-import myproject.mockjang.domain.records.CowRecord;
+import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 import myproject.mockjang.domain.records.RecordType;
 
 @Getter
@@ -36,11 +36,4 @@ public class CowRecordResponse {
         .recordType(record.getRecordType())
         .build();
   }
-
-  public static CowRecordResponse withMemo(CowRecord record) {
-    return CowRecordResponse.builder()
-        .memo(record.getRecord())
-        .build();
-  }
-
 }

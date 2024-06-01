@@ -1,11 +1,11 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.barn;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
+import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +16,7 @@ class BarnRecordTest extends IntegrationTestSupport {
   void writeOneRecord() {
     //given
     Barn barn = Barn.builder().codeId(PARSER_BARN_CODE_ID_1).build();
-    BarnRecord barnRecord1 = BarnRecord.creatRecord(barn,RecordType.DAILY,TEMP_DATE);
+    BarnRecord barnRecord1 = BarnRecord.creatRecord(barn, RecordType.DAILY,TEMP_DATE);
     BarnRecord barnRecord2 = BarnRecord.creatRecord(barn,RecordType.DAILY,TEMP_DATE);
 
     //when

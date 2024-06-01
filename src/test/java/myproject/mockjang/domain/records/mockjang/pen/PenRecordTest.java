@@ -1,12 +1,12 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.pen;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,7 @@ class PenRecordTest extends IntegrationTestSupport {
     //given
     Barn barn = Barn.builder().codeId(PARSER_BARN_CODE_ID_1).build();
     Pen pen = Pen.builder().codeId(PARSER_PEN_CODE_ID_1).barn(barn).build();
-    PenRecord penRecord1 = PenRecord.createRecord(pen,RecordType.DAILY,TEMP_DATE);
+    PenRecord penRecord1 = PenRecord.createRecord(pen, RecordType.DAILY,TEMP_DATE);
     PenRecord penRecord2 = PenRecord.createRecord(pen,RecordType.DAILY,TEMP_DATE);
 
     //when

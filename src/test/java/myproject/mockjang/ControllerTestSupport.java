@@ -10,7 +10,7 @@ import myproject.mockjang.api.service.mockjang.barn.BarnService;
 import myproject.mockjang.api.service.mockjang.cow.CowService;
 import myproject.mockjang.api.service.mockjang.pen.PenService;
 import myproject.mockjang.api.service.note_parser.NoteParserService;
-import myproject.mockjang.api.service.records.CowRecordService;
+import myproject.mockjang.api.service.records.mockjang.cow.CowRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

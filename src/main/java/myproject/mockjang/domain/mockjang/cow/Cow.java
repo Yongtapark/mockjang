@@ -27,7 +27,7 @@ import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import myproject.mockjang.domain.records.CowRecord;
+import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import myproject.mockjang.exception.cow.CowStatusException;

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.api.service.records.request.CowRecordCreateServiceRequest;
+import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordCreateServiceRequest;
 import myproject.mockjang.domain.records.RecordType;
 
 @Getter

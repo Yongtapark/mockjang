@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.cow;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,6 +7,7 @@ import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +23,7 @@ class CowRecordTest extends IntegrationTestSupport {
     cow.registerUpperGroup(pen);
     cow.registerBarn(barn);
 
-    CowRecord cowRecord1 = CowRecord.createRecord(cow,RecordType.DAILY,TEMP_DATE);
+    CowRecord cowRecord1 = CowRecord.createRecord(cow, RecordType.DAILY,TEMP_DATE);
     CowRecord cowRecord2 = CowRecord.createRecord(cow,RecordType.DAILY,TEMP_DATE);
     ;
 

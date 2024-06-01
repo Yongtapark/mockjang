@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.cow;
 
 import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.domain.records.RecordType;
+import myproject.mockjang.domain.records.Records;
 import myproject.mockjang.exception.common.NotExistException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -49,7 +51,7 @@ public class CowRecord extends Records {
     this.barn = barn;
   }
 
-  public static CowRecord createRecord(Cow cow, RecordType recordType,LocalDateTime date) {
+  public static CowRecord createRecord(Cow cow, RecordType recordType, LocalDateTime date) {
     CowRecord cowRecord = CowRecord.builder()
         .cow(cow)
         .pen(cow.getPen())

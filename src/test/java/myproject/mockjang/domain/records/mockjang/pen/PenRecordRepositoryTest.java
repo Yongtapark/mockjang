@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.pen;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -9,6 +9,7 @@ import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ class PenRecordRepositoryTest extends IntegrationTestSupport {
     pen.registerUpperGroup(barn);
     penRepository.save(pen);
 
-    PenRecord penRecord1 = PenRecord.createRecord(pen,RecordType.DAILY,date);
+    PenRecord penRecord1 = PenRecord.createRecord(pen, RecordType.DAILY,date);
     PenRecord penRecord2 = PenRecord.createRecord(pen,RecordType.DAILY,date);
 
     //when

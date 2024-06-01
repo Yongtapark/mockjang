@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import myproject.mockjang.domain.records.BarnRecord;
+import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import org.hibernate.annotations.SQLDelete;

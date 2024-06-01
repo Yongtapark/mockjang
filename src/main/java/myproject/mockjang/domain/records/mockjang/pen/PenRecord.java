@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.pen;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.domain.records.RecordType;
+import myproject.mockjang.domain.records.Records;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -34,7 +36,7 @@ public class PenRecord extends Records {
     this.barn = barn;
   }
 
-  public static PenRecord createRecord(Pen pen,RecordType recordType, LocalDateTime date) {
+  public static PenRecord createRecord(Pen pen, RecordType recordType, LocalDateTime date) {
     PenRecord penRecord = PenRecord.builder().pen(pen).barn(pen.getBarn()).build();
     penRecord.registerDate(date);
     penRecord.registerRecordType(recordType);

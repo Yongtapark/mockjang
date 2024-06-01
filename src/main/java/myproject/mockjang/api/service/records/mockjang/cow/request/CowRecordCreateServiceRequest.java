@@ -1,11 +1,9 @@
-package myproject.mockjang.api.service.records.request;
+package myproject.mockjang.api.service.records.mockjang.cow.request;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.records.RecordType;
 
 @Getter

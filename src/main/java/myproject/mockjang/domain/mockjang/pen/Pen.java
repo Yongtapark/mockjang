@@ -21,7 +21,7 @@ import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
-import myproject.mockjang.domain.records.PenRecord;
+import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import org.hibernate.annotations.SQLDelete;

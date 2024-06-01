@@ -1,9 +1,5 @@
 package myproject.mockjang.api.service.mockjang.pen.response;
 
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,7 +7,7 @@ import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
-import myproject.mockjang.domain.records.PenRecord;
+import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
 
 @Getter
 @NoArgsConstructor

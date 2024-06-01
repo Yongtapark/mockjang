@@ -1,6 +1,7 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.mockjang.cow;
 
 import java.util.List;
+import myproject.mockjang.domain.records.RecordType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

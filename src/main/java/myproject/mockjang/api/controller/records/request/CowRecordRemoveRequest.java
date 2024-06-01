@@ -1,11 +1,10 @@
 package myproject.mockjang.api.controller.records.request;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.api.service.records.request.CowRecordRemoveServiceRequest;
+import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordRemoveServiceRequest;
 
 @Getter
 @NoArgsConstructor

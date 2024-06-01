@@ -1,15 +1,15 @@
-package myproject.mockjang.api.service.records;
+package myproject.mockjang.api.service.records.mockjang.cow;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import myproject.mockjang.api.service.records.request.CowRecordCreateServiceRequest;
-import myproject.mockjang.api.service.records.request.CowRecordFindAllByCodeIdAndRecordTypeServiceRequest;
-import myproject.mockjang.api.service.records.request.CowRecordRemoveServiceRequest;
-import myproject.mockjang.api.service.records.response.CowRecordResponse;
+import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordCreateServiceRequest;
+import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordFindAllByCodeIdAndRecordTypeServiceRequest;
+import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordRemoveServiceRequest;
+import myproject.mockjang.api.service.records.mockjang.cow.response.CowRecordResponse;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
-import myproject.mockjang.domain.records.CowRecord;
-import myproject.mockjang.domain.records.CowRecordRepository;
+import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
+import myproject.mockjang.domain.records.mockjang.cow.CowRecordRepository;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.springframework.stereotype.Service;
