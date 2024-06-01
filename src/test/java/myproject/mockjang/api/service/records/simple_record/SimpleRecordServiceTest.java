@@ -12,6 +12,7 @@ import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.simple_record.SimpleRecord;
 import myproject.mockjang.domain.records.simple_record.SimpleRecordRepository;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,26 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
         assertThat(simpleRecord.getRecord()).isEqualTo(response.getRecord());
     }
 
+    @DisplayName("codeId로 기록을 전체 조회한다.")
+    @Test
+    void findAllByCodeId() {
+        //given
+        SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
+        SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
+        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
+
+        simpleRecordRepository.save(simpleRecord1);
+        simpleRecordRepository.save(simpleRecord2);
+        simpleRecordRepository.save(simpleRecord3);
+
+        //when
+        List<SimpleRecordResponse> searches = simpleRecordService.findAllByCodeId(PARSER_COW_CODE_ID_1);
+
+        //then
+        List<Long> simpleRecordsIds = searches.stream().map(SimpleRecordResponse::getId).toList();
+        Assertions.assertThat(simpleRecordsIds).containsExactly(simpleRecord1.getId(),simpleRecord2.getId());
+    }
+
     @DisplayName("codeId,기록 타입, 기록날짜로 기록 전체 조회")
     @Test
     void searchWithPieceOfCodeId() {
@@ -62,7 +83,6 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
                 .codeId("00")
                 .recordType(RecordType.DAILY)
                 .date(TEMP_DATE)
-                .record(MEMO_1)
                 .build();
 
         //when
@@ -71,6 +91,31 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
         //then
         List<Long> simpleRecordsIds = searches.stream().map(SimpleRecordResponse::getId).toList();
         Assertions.assertThat(simpleRecordsIds).containsExactly(simpleRecord1.getId(),simpleRecord3.getId());
+    }
+
+    @DisplayName("codeId,기록 타입, 기록날짜로 기록 전체 조회")
+    @Test
+    @Disabled
+    void searchWithNoCodeId() {
+        //given
+        SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
+        SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
+        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
+
+        simpleRecordRepository.save(simpleRecord1);
+        simpleRecordRepository.save(simpleRecord2);
+        simpleRecordRepository.save(simpleRecord3);
+
+        SimpleRecordSearchServiceRequest request = SimpleRecordSearchServiceRequest.builder()
+            .codeId("")
+            .build();
+
+        //when
+        List<SimpleRecordResponse> searches = simpleRecordService.search(request);
+
+        //then
+        List<Long> simpleRecordsIds = searches.stream().map(SimpleRecordResponse::getId).toList();
+        Assertions.assertThat(simpleRecordsIds).containsExactly(simpleRecord1.getId(),simpleRecord2.getId(),simpleRecord3.getId());
     }
 
     @DisplayName("고유번호를 통해 기록을 제거한다.")

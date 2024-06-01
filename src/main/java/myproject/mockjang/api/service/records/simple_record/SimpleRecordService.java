@@ -28,6 +28,11 @@ public class SimpleRecordService {
     return SimpleRecordResponse.of(simpleRecord);
   }
 
+  public List<SimpleRecordResponse> findAllByCodeId(String codeId) {;
+    List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(codeId);
+    return simpleRecords.stream().map(SimpleRecordResponse::of).toList();
+  }
+
   public List<SimpleRecordResponse> search(SimpleRecordSearchServiceRequest request) {
     List<SimpleRecord> simpleRecords = simpleRecordRepository.search(request.getCodeId(),
         request.getRecordType(),

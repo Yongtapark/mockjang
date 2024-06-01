@@ -17,15 +17,13 @@ public class SimpleRecordSearchServiceRequest {
 
     private LocalDateTime date;
 
-    private String record;
 
     @Builder
-    private SimpleRecordSearchServiceRequest(String codeId, LocalDateTime date, Long id, String record,
+    private SimpleRecordSearchServiceRequest(String codeId, LocalDateTime date, Long id,
                                             RecordType recordType) {
         this.codeId = codeId;
         this.date = date;
         this.id = id;
-        this.record = record;
         this.recordType = recordType;
     }
 }
