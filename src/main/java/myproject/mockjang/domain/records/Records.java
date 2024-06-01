@@ -25,11 +25,13 @@ public abstract class Records extends AbstractAuditable<YongTaPark, Long> {
   }
 
   protected void registerRecordType(RecordType recordType) {
-    this.recordType =recordType;
+    this.recordType = recordType;
   }
+
   protected void registerDate(LocalDateTime date) {
     this.date = date;
   }
+
   protected void basicNullCheck(Records record) {
     if (record.getRecordType() == null) {
       throw new NotExistException(COMMON_NOT_EXIST.formatMessage(RecordType.class));
@@ -37,7 +39,7 @@ public abstract class Records extends AbstractAuditable<YongTaPark, Long> {
     if (record.getDate() == null) {
       throw new NotExistException(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
     }
-    if(record.getRecord()==null||record.getRecord().isBlank()){
+    if (record.getRecord() == null || record.getRecord().isBlank()) {
       throw new NotExistException(COMMON_NOT_EXIST.formatMessage("record"));
     }
   }

@@ -5,7 +5,7 @@ import myproject.mockjang.api.controller.mockjang.barn.BarnController;
 import myproject.mockjang.api.controller.mockjang.cow.CowController;
 import myproject.mockjang.api.controller.mockjang.pen.PenController;
 import myproject.mockjang.api.controller.note_parser.NoteParserController;
-import myproject.mockjang.api.controller.records.CowRecordController;
+import myproject.mockjang.api.controller.records.mockjang.cow.CowRecordController;
 import myproject.mockjang.api.service.mockjang.barn.BarnService;
 import myproject.mockjang.api.service.mockjang.cow.CowService;
 import myproject.mockjang.api.service.mockjang.pen.PenService;

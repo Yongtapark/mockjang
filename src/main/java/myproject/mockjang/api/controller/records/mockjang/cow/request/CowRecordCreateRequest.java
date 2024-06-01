@@ -1,4 +1,4 @@
-package myproject.mockjang.api.controller.records.request;
+package myproject.mockjang.api.controller.records.mockjang.cow.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.records.simple_record.request.SimpleRecordCreateServiceRequest;
+import myproject.mockjang.api.service.records.simple_record.request.SimpleRecordRemoveServiceRequest;
 import myproject.mockjang.api.service.records.simple_record.request.SimpleRecordSearchServiceRequest;
 import myproject.mockjang.api.service.records.simple_record.response.SimpleRecordResponse;
 import myproject.mockjang.domain.records.RecordType;
@@ -70,6 +71,31 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
         //then
         List<Long> simpleRecordsIds = searches.stream().map(SimpleRecordResponse::getId).toList();
         Assertions.assertThat(simpleRecordsIds).containsExactly(simpleRecord1.getId(),simpleRecord3.getId());
+    }
+
+    @DisplayName("고유번호를 통해 기록을 제거한다.")
+    @Test
+    void remove() {
+        //given
+        SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
+        SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
+        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
+
+        simpleRecordRepository.save(simpleRecord1);
+        simpleRecordRepository.save(simpleRecord2);
+        simpleRecordRepository.save(simpleRecord3);
+
+        SimpleRecordRemoveServiceRequest request = SimpleRecordRemoveServiceRequest.builder()
+            .id(simpleRecord3.getId()).build();
+
+        //when
+        simpleRecordService.remove(request);
+
+        //then
+        List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(
+            PARSER_COW_CODE_ID_1);
+        List<Long> ids = simpleRecords.stream().map(SimpleRecord::getId).toList();
+        Assertions.assertThat(ids).containsExactly(simpleRecord1.getId(), simpleRecord2.getId());
     }
 
 }

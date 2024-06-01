@@ -7,9 +7,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import myproject.mockjang.ControllerTestSupport;
-import myproject.mockjang.api.controller.records.request.CowRecordCreateRequest;
-import myproject.mockjang.api.controller.records.request.CowRecordFindAllByCodeIdAndRecordTypeRequest;
-import myproject.mockjang.api.controller.records.request.CowRecordRemoveRequest;
+import myproject.mockjang.api.controller.records.mockjang.cow.request.CowRecordCreateRequest;
+import myproject.mockjang.api.controller.records.mockjang.cow.request.CowRecordFindAllByCodeIdAndRecordTypeRequest;
+import myproject.mockjang.api.controller.records.mockjang.cow.request.CowRecordRemoveRequest;
 import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -27,6 +27,7 @@ public class CowRecordService {
         () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Cow.class)));
     CowRecord record = CowRecord.createRecord(cow, request.getRecordType(), request.getDate());
     record.recordMemo(request.getMemo());
+    record.recordsNullCheck(record);
     CowRecord savedRecord = cowRecordRepository.save(record);
     return CowRecordResponse.of(savedRecord);
   }

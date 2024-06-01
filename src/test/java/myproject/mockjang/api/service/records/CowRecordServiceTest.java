@@ -1,5 +1,6 @@
 package myproject.mockjang.api.service.records;
 
+import static myproject.mockjang.exception.Exceptions.*;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 
@@ -79,7 +80,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
 
     //when  //then
     assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
-        .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(Barn.class));
+        .hasMessage(COMMON_NOT_EXIST.formatMessage(Barn.class));
   }
 
   @DisplayName("소의 축사칸 이름을 입력하지 않으면 예외를 발생시킨다.")
@@ -101,7 +102,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
 
     //when  //then
     assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
-        .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(Pen.class));
+        .hasMessage(COMMON_NOT_EXIST.formatMessage(Pen.class));
   }
 
   @DisplayName("소의 이름을 입력하지 않으면 예외를 발생시킨다.")
@@ -114,7 +115,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
 
     //when  //then
     assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
-        .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(Cow.class));
+        .hasMessage(COMMON_NOT_EXIST.formatMessage(Cow.class));
   }
 
   @DisplayName("기록 타입을 입력하지 않으면 예외를 발생시킨다.")
@@ -137,7 +138,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
 
     //when  //then
     assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
-        .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(RecordType.class));
+        .hasMessage(COMMON_NOT_EXIST.formatMessage(RecordType.class));
   }
 
   @DisplayName("기록 날짜를 입력하지 않으면 예외를 발생시킨다.")
@@ -160,7 +161,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
 
     //when  //then
     assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
-        .hasMessage(Exceptions.COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
+        .hasMessage(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
   }
 
   @DisplayName("소 번호로 소 기록을 조회한다.")

@@ -1,12 +1,12 @@
-package myproject.mockjang.api.controller.records;
+package myproject.mockjang.api.controller.records.mockjang.cow;
 
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.ApiResponse;
-import myproject.mockjang.api.controller.records.request.CowRecordCreateRequest;
-import myproject.mockjang.api.controller.records.request.CowRecordFindAllByCodeIdAndRecordTypeRequest;
-import myproject.mockjang.api.controller.records.request.CowRecordRemoveRequest;
+import myproject.mockjang.api.controller.records.mockjang.cow.request.CowRecordCreateRequest;
+import myproject.mockjang.api.controller.records.mockjang.cow.request.CowRecordFindAllByCodeIdAndRecordTypeRequest;
+import myproject.mockjang.api.controller.records.mockjang.cow.request.CowRecordRemoveRequest;
 import myproject.mockjang.api.service.records.mockjang.cow.CowRecordService;
 import myproject.mockjang.api.service.records.mockjang.cow.response.CowRecordResponse;
 import myproject.mockjang.domain.records.RecordType;
