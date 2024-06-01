@@ -1,8 +1,9 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.simple_record;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.domain.records.RecordType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ class SimpleRecordRepositoryTest extends IntegrationTestSupport {
 
     @DisplayName("codeId,기록 타입, 기록날짜로 기록 전체 조회")
     @Test
-    void findAllByCodeIdLikeAndRecordTypeAndDateWithPieceOfCodeId() {
+    void searchWithPieceOfCodeId() {
         //given
         SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
         SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);

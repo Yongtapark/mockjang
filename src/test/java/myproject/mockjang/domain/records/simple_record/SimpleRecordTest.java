@@ -1,10 +1,11 @@
-package myproject.mockjang.domain.records;
+package myproject.mockjang.domain.records.simple_record;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.LocalDateTime;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.junit.jupiter.api.DisplayName;
