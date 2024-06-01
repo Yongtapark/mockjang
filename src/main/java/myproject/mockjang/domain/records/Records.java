@@ -37,8 +37,8 @@ public abstract class Records extends AbstractAuditable<YongTaPark, Long> {
     if (record.getDate() == null) {
       throw new NotExistException(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
     }
-    if(record.getRecord().isBlank()){
-      throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Record.class));
+    if(record.getRecord()==null||record.getRecord().isBlank()){
+      throw new NotExistException(COMMON_NOT_EXIST.formatMessage("record"));
     }
   }
 }
