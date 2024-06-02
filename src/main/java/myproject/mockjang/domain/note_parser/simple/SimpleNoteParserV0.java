@@ -18,7 +18,7 @@ public class SimpleNoteParserV0 implements NoteParser<SimpleNoteContainer> {
   @Override
   public SimpleNoteContainer extractAndSaveNotes(SimpleNoteContainer noteContainer,
       String content) {
-    String[] split = content.split(System.lineSeparator());
+    String[] split = content.split("\\r?\\n");
     ArrayList<NoteAndCodeId> noteAndCodeIds = new ArrayList<>();
     for (String eachContent : split) {
       Matcher extractIdAndNote = NoteRegex.getNoteFormMatcher(eachContent);
