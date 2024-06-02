@@ -1,0 +1,10 @@
+POST http://localhost:8081/api/v0/simple_records/new
+Content-Type: application/json
+
+{
+  "context": "[[test]] test ",
+  "recordType": "DAILY",
+  "date": "2024-06-02T09:02:04.445"
+}
+
+

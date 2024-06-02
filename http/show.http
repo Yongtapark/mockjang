@@ -1,0 +1,7 @@
+### 조회
+POST http://localhost:8081/api/v0/records/simple
+Content-Type: application/json
+
+{
+  "codeId": "test"
+}

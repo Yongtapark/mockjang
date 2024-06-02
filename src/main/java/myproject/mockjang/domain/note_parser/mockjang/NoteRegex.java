@@ -23,7 +23,7 @@ public enum NoteRegex {
   }
 
   public static Matcher getNoteFormMatcher(String strPattern) {
-    return Pattern.compile("\\[\\[([^\\]]+)\\]\\] (.*)").matcher(strPattern);
+    return Pattern.compile("\\[\\[([^\\]]+)\\]\\]\\s*(.*)").matcher(strPattern);
   }
 
 }

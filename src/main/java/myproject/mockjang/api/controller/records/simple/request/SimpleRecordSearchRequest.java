@@ -1,7 +1,5 @@
 package myproject.mockjang.api.controller.records.simple.request;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,13 +11,10 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class SimpleRecordSearchRequest {
 
-  @NotBlank(message = "{exception.codeId.blank}")
   private String codeId;
 
-  @NotNull(message = "{exception.recordType.null}")
   private RecordType recordType;
 
-  @NotNull(message = "{exception.date.null}")
   private LocalDateTime date;
 
 

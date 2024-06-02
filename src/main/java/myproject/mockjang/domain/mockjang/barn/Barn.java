@@ -4,6 +4,7 @@ import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,7 +15,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
@@ -22,14 +22,15 @@ import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.AbstractAuditable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE barn SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Barn extends AbstractAuditable<YongTaPark, Long> implements Mockjang {
+@EntityListeners(AuditingEntityListener.class)
+public class Barn implements Mockjang {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

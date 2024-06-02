@@ -12,7 +12,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.feed.NegativeNumberException;
@@ -25,7 +24,7 @@ import org.springframework.data.jpa.domain.AbstractAuditable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE feed SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Feed extends AbstractAuditable<YongTaPark, Long> {
+public class Feed {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

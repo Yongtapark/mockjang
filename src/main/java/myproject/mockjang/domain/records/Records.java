@@ -2,18 +2,20 @@ package myproject.mockjang.domain.records;
 
 import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.Getter;
-import myproject.mockjang.domain.creater.YongTaPark;
+import myproject.mockjang.domain.AuditingEntity;
 import myproject.mockjang.exception.common.NotExistException;
-import org.springframework.data.jpa.domain.AbstractAuditable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Getter
 @MappedSuperclass
-public abstract class Records extends AbstractAuditable<YongTaPark, Long> {
+@EntityListeners(AuditingEntityListener.class)
+public abstract class Records extends AuditingEntity {
 
   private String record;
   private LocalDateTime date;

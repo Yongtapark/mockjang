@@ -11,19 +11,17 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.feed.Feed;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE feed_consumption SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class FeedConsumption extends AbstractAuditable<YongTaPark, Long> {
+public class FeedConsumption {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

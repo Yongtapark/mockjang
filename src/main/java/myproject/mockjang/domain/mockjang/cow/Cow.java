@@ -6,6 +6,7 @@ import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
 import static myproject.mockjang.exception.Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
@@ -22,7 +23,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.creater.YongTaPark;
 import myproject.mockjang.domain.feedcomsumption.FeedConsumption;
 import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.barn.Barn;
@@ -33,14 +33,15 @@ import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.AbstractAuditable;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE cow SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
-public class Cow extends AbstractAuditable<YongTaPark, Long> implements Mockjang {
+@EntityListeners(AuditingEntityListener.class)
+public class Cow implements Mockjang {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
