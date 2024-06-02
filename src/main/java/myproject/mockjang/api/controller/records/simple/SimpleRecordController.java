@@ -22,7 +22,8 @@ public class SimpleRecordController {
   private final SimpleRecordService simpleRecordService;
 
   @PostMapping("/api/v0/records/simple/new")
-  public ApiResponse<SimpleRecordResponse> create(@Valid @RequestBody SimpleRecordCreateRequest request) {
+  public ApiResponse<SimpleRecordResponse> create(
+      @Valid @RequestBody SimpleRecordCreateRequest request) {
     return ApiResponse.ok(simpleRecordService.create(request.toServiceRequest()));
   }
 
@@ -37,7 +38,8 @@ public class SimpleRecordController {
   }
 
   @PostMapping("/api/v0/records/simple/remove")
-  public ApiResponse<SimpleRecordResponse> remove(@Valid @RequestBody SimpleRecordRemoveRequest request) {
+  public ApiResponse<SimpleRecordResponse> remove(
+      @Valid @RequestBody SimpleRecordRemoveRequest request) {
     simpleRecordService.remove(request.toServiceRequest());
     return ApiResponse.noContent();
   }

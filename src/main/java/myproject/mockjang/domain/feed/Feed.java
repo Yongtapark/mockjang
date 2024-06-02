@@ -59,7 +59,8 @@ public class Feed extends AbstractAuditable<YongTaPark, Long> {
   private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
   @Builder
-  private Feed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate, Integer stock,
+  private Feed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate,
+      Integer stock,
       Double amountPerStock,
       Double amount,
       String description, Double dailyConsumption, List<FeedConsumption> feedConsumptions,
@@ -76,14 +77,14 @@ public class Feed extends AbstractAuditable<YongTaPark, Long> {
     this.usageStatus = usageStatus;
   }
 
-  public static Feed createFeed(String codeId, String name,Integer stock, Double amountPerStock,
+  public static Feed createFeed(String codeId, String name, Integer stock, Double amountPerStock,
       LocalDate storeDate,
       LocalDate expirationDate, String description) {
     return Feed.builder().codeId(codeId).name(name).storeDate(storeDate)
         .expirationDate(expirationDate)
         .stock(stock)
         .amountPerStock(amountPerStock)
-        .amount((stock*amountPerStock))
+        .amount((stock * amountPerStock))
         .description(description).build();
 
   }

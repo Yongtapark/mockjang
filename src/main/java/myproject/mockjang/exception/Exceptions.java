@@ -1,7 +1,6 @@
 package myproject.mockjang.exception;
 
 import lombok.Getter;
-import myproject.mockjang.domain.mockjang.Mockjang;
 
 @Getter
 public enum Exceptions {

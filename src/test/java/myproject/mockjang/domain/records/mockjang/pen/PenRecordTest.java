@@ -18,8 +18,8 @@ class PenRecordTest extends IntegrationTestSupport {
     //given
     Barn barn = Barn.builder().codeId(PARSER_BARN_CODE_ID_1).build();
     Pen pen = Pen.builder().codeId(PARSER_PEN_CODE_ID_1).barn(barn).build();
-    PenRecord penRecord1 = PenRecord.createRecord(pen, RecordType.DAILY,TEMP_DATE);
-    PenRecord penRecord2 = PenRecord.createRecord(pen,RecordType.DAILY,TEMP_DATE);
+    PenRecord penRecord1 = PenRecord.createRecord(pen, RecordType.DAILY, TEMP_DATE);
+    PenRecord penRecord2 = PenRecord.createRecord(pen, RecordType.DAILY, TEMP_DATE);
 
     //when
     penRecord1.writeNote("test1");

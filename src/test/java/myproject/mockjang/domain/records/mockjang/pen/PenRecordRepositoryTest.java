@@ -40,8 +40,8 @@ class PenRecordRepositoryTest extends IntegrationTestSupport {
     pen.registerUpperGroup(barn);
     penRepository.save(pen);
 
-    PenRecord penRecord1 = PenRecord.createRecord(pen, RecordType.DAILY,date);
-    PenRecord penRecord2 = PenRecord.createRecord(pen,RecordType.DAILY,date);
+    PenRecord penRecord1 = PenRecord.createRecord(pen, RecordType.DAILY, date);
+    PenRecord penRecord2 = PenRecord.createRecord(pen, RecordType.DAILY, date);
 
     //when
     penRecord1.writeNote("test1");

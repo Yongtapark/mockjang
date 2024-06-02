@@ -30,7 +30,8 @@ public class SimpleRecordService {
     return SimpleRecordResponse.of(simpleRecord);
   }
 
-  public List<SimpleRecordResponse> findAllByCodeId(String codeId) {;
+  public List<SimpleRecordResponse> findAllByCodeId(String codeId) {
+    ;
     List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(codeId);
     return simpleRecords.stream().map(SimpleRecordResponse::of).toList();
   }

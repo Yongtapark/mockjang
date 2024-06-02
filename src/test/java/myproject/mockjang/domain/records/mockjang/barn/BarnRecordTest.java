@@ -16,8 +16,8 @@ class BarnRecordTest extends IntegrationTestSupport {
   void writeOneRecord() {
     //given
     Barn barn = Barn.builder().codeId(PARSER_BARN_CODE_ID_1).build();
-    BarnRecord barnRecord1 = BarnRecord.creatRecord(barn, RecordType.DAILY,TEMP_DATE);
-    BarnRecord barnRecord2 = BarnRecord.creatRecord(barn,RecordType.DAILY,TEMP_DATE);
+    BarnRecord barnRecord1 = BarnRecord.creatRecord(barn, RecordType.DAILY, TEMP_DATE);
+    BarnRecord barnRecord2 = BarnRecord.creatRecord(barn, RecordType.DAILY, TEMP_DATE);
 
     //when
     barnRecord1.writeNote("test1");

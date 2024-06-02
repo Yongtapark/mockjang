@@ -13,11 +13,9 @@ import java.util.List;
 import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.mockjang.cow.request.CowCreateRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
-import myproject.mockjang.api.service.mockjang.pen.response.PenResponse;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
-import myproject.mockjang.domain.mockjang.pen.Pen;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -135,7 +133,7 @@ class CowControllerTest extends ControllerTestSupport {
   }
 
 
-  private  CowCreateRequest createRequest(String cowCode) {
+  private CowCreateRequest createRequest(String cowCode) {
     LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
     return CowCreateRequest.builder().cowCode(cowCode)
         .penCode(PARSER_PEN_CODE_ID_1)

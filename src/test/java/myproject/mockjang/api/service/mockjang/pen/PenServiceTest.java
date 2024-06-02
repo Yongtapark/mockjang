@@ -10,7 +10,6 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.pen.request.PenCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.pen.response.PenResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
@@ -66,7 +65,8 @@ class PenServiceTest extends IntegrationTestSupport {
 
     //then
     assertThat(barn.getPens()).isEmpty();
-    assertThatThrownBy(() -> penRepository.findByCodeId(pen.getCodeId()).orElseThrow()).isInstanceOf(
+    assertThatThrownBy(
+        () -> penRepository.findByCodeId(pen.getCodeId()).orElseThrow()).isInstanceOf(
         NoSuchElementException.class);
   }
 

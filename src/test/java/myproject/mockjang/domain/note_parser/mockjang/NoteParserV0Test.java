@@ -167,7 +167,8 @@ class NoteParserV0Test extends IntegrationTestSupport {
         "[[" + PARSER_BARN_CODE_ID_1 + "," + PARSER_COW_CODE_ID_2 + "]] " + PARSER_BARN_NOTE_1;
 
     //then
-    assertThatThrownBy(() -> noteParserV0.extractAndSaveNotes(mockjangNoteContainer, wrongFormatContext))
+    assertThatThrownBy(
+        () -> noteParserV0.extractAndSaveNotes(mockjangNoteContainer, wrongFormatContext))
         .isInstanceOf(NoteFormatException.class)
         .hasMessage(Exceptions.DOMAIN_NOTE_FORMAT.formatMessage(wrongFormatContext));
   }

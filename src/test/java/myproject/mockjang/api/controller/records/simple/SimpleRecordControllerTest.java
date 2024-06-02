@@ -30,7 +30,7 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
     //when //then
     mockMvc.perform(post("/api/v0/records/simple/new")
             .content(objectMapper.writeValueAsString(request))
-        .contentType(MediaType.APPLICATION_JSON))
+            .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.code").value("200"))

@@ -28,7 +28,7 @@ class PenControllerTest extends ControllerTestSupport {
 
     //when //then
     mockMvc.perform(
-              post("/api/v0/pens/new")
+            post("/api/v0/pens/new")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
@@ -44,7 +44,6 @@ class PenControllerTest extends ControllerTestSupport {
     //given
     PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
         .penCodeId(null).build();
-
 
     //when //then
     mockMvc.perform(
@@ -65,7 +64,6 @@ class PenControllerTest extends ControllerTestSupport {
     //given
     PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
         .penCodeId(STRING_EMPTY).build();
-
 
     //when //then
     mockMvc.perform(
@@ -125,7 +123,7 @@ class PenControllerTest extends ControllerTestSupport {
 
     //when //then
     when(penService.findByCodeId(any())).thenReturn(response);
-    mockMvc.perform(get("/api/v0/pens/"+PARSER_PEN_CODE_ID_1))
+    mockMvc.perform(get("/api/v0/pens/" + PARSER_PEN_CODE_ID_1))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(status().isOk())

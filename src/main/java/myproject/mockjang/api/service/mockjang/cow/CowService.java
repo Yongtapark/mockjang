@@ -4,17 +4,14 @@ import static myproject.mockjang.exception.Exceptions.BUSINESS_ONLY_SLAUGHTERED_
 import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
 import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
-import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
-import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
 import myproject.mockjang.exception.common.NotExistException;

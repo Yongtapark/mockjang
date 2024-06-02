@@ -1,6 +1,6 @@
 package myproject.mockjang.api.service.records;
 
-import static myproject.mockjang.exception.Exceptions.*;
+import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 
@@ -20,10 +20,9 @@ import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 import myproject.mockjang.domain.records.mockjang.cow.CowRecordRepository;
-import myproject.mockjang.domain.records.RecordType;
-import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -248,16 +247,15 @@ class CowRecordServiceTest extends IntegrationTestSupport {
     List<CowRecordResponse> allByCodeIdWhereRecordType2 = cowRecordService.findAllByCodeIdWhereRecordType(
         request2);
 
-
     //then
     List<String> dailyRecords = allByCodeIdWhereRecordType1.stream().map(CowRecordResponse::getMemo)
         .toList();
-    List<String> healthRecords = allByCodeIdWhereRecordType2.stream().map(CowRecordResponse::getMemo)
+    List<String> healthRecords = allByCodeIdWhereRecordType2.stream()
+        .map(CowRecordResponse::getMemo)
         .toList();
     assertThat(dailyRecords).containsOnly(MEMO_1);
     assertThat(healthRecords).containsOnly(MEMO_2);
   }
-
 
 
 }

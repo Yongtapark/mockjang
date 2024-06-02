@@ -59,7 +59,7 @@ public class FeedResponse {
     this.feedConsumptions = feedConsumptions;
   }
 
-  public static FeedResponse of(Feed feed){
+  public static FeedResponse of(Feed feed) {
     return FeedResponse.builder()
         .id(feed.getId())
         .codeId(feed.getCodeId())

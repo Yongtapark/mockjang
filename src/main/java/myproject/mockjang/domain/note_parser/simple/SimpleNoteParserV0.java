@@ -16,7 +16,8 @@ import org.springframework.stereotype.Component;
 public class SimpleNoteParserV0 implements NoteParser<SimpleNoteContainer> {
 
   @Override
-  public SimpleNoteContainer extractAndSaveNotes(SimpleNoteContainer noteContainer, String content) {
+  public SimpleNoteContainer extractAndSaveNotes(SimpleNoteContainer noteContainer,
+      String content) {
     String[] split = content.split(System.lineSeparator());
     ArrayList<NoteAndCodeId> noteAndCodeIds = new ArrayList<>();
     for (String eachContent : split) {

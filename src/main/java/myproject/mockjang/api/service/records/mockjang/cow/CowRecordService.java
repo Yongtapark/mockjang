@@ -39,7 +39,8 @@ public class CowRecordService {
 
   public List<CowRecordResponse> findAllByCodeIdWhereRecordType(
       CowRecordFindAllByCodeIdAndRecordTypeServiceRequest request) {
-    List<CowRecord> cowRecords = cowRecordRepository.findAllByCow_CodeIdAndRecordType(request.getCowCode(),request.getRecordType());
+    List<CowRecord> cowRecords = cowRecordRepository.findAllByCow_CodeIdAndRecordType(
+        request.getCowCode(), request.getRecordType());
     return cowRecords.stream().map(CowRecordResponse::of).toList();
   }
 

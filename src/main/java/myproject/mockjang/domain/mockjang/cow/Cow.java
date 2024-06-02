@@ -1,8 +1,8 @@
 package myproject.mockjang.domain.mockjang.cow;
 
+import static myproject.mockjang.exception.Exceptions.COMMON_ALREADY_EXIST;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
-import static myproject.mockjang.exception.Exceptions.COMMON_ALREADY_EXIST;
 import static myproject.mockjang.exception.Exceptions.DOMAIN_ONLY_SLAUGHTERED_ERROR;
 
 import jakarta.persistence.Entity;

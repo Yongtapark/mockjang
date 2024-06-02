@@ -1,7 +1,6 @@
 package myproject.mockjang.api.service.note_parser.mockjang;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.not;
 
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -18,13 +17,13 @@ import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
+import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecordRepository;
 import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 import myproject.mockjang.domain.records.mockjang.cow.CowRecordRepository;
 import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
 import myproject.mockjang.domain.records.mockjang.pen.PenRecordRepository;
-import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +76,8 @@ class NoteParserServiceTest extends IntegrationTestSupport {
             "[[" + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
 
     NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
-        .date(TEMP_DATE).recordType(RecordType.DAILY).names(new HashMap<>()).context(context).build();
+        .date(TEMP_DATE).recordType(RecordType.DAILY).names(new HashMap<>()).context(context)
+        .build();
 
     //when
     noteParserService.parseNoteAndSaveRecord(request);
@@ -137,14 +137,15 @@ class NoteParserServiceTest extends IntegrationTestSupport {
 
     //when
     NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
-        .names(new HashMap<>()).context(context).recordType(RecordType.DAILY).date(TEMP_DATE).build();
+        .names(new HashMap<>()).context(context).recordType(RecordType.DAILY).date(TEMP_DATE)
+        .build();
     NoteParserResponse response = noteParserService.parseNoteAndSaveRecord(request);
 
     //then
-    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_1,2);
-    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2,1);
-    assertThat(response.getNames()).containsEntry(PARSER_PEN_CODE_ID_1,2);
-    assertThat(response.getNames()).containsEntry(PARSER_BARN_CODE_ID_1,1);
+    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_1, 2);
+    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2, 1);
+    assertThat(response.getNames()).containsEntry(PARSER_PEN_CODE_ID_1, 2);
+    assertThat(response.getNames()).containsEntry(PARSER_BARN_CODE_ID_1, 1);
   }
 
   @DisplayName("',' 구분한 문자열을 입력받으면 각 regex에 해당되는 저장소에 저장된다.")
@@ -178,7 +179,8 @@ class NoteParserServiceTest extends IntegrationTestSupport {
 
     //when
     NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
-        .names(new HashMap<>()).context(context).date(TEMP_DATE).recordType(RecordType.DAILY).build();
+        .names(new HashMap<>()).context(context).date(TEMP_DATE).recordType(RecordType.DAILY)
+        .build();
     noteParserService.parseNoteAndSaveRecord(request);
 
     //then

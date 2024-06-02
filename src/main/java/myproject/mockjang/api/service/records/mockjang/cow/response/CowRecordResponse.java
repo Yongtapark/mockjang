@@ -5,12 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.cow.Cow;
-import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 import myproject.mockjang.domain.records.RecordType;
+import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 
 @Getter
 @NoArgsConstructor
 public class CowRecordResponse {
+
   private Long id;
   private Cow cow;
   private String memo;

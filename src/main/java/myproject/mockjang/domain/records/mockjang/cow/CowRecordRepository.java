@@ -14,7 +14,8 @@ public interface CowRecordRepository extends JpaRepository<CowRecord, Long> {
   List<CowRecord> findAllWhereDeletedTrue();
 
   @Query("SELECT cr FROM CowRecord cr WHERE cr.cow.codeId = :codeId AND cr.recordType = :recordType")
-  List<CowRecord> findAllByCow_CodeIdAndRecordType(@Param("codeId") String codeId, @Param("recordType") RecordType recordType);
+  List<CowRecord> findAllByCow_CodeIdAndRecordType(@Param("codeId") String codeId,
+      @Param("recordType") RecordType recordType);
 
 
 }

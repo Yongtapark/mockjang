@@ -186,7 +186,8 @@ class CowServiceTest extends IntegrationTestSupport {
         .gender(Gender.FEMALE)
         .build();
     // when //then
-    assertThatThrownBy(() -> cowService.createRaisingCow(request)).isInstanceOf(StringException.class)
+    assertThatThrownBy(() -> cowService.createRaisingCow(request)).isInstanceOf(
+            StringException.class)
         .hasMessage(COMMON_BLANK_STRING.getMessage());
   }
 
@@ -267,8 +268,8 @@ class CowServiceTest extends IntegrationTestSupport {
   @Test
   void findByCodeIdWithNoData() {
     //given //when //then
-    assertThatThrownBy(()->cowService.findByCodeId(PARSER_COW_CODE_ID_1)).isInstanceOf(
-        NotExistException.class)
+    assertThatThrownBy(() -> cowService.findByCodeId(PARSER_COW_CODE_ID_1)).isInstanceOf(
+            NotExistException.class)
         .hasMessage(COMMON_NOT_EXIST.formatMessage(PARSER_COW_CODE_ID_1));
   }
 

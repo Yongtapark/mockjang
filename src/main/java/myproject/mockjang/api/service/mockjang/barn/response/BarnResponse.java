@@ -9,6 +9,7 @@ import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
 
 @Getter
 public class BarnResponse {
+
   private Long id;
 
   private String codeId;

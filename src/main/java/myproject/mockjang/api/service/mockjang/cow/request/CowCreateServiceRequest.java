@@ -5,11 +5,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.mockjang.cow.Gender;
-import myproject.mockjang.domain.mockjang.pen.Pen;
 
 @Getter
 @NoArgsConstructor
 public class CowCreateServiceRequest {
+
   private String cowCode;
   private Gender gender;
   private String penCode;

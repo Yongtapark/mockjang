@@ -84,9 +84,9 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
     NoteParserResponse response = simpleNoteParserService.parseNoteAndSaveRecord(request);
 
     //then
-    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_1,2);
-    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2,1);
-    assertThat(response.getNames()).containsEntry(PARSER_PEN_CODE_ID_1,2);
-    assertThat(response.getNames()).containsEntry(PARSER_BARN_CODE_ID_1,1);
+    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_1, 2);
+    assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2, 1);
+    assertThat(response.getNames()).containsEntry(PARSER_PEN_CODE_ID_1, 2);
+    assertThat(response.getNames()).containsEntry(PARSER_BARN_CODE_ID_1, 1);
   }
 }

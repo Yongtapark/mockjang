@@ -4,8 +4,8 @@ import jakarta.annotation.Nullable;
 import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import myproject.mockjang.domain.feed.Feed;
+
 @Getter
 public class FeedCreateServiceRequest {
 

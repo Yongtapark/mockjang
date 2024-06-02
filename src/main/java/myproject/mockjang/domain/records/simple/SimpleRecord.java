@@ -22,35 +22,37 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE simple_record SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 public class SimpleRecord extends Records {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private String codeId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private boolean deleted = false;
+  private String codeId;
 
-    @Builder
-    private SimpleRecord(String codeId, boolean deleted, Long id) {
-        this.codeId = codeId;
-        this.deleted = deleted;
-        this.id = id;
+  private boolean deleted = false;
+
+  @Builder
+  private SimpleRecord(String codeId, boolean deleted, Long id) {
+    this.codeId = codeId;
+    this.deleted = deleted;
+    this.id = id;
+  }
+
+  public static SimpleRecord create(String codeId, RecordType recordType, LocalDateTime date,
+      String record) {
+    SimpleRecord simpleRecord = SimpleRecord.builder()
+        .codeId(codeId)
+        .build();
+    simpleRecord.registerDate(date);
+    simpleRecord.registerRecordType(recordType);
+    simpleRecord.registerRecord(record);
+    return simpleRecord;
+  }
+
+  public void recordsNullCheck(SimpleRecord simpleRecord) {
+    if (codeId == null || codeId.isBlank()) {
+      throw new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage("codeId"));
     }
-
-    public static SimpleRecord create(String codeId, RecordType recordType, LocalDateTime date, String record) {
-        SimpleRecord simpleRecord = SimpleRecord.builder()
-                .codeId(codeId)
-                .build();
-        simpleRecord.registerDate(date);
-        simpleRecord.registerRecordType(recordType);
-        simpleRecord.registerRecord(record);
-        return simpleRecord;
-    }
-
-    public void recordsNullCheck(SimpleRecord simpleRecord) {
-        if(codeId==null || codeId.isBlank()){
-            throw new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage("codeId"));
-        }
-        basicNullCheck(simpleRecord);
-    }
+    basicNullCheck(simpleRecord);
+  }
 }

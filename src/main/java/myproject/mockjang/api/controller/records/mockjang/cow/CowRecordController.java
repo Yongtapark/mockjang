@@ -40,7 +40,7 @@ public class CowRecordController {
 
   @GetMapping("/api/v0/records/cow/{codeId}/{recordType}")
   public ApiResponse<List<CowRecordResponse>> findAllByCodeIdWhereRecordType(
-     @Valid @PathVariable String codeId, @Valid @PathVariable RecordType recordType) {
+      @Valid @PathVariable String codeId, @Valid @PathVariable RecordType recordType) {
     return ApiResponse.ok(cowRecordService.findAllByCodeIdWhereRecordType(
         CowRecordFindAllByCodeIdAndRecordTypeRequest.builder().cowCode(codeId)
             .recordType(recordType).build()

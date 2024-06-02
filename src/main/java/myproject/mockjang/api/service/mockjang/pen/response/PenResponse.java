@@ -12,6 +12,7 @@ import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
 @Getter
 @NoArgsConstructor
 public class PenResponse {
+
   private Long id;
   private String codeId;
   private Barn barn;

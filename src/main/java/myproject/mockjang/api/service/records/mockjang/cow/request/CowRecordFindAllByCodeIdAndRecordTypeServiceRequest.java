@@ -13,7 +13,8 @@ public class CowRecordFindAllByCodeIdAndRecordTypeServiceRequest {
   private RecordType recordType;
 
   @Builder
-  private CowRecordFindAllByCodeIdAndRecordTypeServiceRequest(String cowCode, RecordType recordType) {
+  private CowRecordFindAllByCodeIdAndRecordTypeServiceRequest(String cowCode,
+      RecordType recordType) {
     this.cowCode = cowCode;
     this.recordType = recordType;
   }

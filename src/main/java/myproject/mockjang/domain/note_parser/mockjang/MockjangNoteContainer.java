@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import myproject.mockjang.domain.note_parser.NoteContainer;
-import myproject.mockjang.domain.note_parser.NoteParser;
 
 public class MockjangNoteContainer implements NoteContainer {
 

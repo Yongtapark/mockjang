@@ -10,32 +10,34 @@ import myproject.mockjang.domain.records.simple.SimpleRecord;
 @Getter
 @NoArgsConstructor
 public class SimpleRecordResponse {
-    private Long id;
 
-    private String codeId;
+  private Long id;
 
-    private RecordType recordType;
+  private String codeId;
 
-    private LocalDateTime date;
+  private RecordType recordType;
 
-    private String record;
+  private LocalDateTime date;
 
-    @Builder
-    private SimpleRecordResponse(String codeId, LocalDateTime date, Long id, String record, RecordType recordType) {
-        this.codeId = codeId;
-        this.date = date;
-        this.id = id;
-        this.record = record;
-        this.recordType = recordType;
-    }
+  private String record;
 
-    public static SimpleRecordResponse of(SimpleRecord simpleRecord) {
-        return SimpleRecordResponse.builder()
-                .id(simpleRecord.getId())
-                .codeId(simpleRecord.getCodeId())
-                .recordType(simpleRecord.getRecordType())
-                .date(simpleRecord.getDate())
-                .record(simpleRecord.getRecord())
-                .build();
-    }
+  @Builder
+  private SimpleRecordResponse(String codeId, LocalDateTime date, Long id, String record,
+      RecordType recordType) {
+    this.codeId = codeId;
+    this.date = date;
+    this.id = id;
+    this.record = record;
+    this.recordType = recordType;
+  }
+
+  public static SimpleRecordResponse of(SimpleRecord simpleRecord) {
+    return SimpleRecordResponse.builder()
+        .id(simpleRecord.getId())
+        .codeId(simpleRecord.getCodeId())
+        .recordType(simpleRecord.getRecordType())
+        .date(simpleRecord.getDate())
+        .record(simpleRecord.getRecord())
+        .build();
+  }
 }

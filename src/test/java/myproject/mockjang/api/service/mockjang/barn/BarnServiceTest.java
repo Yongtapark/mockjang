@@ -117,7 +117,7 @@ class BarnServiceTest extends IntegrationTestSupport {
 
     //then
     List<String> codeIdList = response.stream().map(BarnResponse::getCodeId).toList();
-    assertThat(codeIdList).isEqualTo(List.of(barn1.getCodeId(),barn2.getCodeId()));
+    assertThat(codeIdList).isEqualTo(List.of(barn1.getCodeId(), barn2.getCodeId()));
   }
 
   @DisplayName("축사를 단일 조회한다.")
@@ -138,7 +138,8 @@ class BarnServiceTest extends IntegrationTestSupport {
   @Test
   void findByCodeIdWithNoData() {
     //given //when //then
-    assertThatThrownBy(()->barnService.findByCodeId(PARSER_BARN_CODE_ID_1)).isInstanceOf(NotExistException.class)
+    assertThatThrownBy(() -> barnService.findByCodeId(PARSER_BARN_CODE_ID_1)).isInstanceOf(
+            NotExistException.class)
         .hasMessage(COMMON_NOT_EXIST.formatMessage(PARSER_BARN_CODE_ID_1));
   }
 }

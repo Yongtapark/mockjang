@@ -10,6 +10,7 @@ import myproject.mockjang.domain.mockjang.cow.Gender;
 
 @Getter
 public class CowCreateRequest {
+
   @NotBlank(message = "소 이름은 공백일 수 없습니다.")
   private String cowCode;
   @NotNull(message = "소 성별 공백일 수 없습니다.")

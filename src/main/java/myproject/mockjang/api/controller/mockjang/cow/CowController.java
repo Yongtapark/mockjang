@@ -20,17 +20,17 @@ public class CowController {
   private final CowService cowService;
 
   @PostMapping("/api/v0/cows/new")
-  public ApiResponse<CowResponse> create(@Valid @RequestBody CowCreateRequest request){
+  public ApiResponse<CowResponse> create(@Valid @RequestBody CowCreateRequest request) {
     return ApiResponse.ok(cowService.createRaisingCow(request.toServiceRequest()));
   }
 
   @GetMapping("/api/v0/cows")
-  public ApiResponse<List<CowResponse>> findAll(){
+  public ApiResponse<List<CowResponse>> findAll() {
     return ApiResponse.ok(cowService.findAll());
   }
 
   @GetMapping("/api/v0/cows/{codeId}")
-  public ApiResponse<CowResponse> findByCodeId(@PathVariable String codeId){
+  public ApiResponse<CowResponse> findByCodeId(@PathVariable String codeId) {
     return ApiResponse.ok(cowService.findByCodeId(codeId));
   }
 }

@@ -1,4 +1,4 @@
-package myproject.mockjang.api.controller.note_parser;
+package myproject.mockjang.api.controller.note_parser.mockjang;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -27,8 +27,7 @@ class NoteParserControllerTest extends ControllerTestSupport {
     names.put(PARSER_BARN_CODE_ID_1, 1);
     NoteParserResponse response = NoteParserResponse.builder().names(names).build();
 
-
-    String context = "[["+PARSER_BARN_CODE_ID_1+"]] "+PARSER_BARN_NOTE_1;
+    String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
     NoteParserCreateRequest request = NoteParserCreateRequest.builder()
         .context(context)
         .date(date)

@@ -9,6 +9,7 @@ import myproject.mockjang.domain.records.RecordType;
 @Getter
 @NoArgsConstructor
 public class CowRecordCreateServiceRequest {
+
   private String cowCode;
   private String memo;
   private LocalDateTime date;

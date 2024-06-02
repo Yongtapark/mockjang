@@ -12,6 +12,7 @@ import myproject.mockjang.domain.records.RecordType;
 @Getter
 @NoArgsConstructor
 public class CowRecordCreateRequest {
+
   @NotBlank(message = "소 이름은 공백일 수 없습니다.")
   private String cowCode;
   @NotNull(message = "기록 타입은 반드시 입력하셔야 합니다.")
@@ -30,7 +31,7 @@ public class CowRecordCreateRequest {
     this.memo = memo;
   }
 
-  public CowRecordCreateServiceRequest toServiceRequest(){
+  public CowRecordCreateServiceRequest toServiceRequest() {
     return CowRecordCreateServiceRequest.builder()
         .cowCode(cowCode)
         .recordType(recordType)

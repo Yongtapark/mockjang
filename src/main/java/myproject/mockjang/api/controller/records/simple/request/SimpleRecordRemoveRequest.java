@@ -9,6 +9,7 @@ import myproject.mockjang.api.service.records.simple.request.SimpleRecordRemoveS
 @Getter
 @NoArgsConstructor
 public class SimpleRecordRemoveRequest {
+
   @NotNull(message = "{exception.id.null}")
   private Long id;
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SimpleRecordRemoveServiceRequest {
+
   Long id;
 
   @Builder

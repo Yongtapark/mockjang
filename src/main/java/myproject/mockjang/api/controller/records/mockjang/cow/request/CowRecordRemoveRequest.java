@@ -9,6 +9,7 @@ import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordRemo
 @Getter
 @NoArgsConstructor
 public class CowRecordRemoveRequest {
+
   @NotNull(message = "고유번호를 찾을 수 없습니다.")
   private Long id;
 
@@ -17,7 +18,7 @@ public class CowRecordRemoveRequest {
     this.id = id;
   }
 
-  public CowRecordRemoveServiceRequest toServiceRequest(){
+  public CowRecordRemoveServiceRequest toServiceRequest() {
     return CowRecordRemoveServiceRequest.builder().id(id).build();
   }
 }

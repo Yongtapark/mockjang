@@ -1,8 +1,8 @@
 package myproject.mockjang.domain.mockjang.pen;
 
+import static myproject.mockjang.exception.Exceptions.COMMON_ALREADY_EXIST;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UNDER_GROUP;
 import static myproject.mockjang.exception.Exceptions.COMMON_NO_UPPER_GROUP;
-import static myproject.mockjang.exception.Exceptions.COMMON_ALREADY_EXIST;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

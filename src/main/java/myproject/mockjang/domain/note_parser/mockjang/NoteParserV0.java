@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 public class NoteParserV0 implements NoteParser<MockjangNoteContainer> {
 
   @Override
-  public MockjangNoteContainer extractAndSaveNotes(MockjangNoteContainer mockjangNoteContainer, String content) {
+  public MockjangNoteContainer extractAndSaveNotes(MockjangNoteContainer mockjangNoteContainer,
+      String content) {
     String[] split = content.split(System.lineSeparator());
     for (String eachContent : split) {
       Matcher extractIdAndNote = NoteRegex.getNoteFormMatcher(eachContent);
@@ -31,7 +32,8 @@ public class NoteParserV0 implements NoteParser<MockjangNoteContainer> {
     return mockjangNoteContainer;
   }
 
-  private void findEachRegexAndSaveNotes(MockjangNoteContainer mockjangNoteContainer, String ids, String[] idArray,
+  private void findEachRegexAndSaveNotes(MockjangNoteContainer mockjangNoteContainer, String ids,
+      String[] idArray,
       String note) {
     for (NoteRegex regex : NoteRegex.values()) {
       Matcher regexMatcher = regex.getCompile().matcher(ids);

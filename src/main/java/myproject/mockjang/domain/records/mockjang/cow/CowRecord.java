@@ -68,7 +68,7 @@ public class CowRecord extends Records {
   }
 
   private void emptyRelationCheck(CowRecord cowRecord) {
-    if (cowRecord.getBarn() == null ) {
+    if (cowRecord.getBarn() == null) {
       throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Barn.class));
     }
     if (cowRecord.getPen() == null) {

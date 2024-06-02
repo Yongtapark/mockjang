@@ -122,7 +122,7 @@ class BarnControllerTest extends ControllerTestSupport {
 
     //when //then
     when(barnService.findByCodeId(any())).thenReturn(response);
-    mockMvc.perform(get("/api/v0/barns/"+PARSER_BARN_CODE_ID_1))
+    mockMvc.perform(get("/api/v0/barns/" + PARSER_BARN_CODE_ID_1))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(status().isOk())

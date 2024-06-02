@@ -6,14 +6,15 @@ import lombok.Getter;
 
 @Getter
 public class SimpleNoteParserResponse {
-  private HashMap<String,Integer> names;
+
+  private HashMap<String, Integer> names;
 
   @Builder
-  private SimpleNoteParserResponse(HashMap<String,Integer> names) {
+  private SimpleNoteParserResponse(HashMap<String, Integer> names) {
     this.names = names;
   }
 
-  public static SimpleNoteParserResponse of(HashMap<String,Integer> names) {
+  public static SimpleNoteParserResponse of(HashMap<String, Integer> names) {
     return SimpleNoteParserResponse.builder()
         .names(names)
         .build();

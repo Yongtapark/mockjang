@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Transactional
 class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
+
   @Autowired
   private SimpleRecordQueryRepository simpleRecordQueryRepository;
   @Autowired
@@ -20,16 +21,20 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
   @Test
   void search() {
     //given
-    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
-    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
-    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH,
+        TEMP_DATE, MEMO_2);
+    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
 
     simpleRecordRepository.save(simpleRecord1);
     simpleRecordRepository.save(simpleRecord2);
     simpleRecordRepository.save(simpleRecord3);
 
     //when
-    List<SimpleRecord> search = simpleRecordQueryRepository.search(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+    List<SimpleRecord> search = simpleRecordQueryRepository.search(PARSER_COW_CODE_ID_1,
+        RecordType.DAILY,
         TEMP_DATE);
 
     //then
@@ -40,9 +45,12 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
   @Test
   void searchWithNoCodeId() {
     //given
-    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
-    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
-    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH,
+        TEMP_DATE, MEMO_2);
+    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
 
     simpleRecordRepository.save(simpleRecord1);
     simpleRecordRepository.save(simpleRecord2);
@@ -53,16 +61,19 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         TEMP_DATE);
 
     //then
-    Assertions.assertThat(search).containsExactly(simpleRecord1,simpleRecord3);
+    Assertions.assertThat(search).containsExactly(simpleRecord1, simpleRecord3);
   }
 
   @DisplayName("날짜를 통해 검색한다.")
   @Test
   void searchWithNoCodeIdNoRecordType() {
     //given
-    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
-    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
-    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH,
+        TEMP_DATE, MEMO_2);
+    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
 
     simpleRecordRepository.save(simpleRecord1);
     simpleRecordRepository.save(simpleRecord2);
@@ -76,16 +87,19 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         TEMP_DATE);
 
     //then
-    Assertions.assertThat(search).containsExactly(simpleRecord1,simpleRecord2,simpleRecord3);
+    Assertions.assertThat(search).containsExactly(simpleRecord1, simpleRecord2, simpleRecord3);
   }
 
   @DisplayName("조건없이 모두 검색한다.")
   @Test
   void searchWithNoCondition() {
     //given
-    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
-    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
-    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH,
+        TEMP_DATE, MEMO_2);
+    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
 
     simpleRecordRepository.save(simpleRecord1);
     simpleRecordRepository.save(simpleRecord2);
@@ -96,6 +110,6 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         null);
 
     //then
-    Assertions.assertThat(search).containsExactly(simpleRecord1,simpleRecord2,simpleRecord3);
+    Assertions.assertThat(search).containsExactly(simpleRecord1, simpleRecord2, simpleRecord3);
   }
 }

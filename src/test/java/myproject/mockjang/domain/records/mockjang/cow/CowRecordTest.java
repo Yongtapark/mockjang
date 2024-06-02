@@ -23,8 +23,8 @@ class CowRecordTest extends IntegrationTestSupport {
     cow.registerUpperGroup(pen);
     cow.registerBarn(barn);
 
-    CowRecord cowRecord1 = CowRecord.createRecord(cow, RecordType.DAILY,TEMP_DATE);
-    CowRecord cowRecord2 = CowRecord.createRecord(cow,RecordType.DAILY,TEMP_DATE);
+    CowRecord cowRecord1 = CowRecord.createRecord(cow, RecordType.DAILY, TEMP_DATE);
+    CowRecord cowRecord2 = CowRecord.createRecord(cow, RecordType.DAILY, TEMP_DATE);
     ;
 
     //when

@@ -20,17 +20,17 @@ public class PenController {
   private final PenService penService;
 
   @PostMapping("/api/v0/pens/new")
-  public ApiResponse<PenResponse> create(@Valid @RequestBody PenCreateRequest request){
+  public ApiResponse<PenResponse> create(@Valid @RequestBody PenCreateRequest request) {
     return ApiResponse.ok(penService.createPen(request.toServiceRequest()));
   }
 
   @GetMapping("/api/v0/pens")
-  public ApiResponse<List<PenResponse>> findAll(){
+  public ApiResponse<List<PenResponse>> findAll() {
     return ApiResponse.ok(penService.findAll());
   }
 
   @GetMapping("/api/v0/pens/{codeId}")
-  public ApiResponse<PenResponse> findByCodeId(@PathVariable String codeId){
+  public ApiResponse<PenResponse> findByCodeId(@PathVariable String codeId) {
     return ApiResponse.ok(penService.findByCodeId(codeId));
   }
 

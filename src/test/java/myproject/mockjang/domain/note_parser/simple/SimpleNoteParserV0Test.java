@@ -15,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Transactional
 class SimpleNoteParserV0Test extends IntegrationTestSupport {
+
   @Autowired
   private NoteParser<SimpleNoteContainer> noteParser;
+
   @DisplayName("문자열을 받아 codeAndId로 변환한다.")
   @Test
   void extractAndSaveNotes() {
@@ -93,7 +95,7 @@ class SimpleNoteParserV0Test extends IntegrationTestSupport {
     //then
     List<NoteAndCodeId> noteAndCodeIds = noteContainer.getImmutable();
 
-    assertThatThrownBy(() -> noteAndCodeIds.add(new NoteAndCodeId(null,null))).isInstanceOf(
+    assertThatThrownBy(() -> noteAndCodeIds.add(new NoteAndCodeId(null, null))).isInstanceOf(
         UnsupportedOperationException.class);
   }
 }
