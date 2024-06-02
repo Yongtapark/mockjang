@@ -18,8 +18,7 @@ public class SimpleNoteParserCreateServiceRequest {
 
   @Builder
   private SimpleNoteParserCreateServiceRequest(String context, LocalDateTime date,
-      RecordType recordType,
-      HashMap<String, Integer> names) {
+      RecordType recordType, HashMap<String, Integer> names) {
     this.context = context;
     this.date = date;
     this.recordType = recordType;

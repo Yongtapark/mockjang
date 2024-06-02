@@ -153,7 +153,6 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
         .codeId(PARSER_COW_CODE_ID_1)
         .recordType(RecordType.DAILY)
         .date(TEMP_DATE)
-        .record(MEMO_1)
         .build();
 
     //when //then

@@ -29,6 +29,6 @@ public class SimpleNoteParserCreateRequest {
   }
 
   public SimpleNoteParserCreateServiceRequest toServiceRequest(HashMap<String, Integer> names) {
-    return SimpleNoteParserCreateServiceRequest.builder().context(context).names(names).build();
+    return SimpleNoteParserCreateServiceRequest.builder().date(date).recordType(recordType).context(context).names(names).build();
   }
 }

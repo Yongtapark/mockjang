@@ -22,17 +22,12 @@ public class SimpleRecordSearchRequest {
   @NotNull(message = "{exception.date.null}")
   private LocalDateTime date;
 
-  @NotBlank(message = "{exception.record.blank}")
-  private String record;
-
 
   @Builder
-  private SimpleRecordSearchRequest(String codeId, RecordType recordType, LocalDateTime date,
-      String record) {
+  private SimpleRecordSearchRequest(String codeId, RecordType recordType, LocalDateTime date) {
     this.codeId = codeId;
     this.recordType = recordType;
     this.date = date;
-    this.record = record;
   }
 
   public SimpleRecordSearchServiceRequest toServiceRequest() {
