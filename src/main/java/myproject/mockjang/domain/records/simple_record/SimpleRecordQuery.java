@@ -19,10 +19,9 @@ public class SimpleRecordQuery {
     this.queryFactory = queryFactory;
   }
 
-  BooleanExpression predicate = simpleRecord.isNotNull();
-
-
   public List<SimpleRecord> search(String codeId, RecordType recordType, LocalDateTime date) {
+    BooleanExpression predicate = simpleRecord.isNotNull();
+
     if (codeId != null && !codeId.isEmpty()) {
       predicate = predicate.and(simpleRecord.codeId.like("%" + codeId + "%"));
     }
