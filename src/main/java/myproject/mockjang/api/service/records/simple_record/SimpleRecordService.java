@@ -8,6 +8,7 @@ import myproject.mockjang.api.service.records.simple_record.request.SimpleRecord
 import myproject.mockjang.api.service.records.simple_record.request.SimpleRecordSearchServiceRequest;
 import myproject.mockjang.api.service.records.simple_record.response.SimpleRecordResponse;
 import myproject.mockjang.domain.records.simple_record.SimpleRecord;
+import myproject.mockjang.domain.records.simple_record.SimpleRecordQuery;
 import myproject.mockjang.domain.records.simple_record.SimpleRecordRepository;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class SimpleRecordService {
 
   private final SimpleRecordRepository simpleRecordRepository;
+  private final SimpleRecordQuery simpleRecordQuery;
 
   public SimpleRecordResponse create(SimpleRecordCreateServiceRequest request) {
     SimpleRecord simpleRecord = SimpleRecord.create(request.getCodeId(), request.getRecordType(),
@@ -34,7 +36,7 @@ public class SimpleRecordService {
   }
 
   public List<SimpleRecordResponse> search(SimpleRecordSearchServiceRequest request) {
-    List<SimpleRecord> simpleRecords = simpleRecordRepository.search(request.getCodeId(),
+    List<SimpleRecord> simpleRecords = simpleRecordQuery.search(request.getCodeId(),
         request.getRecordType(),
         request.getDate());
     return simpleRecords.stream().map(SimpleRecordResponse::of).toList();

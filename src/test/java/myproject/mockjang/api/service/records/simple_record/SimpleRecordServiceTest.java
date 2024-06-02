@@ -95,7 +95,6 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
 
     @DisplayName("codeId,기록 타입, 기록날짜로 기록 전체 조회")
     @Test
-    @Disabled
     void searchWithNoCodeId() {
         //given
         SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
@@ -107,7 +106,7 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
         simpleRecordRepository.save(simpleRecord3);
 
         SimpleRecordSearchServiceRequest request = SimpleRecordSearchServiceRequest.builder()
-            .codeId("")
+            .codeId(null)
             .build();
 
         //when

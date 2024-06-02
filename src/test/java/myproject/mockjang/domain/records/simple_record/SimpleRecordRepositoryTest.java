@@ -34,42 +34,4 @@ class SimpleRecordRepositoryTest extends IntegrationTestSupport {
         Assertions.assertThat(simpleRecords).hasSize(2);
     }
 
-    @DisplayName("codeId,기록 타입, 기록날짜로 기록 전체 조회")
-    @Test
-    void search() {
-        //given
-        SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
-        SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
-
-        simpleRecordRepository.save(simpleRecord1);
-        simpleRecordRepository.save(simpleRecord2);
-        simpleRecordRepository.save(simpleRecord3);
-
-        //when
-        List<SimpleRecord> simpleRecords = simpleRecordRepository.search(PARSER_COW_CODE_ID_1,RecordType.DAILY,TEMP_DATE);
-
-        //then
-        Assertions.assertThat(simpleRecords).containsOnly(simpleRecord1);
-    }
-
-    @DisplayName("codeId,기록 타입, 기록날짜로 기록 전체 조회")
-    @Test
-    void searchWithPieceOfCodeId() {
-        //given
-        SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY, TEMP_DATE, MEMO_1);
-        SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH, TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY, TEMP_DATE, MEMO_1);
-
-        simpleRecordRepository.save(simpleRecord1);
-        simpleRecordRepository.save(simpleRecord2);
-        simpleRecordRepository.save(simpleRecord3);
-
-        //when
-        List<SimpleRecord> simpleRecords = simpleRecordRepository.search("00",RecordType.DAILY,TEMP_DATE);
-
-        //then
-        Assertions.assertThat(simpleRecords).containsOnly(simpleRecord1,simpleRecord3);
-    }
-
 }

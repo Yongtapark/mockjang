@@ -1,5 +1,6 @@
 package myproject.mockjang.domain.records.simple_record;
 
+import jakarta.transaction.Transactional;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.records.RecordType;
@@ -8,9 +9,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Transactional
 class SimpleRecordQueryTest extends IntegrationTestSupport {
   @Autowired
-  private SimpleRecordQuery recordQuery;
+  private SimpleRecordQuery simpleRecordQuery;
   @Autowired
   private SimpleRecordRepository simpleRecordRepository;
 
@@ -27,7 +29,7 @@ class SimpleRecordQueryTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord3);
 
     //when
-    List<SimpleRecord> search = recordQuery.search(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+    List<SimpleRecord> search = simpleRecordQuery.search(PARSER_COW_CODE_ID_1, RecordType.DAILY,
         TEMP_DATE);
 
     //then
@@ -47,7 +49,7 @@ class SimpleRecordQueryTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord3);
 
     //when
-    List<SimpleRecord> search = recordQuery.search(null, RecordType.DAILY,
+    List<SimpleRecord> search = simpleRecordQuery.search(null, RecordType.DAILY,
         TEMP_DATE);
 
     //then
@@ -66,8 +68,11 @@ class SimpleRecordQueryTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord2);
     simpleRecordRepository.save(simpleRecord3);
 
+    List<SimpleRecord> all = simpleRecordRepository.findAll();
+    System.out.println("all = " + all);
+
     //when
-    List<SimpleRecord> search = recordQuery.search(null, null,
+    List<SimpleRecord> search = simpleRecordQuery.search(null, null,
         TEMP_DATE);
 
     //then
@@ -87,7 +92,7 @@ class SimpleRecordQueryTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord3);
 
     //when
-    List<SimpleRecord> search = recordQuery.search(null, null,
+    List<SimpleRecord> search = simpleRecordQuery.search(null, null,
         null);
 
     //then
