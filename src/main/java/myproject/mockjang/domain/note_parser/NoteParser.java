@@ -1,9 +1,10 @@
 package myproject.mockjang.domain.note_parser;
 
-import org.springframework.stereotype.Component;
 
-public interface NoteParser {
+import myproject.mockjang.domain.note_parser.mockjang.MockjangNoteContainer;
 
-  NoteContainer extractAndSaveNotes(NoteContainer noteContainer, String content);
+public interface NoteParser<T extends NoteContainer> {
+
+  T extractAndSaveNotes(T noteContainer, String content);
 
 }

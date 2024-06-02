@@ -1,31 +1,20 @@
 package myproject.mockjang.api.controller.note_parser;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.Optional;
 import myproject.mockjang.ControllerTestSupport;
-import myproject.mockjang.api.controller.note_parser.request.NoteParserCreateRequest;
-import myproject.mockjang.api.service.note_parser.NoteParserService;
-import myproject.mockjang.api.service.note_parser.request.NoteParserCreateServiceRequest;
-import myproject.mockjang.api.service.note_parser.response.NoteParserResponse;
-import myproject.mockjang.domain.mockjang.barn.Barn;
-import myproject.mockjang.domain.mockjang.barn.BarnRepository;
+import myproject.mockjang.api.controller.note_parser.mockjang.request.NoteParserCreateRequest;
+import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
 import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 
 class NoteParserControllerTest extends ControllerTestSupport {
 
