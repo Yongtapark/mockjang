@@ -33,7 +33,7 @@ public class SimpleRecordController {
   }
 
   @PostMapping("/api/v0/records/simple")
-  public ApiResponse<List<SimpleRecordResponse>> search(SimpleRecordSearchRequest request) {
+  public ApiResponse<List<SimpleRecordResponse>> search(@Valid @RequestBody SimpleRecordSearchRequest request) {
     return ApiResponse.ok(simpleRecordService.search(request.toServiceRequest()));
   }
 
