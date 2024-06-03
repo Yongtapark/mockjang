@@ -29,10 +29,7 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
   void create() {
     //given
     SimpleRecordCreateServiceRequest request = SimpleRecordCreateServiceRequest.builder()
-        .codeId(PARSER_COW_CODE_ID_1)
-        .recordType(RecordType.DAILY)
-        .date(TEMP_DATE)
-        .record(MEMO_1)
+        .codeId(PARSER_COW_CODE_ID_1).recordType(RecordType.DAILY).date(TEMP_DATE).record(MEMO_1)
         .build();
     //when
     SimpleRecordResponse response = simpleRecordService.create(request);
@@ -86,10 +83,7 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord3);
 
     SimpleRecordSearchServiceRequest request = SimpleRecordSearchServiceRequest.builder()
-        .codeId("00")
-        .recordType(RecordType.DAILY)
-        .date(TEMP_DATE)
-        .build();
+        .codeId("00").recordType(RecordType.DAILY).date(TEMP_DATE).build();
 
     //when
     List<SimpleRecordResponse> searches = simpleRecordService.search(request);
@@ -116,8 +110,7 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord3);
 
     SimpleRecordSearchServiceRequest request = SimpleRecordSearchServiceRequest.builder()
-        .codeId(null)
-        .build();
+        .codeId(null).build();
 
     //when
     List<SimpleRecordResponse> searches = simpleRecordService.search(request);
@@ -126,6 +119,32 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
     List<Long> simpleRecordsIds = searches.stream().map(SimpleRecordResponse::getId).toList();
     Assertions.assertThat(simpleRecordsIds)
         .containsExactly(simpleRecord1.getId(), simpleRecord2.getId(), simpleRecord3.getId());
+  }
+
+  @DisplayName("codeId,기록 타입, 기록날짜로 기록 전체 조회")
+  @Test
+  void searchWithWrongCodeId() {
+    //given
+    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH,
+        TEMP_DATE, MEMO_2);
+    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+
+    simpleRecordRepository.save(simpleRecord1);
+    simpleRecordRepository.save(simpleRecord2);
+    simpleRecordRepository.save(simpleRecord3);
+
+    SimpleRecordSearchServiceRequest request = SimpleRecordSearchServiceRequest.builder()
+        .codeId("test").recordType(null).date(null).build();
+
+    //when
+    List<SimpleRecordResponse> searches = simpleRecordService.search(request);
+
+    //then
+    List<Long> simpleRecordsIds = searches.stream().map(SimpleRecordResponse::getId).toList();
+    Assertions.assertThat(simpleRecordsIds).isEmpty();
   }
 
   @DisplayName("고유번호를 통해 기록을 제거한다.")
@@ -150,8 +169,7 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
     simpleRecordService.remove(request);
 
     //then
-    List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(
-        PARSER_COW_CODE_ID_1);
+    List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(PARSER_COW_CODE_ID_1);
     List<Long> ids = simpleRecords.stream().map(SimpleRecord::getId).toList();
     Assertions.assertThat(ids).containsExactly(simpleRecord1.getId(), simpleRecord2.getId());
   }
