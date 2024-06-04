@@ -18,7 +18,10 @@ import myproject.mockjang.api.service.records.simple.SimpleRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.data.jpa.util.JpaMetamodel;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 
 @WebMvcTest(controllers = {
@@ -30,6 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
     SimpleRecordController.class,
     SimpleNoteParserController.class
 })
+@MockBean(JpaMetamodelMappingContext.class)
 public abstract class ControllerTestSupport extends TestConstants {
 
   @Autowired

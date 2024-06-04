@@ -8,6 +8,7 @@ import jakarta.persistence.OneToMany;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -74,6 +75,34 @@ public class Feed {
     this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
     this.expectedDepletionDate = expectedDepletionDate;
     this.usageStatus = usageStatus;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Feed feed = (Feed) o;
+    return deleted == feed.deleted && Objects.equals(id, feed.id)
+        && Objects.equals(codeId, feed.codeId) && Objects.equals(name, feed.name)
+        && Objects.equals(storeDate, feed.storeDate) && Objects.equals(
+        expirationDate, feed.expirationDate) && Objects.equals(expectedDepletionDate,
+        feed.expectedDepletionDate) && Objects.equals(stock, feed.stock)
+        && Objects.equals(amountPerStock, feed.amountPerStock) && Objects.equals(
+        amount, feed.amount) && Objects.equals(description, feed.description)
+        && Objects.equals(dailyConsumption, feed.dailyConsumption)
+        && usageStatus == feed.usageStatus && Objects.equals(feedConsumptions,
+        feed.feedConsumptions);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, codeId, name, storeDate, expirationDate, expectedDepletionDate, stock,
+        amountPerStock, amount, description, dailyConsumption, usageStatus, deleted,
+        feedConsumptions);
   }
 
   public static Feed createFeed(String codeId, String name, Integer stock, Double amountPerStock,

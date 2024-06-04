@@ -37,6 +37,11 @@ public class SimpleRecordController {
     return ApiResponse.ok(simpleRecordService.search(request.toServiceRequest()));
   }
 
+  @GetMapping("/api/v0/records/simple/codeids")
+  public ApiResponse<List<String>> findAllCodeIdWithDistinct() {
+    return ApiResponse.ok(simpleRecordService.findAllCodeIdWithDistinct());
+  }
+
   @PostMapping("/api/v0/records/simple/remove")
   public ApiResponse<SimpleRecordResponse> remove(
       @Valid @RequestBody SimpleRecordRemoveRequest request) {

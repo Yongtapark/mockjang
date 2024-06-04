@@ -36,6 +36,10 @@ public class SimpleRecordService {
     return simpleRecords.stream().map(SimpleRecordResponse::of).toList();
   }
 
+  public List<String> findAllCodeIdWithDistinct() {
+   return simpleRecordQueryRepository.distinctCodeIds();
+  }
+
   public List<SimpleRecordResponse> search(SimpleRecordSearchServiceRequest request) {
     List<SimpleRecord> simpleRecords = simpleRecordQueryRepository.search(request.getCodeId(),
         request.getRecordType(),

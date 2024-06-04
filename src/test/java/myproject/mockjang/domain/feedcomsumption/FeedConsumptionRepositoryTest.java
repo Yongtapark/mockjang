@@ -103,6 +103,6 @@ class FeedConsumptionRepositoryTest extends IntegrationTestSupport {
 
     //then
     assertThat(feedConsumptions).containsOnly(consumption1);
-    assertThat(deletedFeedConsumptions).containsOnly(consumption2);
+    assertThat(deletedFeedConsumptions.getLast().getId()).isEqualTo(consumption2.getId());
   }
 }

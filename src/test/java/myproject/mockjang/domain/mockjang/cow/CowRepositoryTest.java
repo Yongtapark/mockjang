@@ -157,6 +157,6 @@ class CowRepositoryTest extends IntegrationTestSupport {
     //then
     List<Cow> deletedCow = cowRepository.findAllWhereDeletedTrue();
     assertThat(deletedCow).hasSize(1);
-    assertThat(deletedCow).containsOnly(cow2);
+    assertThat(deletedCow.getLast().getId()).isEqualTo(cow2.getId());
   }
 }

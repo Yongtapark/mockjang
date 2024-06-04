@@ -1,5 +1,6 @@
 package myproject.mockjang.api.controller.records.simple;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -158,6 +159,19 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
     //when //then
     mockMvc.perform(post("/api/v0/records/simple")
             .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.code").value("200"))
+        .andExpect(jsonPath("$.status").value("OK"))
+        .andExpect(jsonPath("$.message").value("OK"));
+  }
+
+  @DisplayName("코드 id 이름들을 조회한다.")
+  @Test
+  void findAllCodeIdWithDistinct() throws Exception {
+    //given//when //then
+    mockMvc.perform(get("/api/v0/records/simple/codeids")
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())

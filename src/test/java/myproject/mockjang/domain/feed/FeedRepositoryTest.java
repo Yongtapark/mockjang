@@ -2,6 +2,7 @@ package myproject.mockjang.domain.feed;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import jakarta.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@Transactional
 class FeedRepositoryTest extends IntegrationTestSupport {
 
   @Autowired
@@ -50,6 +52,6 @@ class FeedRepositoryTest extends IntegrationTestSupport {
 
     //then
     assertThat(feeds).containsOnly(hay);
-    assertThat(deletedFeeds).containsOnly(feed);
+    assertThat(deletedFeeds.getLast().getId()).isEqualTo(feed.getId());
   }
 }

@@ -1,10 +1,11 @@
 package myproject.mockjang.domain.records.simple;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import jakarta.transaction.Transactional;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.records.RecordType;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         TEMP_DATE);
 
     //then
-    Assertions.assertThat(search).containsOnly(simpleRecord1);
+    assertThat(search).containsOnly(simpleRecord1);
   }
 
   @DisplayName("기록타입, 날짜를 통해 검색한다.")
@@ -61,7 +62,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         TEMP_DATE);
 
     //then
-    Assertions.assertThat(search).containsExactly(simpleRecord1, simpleRecord3);
+    assertThat(search).containsExactly(simpleRecord1, simpleRecord3);
   }
 
   @DisplayName("날짜를 통해 검색한다.")
@@ -87,7 +88,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         TEMP_DATE);
 
     //then
-    Assertions.assertThat(search).containsExactly(simpleRecord1, simpleRecord2, simpleRecord3);
+    assertThat(search).containsExactly(simpleRecord1, simpleRecord2, simpleRecord3);
   }
 
   @DisplayName("조건없이 모두 검색한다.")
@@ -110,6 +111,35 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         null);
 
     //then
-    Assertions.assertThat(search).containsExactly(simpleRecord1, simpleRecord2, simpleRecord3);
+    assertThat(search).containsExactly(simpleRecord1, simpleRecord2, simpleRecord3);
+  }
+
+  @DisplayName("자동완성")
+  @Test
+  void test() {
+    //given
+    SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH,
+        TEMP_DATE, MEMO_2);
+    SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord4 = SimpleRecord.create(PARSER_BARN_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord simpleRecord5 = SimpleRecord.create(PARSER_BARN_CODE_ID_2, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+
+    simpleRecordRepository.save(simpleRecord1);
+    simpleRecordRepository.save(simpleRecord2);
+    simpleRecordRepository.save(simpleRecord3);
+    simpleRecordRepository.save(simpleRecord4);
+    simpleRecordRepository.save(simpleRecord5);
+
+    //when
+    List<String> strings = simpleRecordQueryRepository.distinctCodeIds();
+
+    //then
+    assertThat(strings).containsExactly(PARSER_COW_CODE_ID_1, PARSER_COW_CODE_ID_2,
+        PARSER_BARN_CODE_ID_1, PARSER_BARN_CODE_ID_2);
   }
 }
