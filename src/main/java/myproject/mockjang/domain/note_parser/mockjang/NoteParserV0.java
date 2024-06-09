@@ -43,13 +43,13 @@ public class NoteParserV0 implements NoteParser<MockjangNoteContainer> {
 
   private void saveIfRegexMatch(MockjangNoteContainer mockjangNoteContainer, String[] idArray,
       String note, NoteRegex regex, Matcher regexMatcher) {
-    ArrayList<NoteAndCodeId> noteAndCodeIds = new ArrayList<>();
+    ArrayList<RecordAndCodeId> recordAndCodeIds = new ArrayList<>();
     if (regexMatcher.matches()) {
       for (int i = 0; i < idArray.length; i++) {
-        noteAndCodeIds.add(new NoteAndCodeId(idArray[i], note));
+        recordAndCodeIds.add(new RecordAndCodeId(idArray[i], note));
         idArray[i] = null;
       }
-      mockjangNoteContainer.putNotes(regex, noteAndCodeIds);
+      mockjangNoteContainer.putNotes(regex, recordAndCodeIds);
     }
   }
 

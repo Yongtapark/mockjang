@@ -116,7 +116,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
 
   @DisplayName("자동완성")
   @Test
-  void test() {
+  void distinctCodeIds() {
     //given
     SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
         TEMP_DATE, MEMO_1);

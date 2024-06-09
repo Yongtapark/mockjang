@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.note_parser.NoteParser;
-import myproject.mockjang.domain.note_parser.mockjang.NoteAndCodeId;
+import myproject.mockjang.domain.note_parser.mockjang.RecordAndCodeId;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,30 +17,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 class SimpleNoteParserV0Test extends IntegrationTestSupport {
 
   @Autowired
-  private NoteParser<SimpleNoteContainer> noteParser;
+  private NoteParser<SimpleRecordContainer> noteParser;
 
   @DisplayName("문자열을 받아 codeAndId로 변환한다.")
   @Test
   void extractAndSaveNotes() {
     //given
-    SimpleNoteContainer noteContainer = new SimpleNoteContainer();
+    SimpleRecordContainer noteContainer = new SimpleRecordContainer();
 
     //when
     noteContainer = noteParser.extractAndSaveNotes(noteContainer,
         "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1);
 
     //then
-    List<NoteAndCodeId> noteAndCodeIds = noteContainer.getImmutable();
-    NoteAndCodeId noteAndCodeId = noteAndCodeIds.get(0);
-    Assertions.assertThat(PARSER_BARN_CODE_ID_1).isEqualTo(noteAndCodeId.codeId());
-    Assertions.assertThat(PARSER_BARN_NOTE_1).isEqualTo(noteAndCodeId.note());
+    List<RecordAndCodeId> recordAndCodeIds = noteContainer.getNotes();
+    RecordAndCodeId recordAndCodeId = recordAndCodeIds.get(0);
+    Assertions.assertThat(PARSER_BARN_CODE_ID_1).isEqualTo(recordAndCodeId.codeId());
+    Assertions.assertThat(PARSER_BARN_NOTE_1).isEqualTo(recordAndCodeId.record());
   }
 
   @Test
   @DisplayName("엔터로 구분하여 동일한 그룹의 여러 codeId와 노트를 저장한다.")
   void extractAndSaveNoteWithEnterSameGroup() {
     //given
-    SimpleNoteContainer noteContainer = new SimpleNoteContainer();
+    SimpleRecordContainer noteContainer = new SimpleRecordContainer();
 
     //when
     noteContainer = noteParser.extractAndSaveNotes(noteContainer,
@@ -48,21 +48,21 @@ class SimpleNoteParserV0Test extends IntegrationTestSupport {
             "[[" + PARSER_BARN_CODE_ID_2 + "]] " + PARSER_BARN_NOTE_2);
 
     //then
-    List<NoteAndCodeId> noteAndCodeIds = noteContainer.getImmutable();
-    NoteAndCodeId noteAndCodeId1 = noteAndCodeIds.get(0);
-    NoteAndCodeId noteAndCodeId2 = noteAndCodeIds.get(1);
+    List<RecordAndCodeId> recordAndCodeIds = noteContainer.getNotes();
+    RecordAndCodeId recordAndCodeId1 = recordAndCodeIds.get(0);
+    RecordAndCodeId recordAndCodeId2 = recordAndCodeIds.get(1);
 
-    assertThat(noteAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
-    assertThat(noteAndCodeId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
-    assertThat(noteAndCodeId2.codeId()).isEqualTo(PARSER_BARN_CODE_ID_2);
-    assertThat(noteAndCodeId2.note()).isEqualTo(PARSER_BARN_NOTE_2);
+    assertThat(recordAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    assertThat(recordAndCodeId1.record()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(recordAndCodeId2.codeId()).isEqualTo(PARSER_BARN_CODE_ID_2);
+    assertThat(recordAndCodeId2.record()).isEqualTo(PARSER_BARN_NOTE_2);
   }
 
   @Test
   @DisplayName("엔터로 구분하여 다른 그룹의 여러 codeId와 노트를 저장한다.")
   void extractAndSaveNoteWithEnterDifferentGroup() {
     //given
-    SimpleNoteContainer mockjangNoteContainer = new SimpleNoteContainer();
+    SimpleRecordContainer mockjangNoteContainer = new SimpleRecordContainer();
 
     //when
     mockjangNoteContainer = noteParser.extractAndSaveNotes(mockjangNoteContainer,
@@ -70,22 +70,22 @@ class SimpleNoteParserV0Test extends IntegrationTestSupport {
             "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
-    List<NoteAndCodeId> noteAndCodeIds = mockjangNoteContainer.getImmutable();
-    NoteAndCodeId noteAndCodeId1 = noteAndCodeIds.get(0);
-    NoteAndCodeId noteAndCodeId2 = noteAndCodeIds.get(1);
+    List<RecordAndCodeId> recordAndCodeIds = mockjangNoteContainer.getNotes();
+    RecordAndCodeId recordAndCodeId1 = recordAndCodeIds.get(0);
+    RecordAndCodeId recordAndCodeId2 = recordAndCodeIds.get(1);
 
-    assertThat(noteAndCodeIds).hasSize(2);
-    assertThat(noteAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
-    assertThat(noteAndCodeId1.note()).isEqualTo(PARSER_BARN_NOTE_1);
-    assertThat(noteAndCodeId2.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
-    assertThat(noteAndCodeId2.note()).isEqualTo(PARSER_COW_NOTE_1);
+    assertThat(recordAndCodeIds).hasSize(2);
+    assertThat(recordAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    assertThat(recordAndCodeId1.record()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(recordAndCodeId2.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
+    assertThat(recordAndCodeId2.record()).isEqualTo(PARSER_COW_NOTE_1);
   }
 
   @Test
   @DisplayName("NoteContainer 리스트를 조작하면 예외를 발생시킨다.")
   void extractAndSaveNoteWithModificationNoteContainer() {
     //given
-    SimpleNoteContainer noteContainer = new SimpleNoteContainer();
+    SimpleRecordContainer noteContainer = new SimpleRecordContainer();
 
     //when
     noteContainer = noteParser.extractAndSaveNotes(noteContainer,
@@ -93,9 +93,9 @@ class SimpleNoteParserV0Test extends IntegrationTestSupport {
             "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
 
     //then
-    List<NoteAndCodeId> noteAndCodeIds = noteContainer.getImmutable();
+    List<RecordAndCodeId> recordAndCodeIds = noteContainer.getNotes();
 
-    assertThatThrownBy(() -> noteAndCodeIds.add(new NoteAndCodeId(null, null))).isInstanceOf(
+    assertThatThrownBy(() -> recordAndCodeIds.add(new RecordAndCodeId(null, null))).isInstanceOf(
         UnsupportedOperationException.class);
   }
 }

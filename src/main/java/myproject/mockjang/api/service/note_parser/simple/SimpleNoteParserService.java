@@ -2,14 +2,16 @@ package myproject.mockjang.api.service.note_parser.simple;
 
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
 import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserCreateServiceRequest;
+import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserUploadTempDataServiceRequest;
 import myproject.mockjang.domain.note_parser.NoteParser;
-import myproject.mockjang.domain.note_parser.mockjang.NoteAndCodeId;
-import myproject.mockjang.domain.note_parser.simple.SimpleNoteContainer;
+import myproject.mockjang.domain.note_parser.mockjang.RecordAndCodeId;
+import myproject.mockjang.domain.note_parser.simple.SimpleRecordContainer;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.simple.SimpleRecord;
 import myproject.mockjang.domain.records.simple.SimpleRecordRepository;
@@ -21,7 +23,7 @@ import org.springframework.stereotype.Service;
 public class SimpleNoteParserService {
 
   private final SimpleRecordRepository simpleRecordRepository;
-  private final NoteParser<SimpleNoteContainer> simpleNoteParserV0;
+  private final NoteParser<SimpleRecordContainer> simpleNoteParserV0;
 
   public NoteParserResponse parseNoteAndSaveRecord(SimpleNoteParserCreateServiceRequest request) {
     String context = request.getContext();
@@ -29,23 +31,37 @@ public class SimpleNoteParserService {
     RecordType recordType = request.getRecordType();
     HashMap<String, Integer> names = request.getNames();
 
-    List<NoteAndCodeId> noteAndCodeIds = parseNote(context);
+    List<RecordAndCodeId> recordAndCodeIds = parseNote(context);
 
-    for (NoteAndCodeId noteAndCodeId : noteAndCodeIds) {
-      names.merge(noteAndCodeId.codeId(), 1, Integer::sum);
-      String codeId = noteAndCodeId.codeId();
-      String note = noteAndCodeId.note();
+    for (RecordAndCodeId recordAndCodeId : recordAndCodeIds) {
+      names.merge(recordAndCodeId.codeId(), 1, Integer::sum);
+      String codeId = recordAndCodeId.codeId();
+      String note = recordAndCodeId.record();
       simpleRecordRepository.save(SimpleRecord.create(codeId, recordType, date, note));
     }
 
     return NoteParserResponse.of(names);
   }
 
-  private List<NoteAndCodeId> parseNote(String context) {
-    SimpleNoteContainer simpleNoteContainer = new SimpleNoteContainer();
-    SimpleNoteContainer container = simpleNoteParserV0.extractAndSaveNotes(
-        simpleNoteContainer, context);
-    return container.getImmutable();
+  private List<RecordAndCodeId> parseNote(String context) {
+    SimpleRecordContainer simpleRecordContainer = new SimpleRecordContainer();
+    SimpleRecordContainer container = simpleNoteParserV0.extractAndSaveNotes(
+            simpleRecordContainer, context);
+    return container.getNotes();
+  }
+
+  public void uploadTempRecords(SimpleNoteParserUploadTempDataServiceRequest request) {
+    SimpleRecordContainer simpleRecordContainer = request.getSimpleRecordContainer();
+    List<RecordAndCodeId> immutable = simpleRecordContainer.getNotes();
+    ArrayList<SimpleRecord> simpleRecords = new ArrayList<>();
+    for (RecordAndCodeId recordAndCodeId : immutable) {
+      String codeId = recordAndCodeId.codeId();
+      String note = recordAndCodeId.record();
+      SimpleRecord simpleRecord = SimpleRecord.create(codeId, simpleRecordContainer.getRecordType(),
+              simpleRecordContainer.getDate(), note);
+      simpleRecords.add(simpleRecord);
+    }
+    simpleRecordRepository.saveAll(simpleRecords);
   }
 
 }

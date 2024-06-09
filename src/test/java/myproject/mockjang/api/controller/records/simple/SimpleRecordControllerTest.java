@@ -1,5 +1,6 @@
 package myproject.mockjang.api.controller.records.simple;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -131,13 +132,9 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
   @Test
   void remove() throws Exception {
     //given
-    SimpleRecordRemoveRequest request = SimpleRecordRemoveRequest.builder()
-        .id(1L)
-        .build();
 
     //when //then
-    mockMvc.perform(post("/api/v0/records/simple/remove")
-            .content(objectMapper.writeValueAsString(request))
+    mockMvc.perform(delete("/api/v0/records/simple/"+1L)
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())

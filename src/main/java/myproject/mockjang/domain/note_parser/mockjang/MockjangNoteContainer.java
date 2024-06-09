@@ -8,32 +8,32 @@ import myproject.mockjang.domain.note_parser.NoteContainer;
 
 public class MockjangNoteContainer implements NoteContainer {
 
-  private final HashMap<NoteRegex, List<NoteAndCodeId>> container;
+  private final HashMap<NoteRegex, List<RecordAndCodeId>> container;
 
   public MockjangNoteContainer() {
     this.container = new HashMap<>();
   }
 
-  public void putNotes(NoteRegex regex, List<NoteAndCodeId> noteAndCodeIds) {
+  public void putNotes(NoteRegex regex, List<RecordAndCodeId> recordAndCodeIds) {
     if (container.containsKey(regex)) {
-      List<NoteAndCodeId> currentNoteAndCodeIds = container.get(regex);
-      currentNoteAndCodeIds.addAll(noteAndCodeIds);
+      List<RecordAndCodeId> currentRecordAndCodeIds = container.get(regex);
+      currentRecordAndCodeIds.addAll(recordAndCodeIds);
       return;
     }
-    container.put(regex, noteAndCodeIds);
+    container.put(regex, recordAndCodeIds);
   }
 
-  public List<NoteAndCodeId> getNotes(NoteRegex regex) {
+  public List<RecordAndCodeId> getNotes(NoteRegex regex) {
     return container.get(regex);
   }
 
-  public Collection<List<NoteAndCodeId>> values() {
+  public Collection<List<RecordAndCodeId>> values() {
     return container.values();
   }
 
-  public Map<NoteRegex, List<NoteAndCodeId>> getImmutableMap() {
-    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = new HashMap<>();
-    for (Map.Entry<NoteRegex, List<NoteAndCodeId>> entry : container.entrySet()) {
+  public Map<NoteRegex, List<RecordAndCodeId>> getImmutableMap() {
+    Map<NoteRegex, List<RecordAndCodeId>> immutableMap = new HashMap<>();
+    for (Map.Entry<NoteRegex, List<RecordAndCodeId>> entry : container.entrySet()) {
       immutableMap.put(entry.getKey(), List.copyOf(entry.getValue()));
     }
     return Map.copyOf(immutableMap);

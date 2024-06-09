@@ -162,11 +162,9 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord2);
     simpleRecordRepository.save(simpleRecord3);
 
-    SimpleRecordRemoveServiceRequest request = SimpleRecordRemoveServiceRequest.builder()
-        .id(simpleRecord3.getId()).build();
 
     //when
-    simpleRecordService.remove(request);
+    simpleRecordService.remove(simpleRecord3.getId());
 
     //then
     List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(PARSER_COW_CODE_ID_1);

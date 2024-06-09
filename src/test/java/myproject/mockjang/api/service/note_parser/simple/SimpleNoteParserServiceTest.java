@@ -7,6 +7,9 @@ import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
 import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserCreateServiceRequest;
+import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserUploadTempDataServiceRequest;
+import myproject.mockjang.domain.note_parser.mockjang.RecordAndCodeId;
+import myproject.mockjang.domain.note_parser.simple.SimpleRecordContainer;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.simple.SimpleRecord;
 import myproject.mockjang.domain.records.simple.SimpleRecordRepository;
@@ -88,5 +91,27 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
     assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2, 1);
     assertThat(response.getNames()).containsEntry(PARSER_PEN_CODE_ID_1, 2);
     assertThat(response.getNames()).containsEntry(PARSER_BARN_CODE_ID_1, 1);
+  }
+
+  @DisplayName("임시로 저장된 기록 목록을 db에 저장한다.")
+  @Test
+  void uploadTempContents() {
+    //given
+    RecordAndCodeId recordAndCodeId1 = new RecordAndCodeId(PARSER_COW_CODE_ID_1, PARSER_COW_NOTE_1);
+    RecordAndCodeId recordAndCodeId2 = new RecordAndCodeId(PARSER_COW_CODE_ID_2, PARSER_COW_NOTE_2);
+    SimpleRecordContainer simpleRecordContainer = SimpleRecordContainer.builder().notes(List.of(recordAndCodeId1,
+            recordAndCodeId2)).recordType(RecordType.DAILY).date(TEMP_DATE).build();
+
+    SimpleNoteParserUploadTempDataServiceRequest request = SimpleNoteParserUploadTempDataServiceRequest.builder()
+            .simpleRecordContainer(simpleRecordContainer).build();
+    //when
+    simpleNoteParserService.uploadTempRecords(request);
+
+    //then
+    List<SimpleRecord> simpleRecords = simpleRecordRepository.findAll();
+    assertThat(simpleRecords.getFirst().getCodeId()).isEqualTo(recordAndCodeId1.codeId());
+    assertThat(simpleRecords.getFirst().getRecord()).isEqualTo(recordAndCodeId1.record());
+    assertThat(simpleRecords.getLast().getCodeId()).isEqualTo(recordAndCodeId2.codeId());
+    assertThat(simpleRecords.getLast().getRecord()).isEqualTo(recordAndCodeId2.record());
   }
 }

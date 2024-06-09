@@ -22,7 +22,7 @@ import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.mockjang.pen.PenRepository;
 import myproject.mockjang.domain.note_parser.NoteParser;
 import myproject.mockjang.domain.note_parser.mockjang.MockjangNoteContainer;
-import myproject.mockjang.domain.note_parser.mockjang.NoteAndCodeId;
+import myproject.mockjang.domain.note_parser.mockjang.RecordAndCodeId;
 import myproject.mockjang.domain.note_parser.mockjang.NoteRegex;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
@@ -53,7 +53,7 @@ public class NoteParserService {
     LocalDateTime date = request.getDate();
     RecordType recordType = request.getRecordType();
     HashMap<String, Integer> names = request.getNames();
-    Map<NoteRegex, List<NoteAndCodeId>> immutableMap = parseNote(context);
+    Map<NoteRegex, List<RecordAndCodeId>> immutableMap = parseNote(context);
     NoteRegex[] regexes = values();
     for (NoteRegex regex : regexes) {
       if (regex.equals(BARN) && immutableMap.containsKey(regex)) {
@@ -69,50 +69,50 @@ public class NoteParserService {
     return NoteParserResponse.of(names);
   }
 
-  private void saveCowRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap,
+  private void saveCowRecord(NoteRegex regex, Map<NoteRegex, List<RecordAndCodeId>> immutableMap,
       HashMap<String, Integer> names, LocalDateTime date, RecordType recordType) {
-    List<NoteAndCodeId> noteAndCodeIds;
-    noteAndCodeIds = immutableMap.get(regex);
-    for (NoteAndCodeId noteAndCodeId : noteAndCodeIds) {
-      names.merge(noteAndCodeId.codeId(), 1, Integer::sum);
-      Cow findCow = cowRepository.findByCodeId(noteAndCodeId.codeId())
-          .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, noteAndCodeId.codeId()));
+    List<RecordAndCodeId> recordAndCodeIds;
+    recordAndCodeIds = immutableMap.get(regex);
+    for (RecordAndCodeId recordAndCodeId : recordAndCodeIds) {
+      names.merge(recordAndCodeId.codeId(), 1, Integer::sum);
+      Cow findCow = cowRepository.findByCodeId(recordAndCodeId.codeId())
+          .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, recordAndCodeId.codeId()));
       CowRecord cowRecord = CowRecord.createRecord(findCow, recordType, date);
-      cowRecord.recordMemo(noteAndCodeId.note());
+      cowRecord.recordMemo(recordAndCodeId.record());
       cowRecordRepository.save(cowRecord);
     }
   }
 
-  private void savePenRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap,
+  private void savePenRecord(NoteRegex regex, Map<NoteRegex, List<RecordAndCodeId>> immutableMap,
       HashMap<String, Integer> names, LocalDateTime date, RecordType recordType) {
-    List<NoteAndCodeId> noteAndCodeIds;
-    noteAndCodeIds = immutableMap.get(regex);
-    for (NoteAndCodeId noteAndCodeId : noteAndCodeIds) {
-      names.merge(noteAndCodeId.codeId(), 1, Integer::sum);
-      Pen findPen = penRepository.findByCodeId(noteAndCodeId.codeId())
+    List<RecordAndCodeId> recordAndCodeIds;
+    recordAndCodeIds = immutableMap.get(regex);
+    for (RecordAndCodeId recordAndCodeId : recordAndCodeIds) {
+      names.merge(recordAndCodeId.codeId(), 1, Integer::sum);
+      Pen findPen = penRepository.findByCodeId(recordAndCodeId.codeId())
           .orElseThrow(() -> new NotExistException(
-              COMMON_NOT_EXIST, noteAndCodeId.codeId()));
+              COMMON_NOT_EXIST, recordAndCodeId.codeId()));
       PenRecord penRecord = PenRecord.createRecord(findPen, recordType, date);
-      penRecord.writeNote(noteAndCodeId.note());
+      penRecord.writeNote(recordAndCodeId.record());
       penRecordRepository.save(penRecord);
     }
   }
 
-  private void saveBarnRecord(NoteRegex regex, Map<NoteRegex, List<NoteAndCodeId>> immutableMap,
+  private void saveBarnRecord(NoteRegex regex, Map<NoteRegex, List<RecordAndCodeId>> immutableMap,
       HashMap<String, Integer> names, LocalDateTime date, RecordType recordType) {
-    List<NoteAndCodeId> noteAndCodeIds;
-    noteAndCodeIds = immutableMap.get(regex);
-    for (NoteAndCodeId noteAndCodeId : noteAndCodeIds) {
-      names.merge(noteAndCodeId.codeId(), 1, Integer::sum);
-      Barn findBarn = barnRepository.findByCodeId(noteAndCodeId.codeId())
-          .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, noteAndCodeId.codeId()));
+    List<RecordAndCodeId> recordAndCodeIds;
+    recordAndCodeIds = immutableMap.get(regex);
+    for (RecordAndCodeId recordAndCodeId : recordAndCodeIds) {
+      names.merge(recordAndCodeId.codeId(), 1, Integer::sum);
+      Barn findBarn = barnRepository.findByCodeId(recordAndCodeId.codeId())
+          .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, recordAndCodeId.codeId()));
       BarnRecord barnRecord = BarnRecord.creatRecord(findBarn, recordType, date);
-      barnRecord.writeNote(noteAndCodeId.note());
+      barnRecord.writeNote(recordAndCodeId.record());
       barnRecordRepository.save(barnRecord);
     }
   }
 
-  private Map<NoteRegex, List<NoteAndCodeId>> parseNote(String context) {
+  private Map<NoteRegex, List<RecordAndCodeId>> parseNote(String context) {
     MockjangNoteContainer mockjangNoteContainer = new MockjangNoteContainer();
     MockjangNoteContainer parsedMockjangNoteContainer = noteParserV0.extractAndSaveNotes(
         mockjangNoteContainer, context);

@@ -47,9 +47,8 @@ public class SimpleRecordService {
     return simpleRecords.stream().map(SimpleRecordResponse::of).toList();
   }
 
-  public void remove(SimpleRecordRemoveServiceRequest request) {
-    Long id = request.getId();
-    SimpleRecord simpleRecord = simpleRecordRepository.findById(id).orElseThrow(
+  public void remove(Long codeId) {
+    SimpleRecord simpleRecord = simpleRecordRepository.findById(codeId).orElseThrow(
         () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(SimpleRecord.class)));
     simpleRecordRepository.delete(simpleRecord);
   }
