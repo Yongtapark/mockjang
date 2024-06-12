@@ -68,6 +68,34 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
     assertThat(simpleRecord6.getRecord()).isEqualTo(PARSER_COW_NOTE_2);
   }
 
+  @DisplayName("각 라인 사이에 빈 라인이 있어도 정상 동작한다.")
+  @Test
+  void parseNoteAndSaveRecordsBetweenSpaceLine() {
+    //given
+    String context =
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator()
+            + System.lineSeparator() + "[[" + PARSER_PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1;
+
+    SimpleNoteParserCreateServiceRequest request = SimpleNoteParserCreateServiceRequest.builder()
+        .date(TEMP_DATE).recordType(RecordType.DAILY).names(new HashMap<>()).context(context)
+        .build();
+
+    //when
+    simpleNoteParserService.parseNoteAndSaveRecord(request);
+
+    //then
+    List<SimpleRecord> simpleRecords = simpleRecordRepository.findAll();
+
+    assertThat(simpleRecords).hasSize(2);
+    SimpleRecord simpleRecord1 = simpleRecords.get(0);
+    SimpleRecord simpleRecord2 = simpleRecords.get(1);
+
+    assertThat(simpleRecord1.getCodeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    assertThat(simpleRecord1.getRecord()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(simpleRecord2.getCodeId()).isEqualTo(PARSER_PEN_CODE_ID_1);
+    assertThat(simpleRecord2.getRecord()).isEqualTo(PARSER_PEN_NOTE_1);
+  }
+
   @DisplayName("엔터로 구분한 문자열을 입력받으면 작업 완료 후 이름들을 반환한다.")
   @Test
   void parseNoteAndSaveRecordWithEnterReturnNames() {
@@ -99,11 +127,12 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
     //given
     RecordAndCodeId recordAndCodeId1 = new RecordAndCodeId(PARSER_COW_CODE_ID_1, PARSER_COW_NOTE_1);
     RecordAndCodeId recordAndCodeId2 = new RecordAndCodeId(PARSER_COW_CODE_ID_2, PARSER_COW_NOTE_2);
-    SimpleRecordContainer simpleRecordContainer = SimpleRecordContainer.builder().notes(List.of(recordAndCodeId1,
+    SimpleRecordContainer simpleRecordContainer = SimpleRecordContainer.builder()
+        .notes(List.of(recordAndCodeId1,
             recordAndCodeId2)).recordType(RecordType.DAILY).date(TEMP_DATE).build();
 
     SimpleNoteParserUploadTempDataServiceRequest request = SimpleNoteParserUploadTempDataServiceRequest.builder()
-            .simpleRecordContainer(simpleRecordContainer).build();
+        .simpleRecordContainer(simpleRecordContainer).build();
     //when
     simpleNoteParserService.uploadTempRecords(request);
 
