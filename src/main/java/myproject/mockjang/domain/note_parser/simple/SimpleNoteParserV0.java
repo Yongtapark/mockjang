@@ -21,6 +21,9 @@ public class SimpleNoteParserV0 implements NoteParser<SimpleRecordContainer> {
     String[] split = content.split("\\r?\\n");
     ArrayList<RecordAndCodeId> recordAndCodeIds = new ArrayList<>();
     for (String eachContent : split) {
+      if (isEmptyLine(eachContent)) {
+        continue;
+      }
       Matcher extractIdAndNote = NoteRegex.getNoteFormMatcher(eachContent);
       if (extractIdAndNote.matches()) {
         String[] idArray = extractIdAndNote.group(1).split(",");
@@ -34,6 +37,13 @@ public class SimpleNoteParserV0 implements NoteParser<SimpleRecordContainer> {
       }
     }
     return noteContainer;
+  }
+
+  private static boolean isEmptyLine(String eachContent) {
+    if(eachContent.isBlank()){
+      return true;
+    }
+    return false;
   }
 
   private void saveEach(String[] idArray, String note,
