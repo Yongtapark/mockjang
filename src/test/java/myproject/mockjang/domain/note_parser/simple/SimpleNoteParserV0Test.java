@@ -82,6 +82,56 @@ class SimpleNoteParserV0Test extends IntegrationTestSupport {
   }
 
   @Test
+  @DisplayName("엔터를 한번 더 쳐서 입력해도 기록은 정상 입력된다.")
+  void extractAndSaveNoteWithEmptyLine() {
+    //given
+    SimpleRecordContainer mockjangNoteContainer = new SimpleRecordContainer();
+
+    //when
+    mockjangNoteContainer = noteParser.extractAndSaveNotes(mockjangNoteContainer,
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator()
+            + System.lineSeparator() +
+            "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
+
+    //then
+    List<RecordAndCodeId> recordAndCodeIds = mockjangNoteContainer.getNotes();
+    RecordAndCodeId recordAndCodeId1 = recordAndCodeIds.get(0);
+    RecordAndCodeId recordAndCodeId2 = recordAndCodeIds.get(1);
+
+    assertThat(recordAndCodeIds).hasSize(2);
+    assertThat(recordAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    assertThat(recordAndCodeId1.record()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(recordAndCodeId2.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
+    assertThat(recordAndCodeId2.record()).isEqualTo(PARSER_COW_NOTE_1);
+  }
+
+  @Test
+  @DisplayName("//를 입력 하면 주석 처리를 할 수 있다.")
+  void extractAndSaveNoteWithAnnotation() {
+    //given
+    SimpleRecordContainer mockjangNoteContainer = new SimpleRecordContainer();
+
+    //when
+    mockjangNoteContainer = noteParser.extractAndSaveNotes(mockjangNoteContainer,
+        "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator()
+            + System.lineSeparator() + ANNOTATION_TEMP+ System.lineSeparator()+
+            "[[" + PARSER_COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1);
+
+    //then
+    List<RecordAndCodeId> recordAndCodeIds = mockjangNoteContainer.getNotes();
+    RecordAndCodeId recordAndCodeId1 = recordAndCodeIds.get(0);
+    RecordAndCodeId recordAndCodeId2 = recordAndCodeIds.get(1);
+
+    assertThat(recordAndCodeIds).hasSize(2);
+    assertThat(recordAndCodeId1.codeId()).isEqualTo(PARSER_BARN_CODE_ID_1);
+    assertThat(recordAndCodeId1.record()).isEqualTo(PARSER_BARN_NOTE_1);
+    assertThat(recordAndCodeId2.codeId()).isEqualTo(PARSER_COW_CODE_ID_1);
+    assertThat(recordAndCodeId2.record()).isEqualTo(PARSER_COW_NOTE_1);
+  }
+
+
+
+  @Test
   @DisplayName("NoteContainer 리스트를 조작하면 예외를 발생시킨다.")
   void extractAndSaveNoteWithModificationNoteContainer() {
     //given

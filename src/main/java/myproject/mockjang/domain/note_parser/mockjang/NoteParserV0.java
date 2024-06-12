@@ -6,6 +6,7 @@ import static myproject.mockjang.exception.Exceptions.DOMAIN_NOTE_FORMAT;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import myproject.mockjang.domain.note_parser.NoteParser;
+import myproject.mockjang.domain.note_parser.NoteRegex;
 import myproject.mockjang.exception.note_parser.NoteFormatException;
 import org.springframework.stereotype.Component;
 

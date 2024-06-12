@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import myproject.mockjang.domain.note_parser.NoteParser;
 import myproject.mockjang.domain.note_parser.mockjang.RecordAndCodeId;
-import myproject.mockjang.domain.note_parser.mockjang.NoteRegex;
+import myproject.mockjang.domain.note_parser.NoteRegex;
 import myproject.mockjang.exception.note_parser.NoteFormatException;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +22,10 @@ public class SimpleNoteParserV0 implements NoteParser<SimpleRecordContainer> {
     ArrayList<RecordAndCodeId> recordAndCodeIds = new ArrayList<>();
     for (String eachContent : split) {
       if (isEmptyLine(eachContent)) {
+        continue;
+      }
+      Matcher annotationFormMatcher = NoteRegex.getAnnotationFormMatcher(eachContent);
+      if(annotationFormMatcher.matches()) {
         continue;
       }
       Matcher extractIdAndNote = NoteRegex.getNoteFormMatcher(eachContent);

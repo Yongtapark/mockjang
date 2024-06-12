@@ -1,8 +1,8 @@
 package myproject.mockjang.domain.note_parser.mockjang;
 
-import static myproject.mockjang.domain.note_parser.mockjang.NoteRegex.BARN;
-import static myproject.mockjang.domain.note_parser.mockjang.NoteRegex.COW;
-import static myproject.mockjang.domain.note_parser.mockjang.NoteRegex.PEN;
+import static myproject.mockjang.domain.note_parser.NoteRegex.BARN;
+import static myproject.mockjang.domain.note_parser.NoteRegex.COW;
+import static myproject.mockjang.domain.note_parser.NoteRegex.PEN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.domain.note_parser.NoteRegex;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.note_parser.NoteFormatException;
 import org.assertj.core.api.Assertions;

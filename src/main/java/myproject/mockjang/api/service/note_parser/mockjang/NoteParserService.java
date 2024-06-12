@@ -1,9 +1,9 @@
 package myproject.mockjang.api.service.note_parser.mockjang;
 
-import static myproject.mockjang.domain.note_parser.mockjang.NoteRegex.BARN;
-import static myproject.mockjang.domain.note_parser.mockjang.NoteRegex.COW;
-import static myproject.mockjang.domain.note_parser.mockjang.NoteRegex.PEN;
-import static myproject.mockjang.domain.note_parser.mockjang.NoteRegex.values;
+import static myproject.mockjang.domain.note_parser.NoteRegex.BARN;
+import static myproject.mockjang.domain.note_parser.NoteRegex.COW;
+import static myproject.mockjang.domain.note_parser.NoteRegex.PEN;
+import static myproject.mockjang.domain.note_parser.NoteRegex.values;
 import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 
 import jakarta.transaction.Transactional;
@@ -23,7 +23,7 @@ import myproject.mockjang.domain.mockjang.pen.PenRepository;
 import myproject.mockjang.domain.note_parser.NoteParser;
 import myproject.mockjang.domain.note_parser.mockjang.MockjangNoteContainer;
 import myproject.mockjang.domain.note_parser.mockjang.RecordAndCodeId;
-import myproject.mockjang.domain.note_parser.mockjang.NoteRegex;
+import myproject.mockjang.domain.note_parser.NoteRegex;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecordRepository;

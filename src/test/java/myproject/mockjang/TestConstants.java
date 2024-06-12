@@ -30,5 +30,11 @@ public abstract class TestConstants {
   protected static final String PARSER_COW_NOTE_1 = "0001 소 입력 테스트";
   protected static final String PARSER_COW_CODE_ID_2 = "0002";
   protected static final String PARSER_COW_NOTE_2 = "0002 소 입력 테스트";
+  protected static final String ANNOTATION_TEMP = "//annotation test";
+  protected static final LocalDateTime READ_DATE = LocalDateTime.of(2024, 6, 12, 00, 00);
+  protected static final LocalDateTime READ_DATE_SAME = READ_DATE;
+  protected static final LocalDateTime READ_DATE_BEFORE = READ_DATE.minusDays(1);
+  protected static final LocalDateTime READ_DATE_AFTER = READ_DATE.plusDays(1);
+
 
 }

@@ -1,4 +1,4 @@
-package myproject.mockjang.domain.note_parser.mockjang;
+package myproject.mockjang.domain.note_parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -13,6 +13,8 @@ public enum NoteRegex {
 
   @Getter
   private static String frameRegex = "\\[\\[([^\\]]+)\\]\\]\\s*(.*)";
+  @Getter
+  private static String annotationRegex = "(\\/\\/)(.*)";
 
   NoteRegex(Pattern pattern) {
     this.pattern = pattern;
@@ -28,6 +30,10 @@ public enum NoteRegex {
 
   public static Matcher getNoteFormMatcher(String strPattern) {
     return Pattern.compile(frameRegex).matcher(strPattern);
+  }
+
+  public static Matcher getAnnotationFormMatcher(String strPattern) {
+    return Pattern.compile(annotationRegex).matcher(strPattern);
   }
 
 }
