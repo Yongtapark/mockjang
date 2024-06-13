@@ -20,6 +20,8 @@ public enum Exceptions {
   DOMAIN_NO_COW_OR_PEN_OR_BARN("축사 || 축사칸 || 소 미입력"),
   //noteParser
   DOMAIN_NOTE_FORMAT("유효하지 않은 노트 형식 : %s"),
+  //schedule
+  DOMAIN_SCHEDULE_FORM("시작 날짜보다 목표 날짜가 시간상 뒤에 위치할 수 없습니다."),
 
   BUSINESS_ONLY_SLAUGHTERED_ERROR("도축된 소만 입력 가능");
 
