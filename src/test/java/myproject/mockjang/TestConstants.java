@@ -35,6 +35,8 @@ public abstract class TestConstants {
   protected static final LocalDateTime READ_DATE_SAME = READ_DATE;
   protected static final LocalDateTime READ_DATE_BEFORE = READ_DATE.minusDays(1);
   protected static final LocalDateTime READ_DATE_AFTER = READ_DATE.plusDays(1);
+  protected static final LocalDateTime START_DATE_BEFORE_READ = READ_DATE.minusDays(3);
+  protected static final LocalDateTime TARGET_DATE_AFTER_READ = READ_DATE.minusDays(2);
 
 
 }
