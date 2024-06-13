@@ -55,8 +55,7 @@ public class Schedule extends AuditingEntity {
 
     public void calculateScheduleType(LocalDateTime readDate) {
         if (startDate == null) {
-            compareWithNoStart(targetDate, readDate);
-            return;
+            startDate = targetDate;
         }
         if (startDate.isAfter(targetDate)) {
             throw new ScheduleFormException(Exceptions.DOMAIN_SCHEDULE_FORM);
@@ -64,24 +63,12 @@ public class Schedule extends AuditingEntity {
         compareWithPeriod(startDate, targetDate, readDate);
     }
 
-    private void compareWithNoStart(LocalDateTime targetDate, LocalDateTime readDate) {
-        if (targetDate.isAfter(readDate)) {
-            registerScheduleStatus(ScheduleStatus.UPCOMING);
-            return;
-        }
-        if (targetDate.equals(readDate)) {
-            registerScheduleStatus(ScheduleStatus.IN_PROGRESS);
-            return;
-        }
-        registerScheduleStatus(ScheduleStatus.EXPIRED);
-    }
-
     private void compareWithPeriod(LocalDateTime startDate, LocalDateTime targetDate, LocalDateTime readDate) {
         if (startDate.isAfter(readDate)) {
             registerScheduleStatus(ScheduleStatus.UPCOMING);
             return;
         }
-        if (startDate.isBefore(readDate) && (targetDate.isAfter(readDate) || targetDate.equals(readDate))) {
+        if ((startDate.isBefore(readDate)||startDate.equals(readDate)) && (targetDate.isAfter(readDate) || targetDate.equals(readDate))) {
             registerScheduleStatus(ScheduleStatus.IN_PROGRESS);
             return;
         }
