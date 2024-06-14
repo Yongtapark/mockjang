@@ -12,6 +12,7 @@ import myproject.mockjang.api.service.schedule.request.ScheduleUpdateServiceRequ
 import myproject.mockjang.domain.schedule.Schedule;
 import myproject.mockjang.domain.schedule.ScheduleQueryRepository;
 import myproject.mockjang.domain.schedule.ScheduleRepository;
+import myproject.mockjang.domain.schedule.ScheduleStatus;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.springframework.stereotype.Service;
@@ -56,5 +57,9 @@ public class ScheduleService {
     return search.stream().map(ScheduleResponse::of).toList();
   }
 
-
+  public void calculateScheduleStatus(List<Schedule> schedules,LocalDateTime readDate) {
+    for (Schedule schedule : schedules) {
+      schedule.calculateScheduleType(readDate);
+    }
+  }
 }
