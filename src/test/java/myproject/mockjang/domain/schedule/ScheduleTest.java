@@ -93,15 +93,11 @@ class ScheduleTest extends IntegrationTestSupport {
     Assertions.assertThat(schedule.getScheduleStatus()).isEqualTo(ScheduleStatus.EXPIRED);
   }
 
-  @DisplayName("목표 날짜보다 시작 날짜가 늦으면 예외를 발생시킨다.")
+  @DisplayName("일정 생성 시 목표 날짜보다 시작 날짜가 늦으면 예외를 발생시킨다.")
   @Test
-  void whenStartDateLateThenTargetDate() {
-    //given
-    Schedule schedule = Schedule.builder().targetDate(READ_DATE)
-            .startDate(READ_DATE_AFTER).build();
-
-    //when //then
-    Assertions.assertThatThrownBy(()->schedule.calculateScheduleType(READ_DATE)).isInstanceOf(ScheduleFormException.class)
+  void createWhenTargetDateBeforeStartDate() {
+    //given //when //then
+    Assertions.assertThatThrownBy(()->Schedule.create(READ_DATE.plusDays(1), READ_DATE, SCHEDULE_CONTEXT_1)).isInstanceOf(ScheduleFormException.class)
             .hasMessage("시작 날짜보다 목표 날짜가 시간상 뒤에 위치할 수 없습니다.");
   }
 }
