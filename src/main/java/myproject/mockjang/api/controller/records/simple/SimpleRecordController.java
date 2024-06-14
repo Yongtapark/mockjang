@@ -6,12 +6,14 @@ import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.ApiResponse;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordCreateRequest;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordSearchRequest;
+import myproject.mockjang.api.controller.records.simple.request.SimpleRecordUpdateRequest;
 import myproject.mockjang.api.service.records.simple.SimpleRecordService;
 import myproject.mockjang.api.service.records.simple.response.SimpleRecordResponse;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,9 +29,15 @@ public class SimpleRecordController {
         return ApiResponse.ok(simpleRecordService.create(request.toServiceRequest()));
     }
 
-    @GetMapping("/api/v0/records/simple/{codeId}")
-    public ApiResponse<List<SimpleRecordResponse>> findAllByCodeId(@PathVariable String codeId) {
-        return ApiResponse.ok(simpleRecordService.findAllByCodeId(codeId));
+    @GetMapping("/api/v0/records/simple/{id}")
+    public ApiResponse<SimpleRecordResponse> findSimpleRecordById(@PathVariable Long id) {
+        return ApiResponse.ok(simpleRecordService.findSimpleRecordById(id));
+    }
+
+    @PostMapping("/api/v0/records/simple/update")
+    public ApiResponse<Void> update(@Valid @RequestBody SimpleRecordUpdateRequest request) {
+        simpleRecordService.update(request.toServiceRequest());
+        return ApiResponse.noContent();
     }
 
     @PostMapping("/api/v0/records/simple")
@@ -38,12 +46,12 @@ public class SimpleRecordController {
     }
 
     @GetMapping("/api/v0/records/simple/codeids")
-    public ApiResponse<List<String>> findAllCodeIdWithDistinct() {
+    public ApiResponse<List<String>> getAutoCompleteList() {
         return ApiResponse.ok(simpleRecordService.findAllCodeIdWithDistinct());
     }
 
     @DeleteMapping("/api/v0/records/simple/{id}")
-    public ApiResponse<SimpleRecordResponse> remove(@PathVariable Long id) {
+    public ApiResponse<Void> remove(@PathVariable Long id) {
         simpleRecordService.remove(id);
         return ApiResponse.noContent();
     }
