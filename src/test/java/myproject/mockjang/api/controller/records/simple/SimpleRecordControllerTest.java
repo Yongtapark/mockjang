@@ -11,6 +11,7 @@ import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordCreateRequest;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordRemoveRequest;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordSearchRequest;
+import myproject.mockjang.api.controller.records.simple.request.SimpleRecordUpdateRequest;
 import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -134,7 +135,7 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
     //given
 
     //when //then
-    mockMvc.perform(delete("/api/v0/records/simple/"+1L)
+    mockMvc.perform(delete("/api/v0/records/simple/" + 1L)
             .contentType(MediaType.APPLICATION_JSON))
         .andDo(print())
         .andExpect(status().isOk())
@@ -166,7 +167,7 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
 
   @DisplayName("코드 id 이름들을 조회한다.")
   @Test
-  void findAllCodeIdWithDistinct() throws Exception {
+  void getAutoCompleteList() throws Exception {
     //given//when //then
     mockMvc.perform(get("/api/v0/records/simple/codeids")
             .contentType(MediaType.APPLICATION_JSON))
@@ -175,5 +176,61 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
         .andExpect(jsonPath("$.code").value("200"))
         .andExpect(jsonPath("$.status").value("OK"))
         .andExpect(jsonPath("$.message").value("OK"));
+  }
+
+  @DisplayName("기록을 단일 조회한다.")
+  @Test
+  void findSimpleRecordById() throws Exception {
+    //given//when //then
+    mockMvc.perform(get("/api/v0/records/simple/{id}",1L)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.code").value("200"))
+        .andExpect(jsonPath("$.status").value("OK"))
+        .andExpect(jsonPath("$.message").value("OK"));
+  }
+
+  @DisplayName("기록을 수정한다.")
+  @Test
+  void update() throws Exception {
+    //given
+    SimpleRecordUpdateRequest request = SimpleRecordUpdateRequest.builder()
+        .id(1L)
+        .record(null)
+        .build();
+
+    //when //then
+    mockMvc.perform(post("/api/v0/records/simple/update")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.code").value("204"))
+        .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+        .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+  }
+
+  @DisplayName("기록을 수정할 때, id값이 없으면 예외를 발생시킨다.")
+  @Test
+  void updateWithNoId() throws Exception {
+    //given
+    SimpleRecordUpdateRequest request = SimpleRecordUpdateRequest.builder()
+        .id(null)
+        .codeId(PARSER_COW_CODE_ID_1)
+        .record(MEMO_1)
+        .recordType(RecordType.HEALTH)
+        .date(TEMP_DATE)
+        .build();
+
+    //when //then
+    mockMvc.perform(post("/api/v0/records/simple/update")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.code").value("400"))
+        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+        .andExpect(jsonPath("$.message").value("고유번호는 반드시 입력하셔야 합니다."));
   }
 }
