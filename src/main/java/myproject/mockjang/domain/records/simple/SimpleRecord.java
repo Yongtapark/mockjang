@@ -55,4 +55,11 @@ public class SimpleRecord extends Records {
     }
     basicNullCheck(simpleRecord);
   }
+
+  public void update(String codeId, RecordType recordType, LocalDateTime date, String record) {
+    this.codeId=codeId;
+    registerRecordType(recordType);
+    registerDate(date);
+    registerRecord(record);
+  }
 }
