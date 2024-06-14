@@ -13,7 +13,6 @@ import myproject.mockjang.domain.schedule.ScheduleStatus;
 @NoArgsConstructor
 public class ScheduleCreateRequest {
 
-  @NotNull(message = "{exception.date.null}")
   private LocalDateTime startDate;
 
   @NotNull(message = "{exception.date.null}")
