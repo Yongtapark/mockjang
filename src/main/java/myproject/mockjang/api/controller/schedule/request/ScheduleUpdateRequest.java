@@ -1,5 +1,6 @@
 package myproject.mockjang.api.controller.schedule.request;
 
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import myproject.mockjang.domain.schedule.ScheduleStatus;
 @Getter
 @NoArgsConstructor
 public class ScheduleUpdateRequest {
+  @NotNull(message = "{exception.id.null}")
   private Long id;
   private LocalDateTime startDate;
   private LocalDateTime targetDate;
