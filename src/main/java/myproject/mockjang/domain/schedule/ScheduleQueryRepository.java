@@ -41,7 +41,7 @@ public class ScheduleQueryRepository {
         if (scheduleStatus != null) {
             predicate.and(schedule.scheduleStatus.eq(scheduleStatus));
         }
-        if (startDate != null) {
+        if (targetDate != null) {
             predicate.and(schedule.targetDate.eq(targetDate));
         }
         if (startDate != null) {
