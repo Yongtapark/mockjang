@@ -1,6 +1,8 @@
 package myproject.mockjang.api.service.schedule;
 
+import static myproject.mockjang.domain.schedule.ScheduleStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -14,6 +16,8 @@ import myproject.mockjang.api.service.schedule.request.ScheduleUpdateServiceRequ
 import myproject.mockjang.domain.schedule.Schedule;
 import myproject.mockjang.domain.schedule.ScheduleRepository;
 import myproject.mockjang.domain.schedule.ScheduleStatus;
+import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.exception.schdules.ScheduleFormException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +56,22 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     assertThat(schedule.getTargetDate()).isEqualTo(request.getTargetDate());
   }
 
+  @DisplayName("일정을 생성할 때, 목표날짜보다 시작날짜가 뒤에 있으면 예외를 발생시킨다.")
+  @Test
+  void createWhenStartDateIsAfterTargetDate() {
+    //given
+    ScheduleCreateServiceRequest request = ScheduleCreateServiceRequest.builder()
+        .targetDate(READ_DATE.minusDays(1))
+        .startDate(READ_DATE.plusDays(1))
+        .context(SCHEDULE_CONTEXT_1)
+        .build();
+
+    //when //then
+    assertThatThrownBy(() -> scheduleService.create(request)).isInstanceOf(
+        ScheduleFormException.class).hasMessage(
+        Exceptions.DOMAIN_SCHEDULE_FORM.getMessage());
+  }
+
   @DisplayName("일정을 수정한다.")
   @Test
   void update() {
@@ -64,6 +84,7 @@ class ScheduleServiceTest extends IntegrationTestSupport {
         .targetDate(READ_DATE.plusDays(2))
         .startDate(READ_DATE.minusDays(2))
         .context(SCHEDULE_CONTEXT_2)
+        .readDate(READ_DATE)
         .build();
 
     //when
@@ -74,6 +95,52 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     assertThat(findSchedule.getContext()).isEqualTo(SCHEDULE_CONTEXT_2);
     assertThat(findSchedule.getStartDate()).isEqualTo(request.getStartDate());
     assertThat(findSchedule.getTargetDate()).isEqualTo(request.getTargetDate());
+  }
+
+  @DisplayName("일정을 수정할 때, 목표날짜보다 시작날짜가 뒤에 있으면 예외를 발생시킨다.")
+  @Test
+  void updateWhenStartDateIsAfterTargetDate() {
+    //given
+    Schedule savedSchedule = createAndSave(READ_DATE.minusDays(1), READ_DATE.plusDays(1),
+        SCHEDULE_CONTEXT_1);
+
+    ScheduleUpdateServiceRequest request = ScheduleUpdateServiceRequest.builder()
+        .id(savedSchedule.getId())
+        .targetDate(READ_DATE.minusDays(1))
+        .startDate(READ_DATE.plusDays(1))
+        .context(SCHEDULE_CONTEXT_2)
+        .build();
+
+    //when //then
+    assertThatThrownBy(() -> scheduleService.update(request)).isInstanceOf(
+        ScheduleFormException.class).hasMessage(
+        Exceptions.DOMAIN_SCHEDULE_FORM.getMessage());
+  }
+
+  @DisplayName("일정을 수정하면 상태도 수정된다.")
+  @Test
+  void updateWithStatusChange() {
+    //given
+    Schedule savedSchedule = createAndSave(READ_DATE.minusDays(1), READ_DATE.minusDays(1),
+        SCHEDULE_CONTEXT_1);
+
+    ScheduleUpdateServiceRequest request = ScheduleUpdateServiceRequest.builder()
+        .id(savedSchedule.getId())
+        .targetDate(READ_DATE.plusDays(2))
+        .startDate(READ_DATE.minusDays(2))
+        .context(SCHEDULE_CONTEXT_2)
+        .readDate(READ_DATE)
+        .build();
+
+    //when
+    scheduleService.update(request);
+
+    //then
+    Schedule findSchedule = scheduleRepository.findById(request.getId()).orElseThrow();
+    assertThat(findSchedule.getContext()).isEqualTo(SCHEDULE_CONTEXT_2);
+    assertThat(findSchedule.getStartDate()).isEqualTo(request.getStartDate());
+    assertThat(findSchedule.getTargetDate()).isEqualTo(request.getTargetDate());
+    assertThat(findSchedule.getScheduleStatus()).isEqualTo(IN_PROGRESS);
   }
 
   @DisplayName("일정을 제거한다.")
@@ -99,16 +166,19 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     //given
     Schedule savedSchedule0 = createAndSave(monday, tuesday, SCHEDULE_CONTEXT_1);
     Schedule savedSchedule1 = createAndSave(monday, readDateWednesday, SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
     Schedule savedSchedule3 = createAndSave(sunday, sunday, SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
 
     //when
     List<ScheduleResponse> scheduleResponses = scheduleService.showThisWeekSchedule(READ_DATE);
 
     //then
     List<Long> scheduleIds = scheduleResponses.stream().map(ScheduleResponse::getId).toList();
-    assertThat(scheduleIds).containsExactly(savedSchedule1.getId(), savedSchedule3.getId(),savedSchedule2.getId());
+    assertThat(scheduleIds).containsExactly(savedSchedule1.getId(), savedSchedule3.getId(),
+        savedSchedule2.getId());
     assertThat(scheduleIds).doesNotContain(savedSchedule0.getId(), savedSchedule4.getId());
   }
 
@@ -118,9 +188,11 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     //given
     Schedule savedSchedule0 = createAndSave(monday, tuesday, SCHEDULE_CONTEXT_1);
     Schedule savedSchedule1 = createAndSave(monday, readDateWednesday, SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
     Schedule savedSchedule3 = createAndSave(sunday, sunday, SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
     ScheduleSearchServiceRequest request = ScheduleSearchServiceRequest.builder()
         .startDate(monday).build();
 
@@ -140,9 +212,11 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     //given
     Schedule savedSchedule0 = createAndSave(monday, tuesday, SCHEDULE_CONTEXT_1);
     Schedule savedSchedule1 = createAndSave(monday, readDateWednesday, SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
     Schedule savedSchedule3 = createAndSave(sunday, sunday, SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
     ScheduleSearchServiceRequest request = ScheduleSearchServiceRequest.builder()
         .targetDate(readDayPlusNextWeek).build();
 
@@ -162,9 +236,11 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     //given
     Schedule savedSchedule0 = createAndSave(monday, tuesday, SCHEDULE_CONTEXT_1);
     Schedule savedSchedule1 = createAndSave(monday, readDateWednesday, SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule2 = createAndSave(readDateWednesday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
     Schedule savedSchedule3 = createAndSave(sunday, sunday, SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule4 = createAndSave(nextWeekMonday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
     ScheduleSearchServiceRequest request = ScheduleSearchServiceRequest.builder()
         .context(SCHEDULE_CONTEXT_1).build();
 
@@ -182,32 +258,38 @@ class ScheduleServiceTest extends IntegrationTestSupport {
   @Test
   void calculateScheduleStatus() {
     //given
-    Schedule savedSchedule0 = createAndSave(READ_DATE,monday, tuesday, SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule1 = createAndSave(READ_DATE,monday, readDateWednesday, SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule2 = createAndSave(READ_DATE,readDateWednesday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule3 = createAndSave(READ_DATE,sunday, sunday, SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule4 = createAndSave(READ_DATE,nextWeekMonday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
-    List<Schedule> savedSchedules = List.of(savedSchedule0, savedSchedule1, savedSchedule2, savedSchedule3, savedSchedule4);
+    Schedule savedSchedule0 = createAndSave(READ_DATE, monday, tuesday, SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule1 = createAndSave(READ_DATE, monday, readDateWednesday,
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule2 = createAndSave(READ_DATE, readDateWednesday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule3 = createAndSave(READ_DATE, sunday, sunday, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule4 = createAndSave(READ_DATE, nextWeekMonday, readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
+    List<Schedule> savedSchedules = List.of(savedSchedule0, savedSchedule1, savedSchedule2,
+        savedSchedule3, savedSchedule4);
 
     //when
-    scheduleService.calculateScheduleStatus(savedSchedules,READ_DATE);
+    scheduleService.calculateScheduleStatus(savedSchedules, READ_DATE);
 
     //then
     assertThat(savedSchedule0.getScheduleStatus()).isEqualTo(ScheduleStatus.EXPIRED);
-    assertThat(savedSchedule1.getScheduleStatus()).isEqualTo(ScheduleStatus.IN_PROGRESS);
-    assertThat(savedSchedule2.getScheduleStatus()).isEqualTo(ScheduleStatus.IN_PROGRESS);
+    assertThat(savedSchedule1.getScheduleStatus()).isEqualTo(IN_PROGRESS);
+    assertThat(savedSchedule2.getScheduleStatus()).isEqualTo(IN_PROGRESS);
     assertThat(savedSchedule3.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
     assertThat(savedSchedule4.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
   }
 
 
-  private Schedule createAndSave(LocalDateTime startDate, LocalDateTime targetDate, String context) {
+  private Schedule createAndSave(LocalDateTime startDate, LocalDateTime targetDate,
+      String context) {
     Schedule schedule = Schedule.create(startDate, targetDate,
         context);
     return scheduleRepository.save(schedule);
   }
 
-  private Schedule createAndSave(LocalDateTime readDate, LocalDateTime startDate, LocalDateTime targetDate, String context) {
+  private Schedule createAndSave(LocalDateTime readDate, LocalDateTime startDate,
+      LocalDateTime targetDate, String context) {
     Schedule schedule = Schedule.create(startDate, targetDate,
         context);
     schedule.calculateScheduleType(readDate);
