@@ -4,15 +4,14 @@ import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import myproject.mockjang.api.service.schedule.request.ScheduleCreateServiceRequest;
 import myproject.mockjang.api.service.schedule.reponse.ScheduleResponse;
+import myproject.mockjang.api.service.schedule.request.ScheduleCreateServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleRemoveServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleSearchServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleUpdateServiceRequest;
 import myproject.mockjang.domain.schedule.Schedule;
 import myproject.mockjang.domain.schedule.ScheduleQueryRepository;
 import myproject.mockjang.domain.schedule.ScheduleRepository;
-import myproject.mockjang.domain.schedule.ScheduleStatus;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import org.springframework.stereotype.Service;
@@ -32,16 +31,25 @@ public class ScheduleService {
     return ScheduleResponse.of(schedule);
   }
 
+  private Schedule findById(Long id) {
+    return scheduleRepository.findById(id).orElseThrow(()->new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
+  }
+
+  public ScheduleResponse findScheduleById(Long id){
+    return ScheduleResponse.of(findById(id));
+  }
+
   public void update(ScheduleUpdateServiceRequest request) {
-    Schedule targetSchedule = scheduleRepository.findById(request.getId()).orElseThrow(
-        () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
+    Schedule targetSchedule = findById(request.getId());
     targetSchedule.update(request.getContext(), request.getStartDate(), request.getTargetDate());
+    if(request.getTargetDate()!=null || request.getStartDate()!=null){
+      calculateScheduleStatus(targetSchedule,request.getReadDate());
+    }
     scheduleRepository.save(targetSchedule);
   }
 
   public void remove(ScheduleRemoveServiceRequest request) {
-    Schedule targetSchedule = scheduleRepository.findById(request.getId()).orElseThrow(
-        () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
+    Schedule targetSchedule = findById(request.getId());
     scheduleRepository.delete(targetSchedule);
   }
 
@@ -59,7 +67,11 @@ public class ScheduleService {
 
   public void calculateScheduleStatus(List<Schedule> schedules,LocalDateTime readDate) {
     for (Schedule schedule : schedules) {
-      schedule.calculateScheduleType(readDate);
+      calculateScheduleStatus(schedule,readDate);
     }
+  }
+
+  private void calculateScheduleStatus(Schedule schedule,LocalDateTime readDate) {
+    schedule.calculateScheduleType(readDate);
   }
 }
