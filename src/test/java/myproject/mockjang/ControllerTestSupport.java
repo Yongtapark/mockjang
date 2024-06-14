@@ -8,6 +8,7 @@ import myproject.mockjang.api.controller.note_parser.mockjang.NoteParserControll
 import myproject.mockjang.api.controller.note_parser.simple.SimpleNoteParserController;
 import myproject.mockjang.api.controller.records.mockjang.cow.CowRecordController;
 import myproject.mockjang.api.controller.records.simple.SimpleRecordController;
+import myproject.mockjang.api.controller.schedule.ScheduleController;
 import myproject.mockjang.api.service.mockjang.barn.BarnService;
 import myproject.mockjang.api.service.mockjang.cow.CowService;
 import myproject.mockjang.api.service.mockjang.pen.PenService;
@@ -15,6 +16,7 @@ import myproject.mockjang.api.service.note_parser.mockjang.NoteParserService;
 import myproject.mockjang.api.service.note_parser.simple.SimpleNoteParserService;
 import myproject.mockjang.api.service.records.mockjang.cow.CowRecordService;
 import myproject.mockjang.api.service.records.simple.SimpleRecordService;
+import myproject.mockjang.api.service.schedule.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,7 +33,8 @@ import org.springframework.test.web.servlet.MockMvc;
     CowController.class,
     CowRecordController.class,
     SimpleRecordController.class,
-    SimpleNoteParserController.class
+    SimpleNoteParserController.class,
+    ScheduleController.class
 })
 @MockBean(JpaMetamodelMappingContext.class)
 public abstract class ControllerTestSupport extends TestConstants {
@@ -62,4 +65,7 @@ public abstract class ControllerTestSupport extends TestConstants {
 
   @MockBean
   protected SimpleNoteParserService simpleNoteParserService;
+
+  @MockBean
+  protected ScheduleService scheduleService;
 }
