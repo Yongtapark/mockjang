@@ -63,8 +63,8 @@ public class ScheduleService {
   }
 
   public List<ScheduleResponse> search(ScheduleSearchServiceRequest request) {
-    List<Schedule> search = scheduleQueryRepository.search(request.getContext(),
-        request.getScheduleStatus(), request.getTargetDate(), request.getStartDate());
+    List<Schedule> search = scheduleQueryRepository.search(request.getStartDate(),
+        request.getTargetDate(), request.getContext(), request.getScheduleStatus());
     return search.stream().map(ScheduleResponse::of).toList();
   }
 
