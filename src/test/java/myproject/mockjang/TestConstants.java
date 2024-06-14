@@ -37,6 +37,9 @@ public abstract class TestConstants {
   protected static final LocalDateTime READ_DATE_AFTER = READ_DATE.plusDays(1);
   protected static final LocalDateTime START_DATE_BEFORE_READ = READ_DATE.minusDays(3);
   protected static final LocalDateTime TARGET_DATE_AFTER_READ = READ_DATE.minusDays(2);
+  protected static final String SCHEDULE_CONTEXT_1 = "scheduleContext1";
+  protected static final String SCHEDULE_CONTEXT_2 = "scheduleContext2";
+
 
 
 }
