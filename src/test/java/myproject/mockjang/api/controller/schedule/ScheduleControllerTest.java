@@ -39,7 +39,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
         .andExpect(jsonPath("$.message").value("OK"));
   }
 
-  @DisplayName("일정을 생성할 때, 목표날짜가 없으면 예외를 발생시킨다..")
+  @DisplayName("일정을 생성할 때, 목표날짜가 없으면 예외를 발생시킨다.")
   @Test
   void createWithNoTargetDate() throws Exception {
     //given
