@@ -13,6 +13,7 @@ import myproject.mockjang.api.service.schedule.request.ScheduleSearchServiceRequ
 import myproject.mockjang.api.service.schedule.request.ScheduleUpdateServiceRequest;
 import myproject.mockjang.domain.schedule.Schedule;
 import myproject.mockjang.domain.schedule.ScheduleRepository;
+import myproject.mockjang.domain.schedule.ScheduleStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ class ScheduleServiceTest extends IntegrationTestSupport {
 
   @DisplayName("조회일 부터 조회일 주말까지의 일정을 조회한다.")
   @Test
-  void test() {
+  void showThisWeekSchedule() {
     //given
     Schedule savedSchedule0 = createAndSave(monday, tuesday, SCHEDULE_CONTEXT_1);
     Schedule savedSchedule1 = createAndSave(monday, readDateWednesday, SCHEDULE_CONTEXT_1);
@@ -177,10 +178,39 @@ class ScheduleServiceTest extends IntegrationTestSupport {
         savedSchedule3.getId());
   }
 
+  @DisplayName("조회일을 비교하며 상태를 추적한다.")
+  @Test
+  void calculateScheduleStatus() {
+    //given
+    Schedule savedSchedule0 = createAndSave(READ_DATE,monday, tuesday, SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule1 = createAndSave(READ_DATE,monday, readDateWednesday, SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule2 = createAndSave(READ_DATE,readDateWednesday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule3 = createAndSave(READ_DATE,sunday, sunday, SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule4 = createAndSave(READ_DATE,nextWeekMonday, readDayPlusNextWeek, SCHEDULE_CONTEXT_2);
+    List<Schedule> savedSchedules = List.of(savedSchedule0, savedSchedule1, savedSchedule2, savedSchedule3, savedSchedule4);
+
+    //when
+    scheduleService.calculateScheduleStatus(savedSchedules,READ_DATE);
+
+    //then
+    assertThat(savedSchedule0.getScheduleStatus()).isEqualTo(ScheduleStatus.EXPIRED);
+    assertThat(savedSchedule1.getScheduleStatus()).isEqualTo(ScheduleStatus.IN_PROGRESS);
+    assertThat(savedSchedule2.getScheduleStatus()).isEqualTo(ScheduleStatus.IN_PROGRESS);
+    assertThat(savedSchedule3.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
+    assertThat(savedSchedule4.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
+  }
+
 
   private Schedule createAndSave(LocalDateTime startDate, LocalDateTime targetDate, String context) {
     Schedule schedule = Schedule.create(startDate, targetDate,
         context);
+    return scheduleRepository.save(schedule);
+  }
+
+  private Schedule createAndSave(LocalDateTime readDate, LocalDateTime startDate, LocalDateTime targetDate, String context) {
+    Schedule schedule = Schedule.create(startDate, targetDate,
+        context);
+    schedule.calculateScheduleType(readDate);
     return scheduleRepository.save(schedule);
   }
 }
