@@ -7,6 +7,7 @@ import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.records.simple.request.SimpleRecordCreateServiceRequest;
 import myproject.mockjang.api.service.records.simple.request.SimpleRecordRemoveServiceRequest;
 import myproject.mockjang.api.service.records.simple.request.SimpleRecordSearchServiceRequest;
+import myproject.mockjang.api.service.records.simple.request.SimpleRecordUpdateServiceRequest;
 import myproject.mockjang.api.service.records.simple.response.SimpleRecordResponse;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.simple.SimpleRecord;
@@ -162,7 +163,6 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
     simpleRecordRepository.save(simpleRecord2);
     simpleRecordRepository.save(simpleRecord3);
 
-
     //when
     simpleRecordService.remove(simpleRecord3.getId());
 
@@ -170,6 +170,31 @@ class SimpleRecordServiceTest extends IntegrationTestSupport {
     List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(PARSER_COW_CODE_ID_1);
     List<Long> ids = simpleRecords.stream().map(SimpleRecord::getId).toList();
     Assertions.assertThat(ids).containsExactly(simpleRecord1.getId(), simpleRecord2.getId());
+  }
+
+  @DisplayName("기록을 수정한다.")
+  @Test
+  void update() {
+    //given
+    SimpleRecord simpleRecord = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
+        TEMP_DATE, MEMO_1);
+    SimpleRecord savedSimpleRecord = simpleRecordRepository.save(simpleRecord);
+    SimpleRecordUpdateServiceRequest request = SimpleRecordUpdateServiceRequest.builder()
+        .id(savedSimpleRecord.getId())
+        .codeId(PARSER_COW_CODE_ID_2)
+        .recordType(RecordType.HEALTH)
+        .date(TEMP_DATE.plusDays(1))
+        .record(MEMO_2)
+        .build();
+
+    //when
+    simpleRecordService.update(request);
+
+    //then
+    assertThat(simpleRecord.getId()).isEqualTo(savedSimpleRecord.getId());
+    assertThat(simpleRecord.getDate()).isEqualTo(TEMP_DATE.plusDays(1));
+    assertThat(simpleRecord.getRecordType()).isEqualTo(RecordType.HEALTH);
+    assertThat(simpleRecord.getRecord()).isEqualTo(MEMO_2);
   }
 
 }
