@@ -3,6 +3,8 @@ package myproject.mockjang.api.service.schedule;
 import static myproject.mockjang.domain.schedule.ScheduleStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -20,10 +22,11 @@ import myproject.mockjang.exception.schdules.ScheduleFormException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 
 class ScheduleServiceTest extends IntegrationTestSupport {
 
-  @Autowired
+  @SpyBean
   private ScheduleService scheduleService;
   @Autowired
   private ScheduleRepository scheduleRepository;
@@ -170,7 +173,8 @@ class ScheduleServiceTest extends IntegrationTestSupport {
         SCHEDULE_CONTEXT_2);
 
     //when
-    List<ScheduleResponse> scheduleResponses = scheduleService.showThisWeekScheduleFromToday(READ_DATE);
+    List<ScheduleResponse> scheduleResponses = scheduleService.showThisWeekScheduleFromToday(
+        READ_DATE);
 
     //then
     List<Long> scheduleIds = scheduleResponses.stream().map(ScheduleResponse::getId).toList();
@@ -255,19 +259,27 @@ class ScheduleServiceTest extends IntegrationTestSupport {
   @Test
   void calculateScheduleStatus() {
     //given
-    Schedule savedSchedule0 = createAndSave(READ_DATE, monday, tuesday, SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule1 = createAndSave(READ_DATE, monday, readDateWednesday,
+    Schedule savedSchedule0 = createAndSave(READ_DATE.minusDays(7), monday, tuesday,
         SCHEDULE_CONTEXT_1);
-    Schedule savedSchedule2 = createAndSave(READ_DATE, readDateWednesday, readDayPlusNextWeek,
+    Schedule savedSchedule1 = createAndSave(READ_DATE.minusDays(7), monday, readDateWednesday,
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule2 = createAndSave(READ_DATE.minusDays(7), readDateWednesday,
+        readDayPlusNextWeek,
         SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule3 = createAndSave(READ_DATE, sunday, sunday, SCHEDULE_CONTEXT_2);
-    Schedule savedSchedule4 = createAndSave(READ_DATE, nextWeekMonday, readDayPlusNextWeek,
+    Schedule savedSchedule3 = createAndSave(READ_DATE.minusDays(7), sunday, sunday,
         SCHEDULE_CONTEXT_2);
-    List<Schedule> savedSchedules = List.of(savedSchedule0, savedSchedule1, savedSchedule2,
-        savedSchedule3, savedSchedule4);
+    Schedule savedSchedule4 = createAndSave(READ_DATE.minusDays(7), nextWeekMonday,
+        readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
+
+    savedSchedule0.calculateScheduleType(READ_DATE);
+    savedSchedule1.calculateScheduleType(READ_DATE);
+    savedSchedule2.calculateScheduleType(READ_DATE);
+    savedSchedule3.calculateScheduleType(READ_DATE);
+    savedSchedule4.calculateScheduleType(READ_DATE);
 
     //when
-    scheduleService.calculateScheduleStatus(savedSchedules, READ_DATE);
+    scheduleService.calculateScheduleStatusExceptExpired(READ_DATE);
 
     //then
     assertThat(savedSchedule0.getScheduleStatus()).isEqualTo(ScheduleStatus.EXPIRED);
@@ -275,6 +287,7 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     assertThat(savedSchedule2.getScheduleStatus()).isEqualTo(IN_PROGRESS);
     assertThat(savedSchedule3.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
     assertThat(savedSchedule4.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
+    verify(scheduleService,times(4)).calculateScheduleStatusExceptExpired(READ_DATE);
   }
 
 

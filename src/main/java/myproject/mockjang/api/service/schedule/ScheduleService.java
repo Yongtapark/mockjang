@@ -32,11 +32,6 @@ public class ScheduleService {
     return ScheduleResponse.of(schedule);
   }
 
-  private Schedule findById(Long id) {
-    return scheduleRepository.findById(id).orElseThrow(
-        () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
-  }
-
   public ScheduleResponse findScheduleById(Long id) {
     return ScheduleResponse.of(findById(id));
   }
@@ -68,10 +63,20 @@ public class ScheduleService {
     return search.stream().map(ScheduleResponse::of).toList();
   }
 
-  public void calculateScheduleStatus(List<Schedule> schedules, LocalDateTime readDate) {
+  public void calculateScheduleStatusExceptExpired(LocalDateTime readDate) {
+    List<Schedule> schedules = findAllScheduleExceptExpired();
     for (Schedule schedule : schedules) {
       calculateScheduleStatus(schedule, readDate);
     }
+  }
+
+  private Schedule findById(Long id) {
+    return scheduleRepository.findById(id).orElseThrow(
+        () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
+  }
+
+  private List<Schedule> findAllScheduleExceptExpired() {
+    return scheduleQueryRepository.findAllScheduleExceptExpired();
   }
 
   private void calculateScheduleStatus(Schedule schedule, LocalDateTime readDate) {
