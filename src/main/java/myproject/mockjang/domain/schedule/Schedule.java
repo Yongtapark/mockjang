@@ -50,6 +50,9 @@ public class Schedule extends AuditingEntity {
   }
 
   public static Schedule create(LocalDateTime startDate, LocalDateTime targetDate, String context) {
+    if (startDate.isAfter(targetDate)) {
+      throw new ScheduleFormException(Exceptions.DOMAIN_SCHEDULE_FORM);
+    }
     return Schedule.builder()
         .startDate(startDate)
         .targetDate(targetDate)
@@ -64,9 +67,6 @@ public class Schedule extends AuditingEntity {
   public void calculateScheduleType(LocalDateTime readDate) {
     if (startDate == null) {
       startDate = targetDate;
-    }
-    if (startDate.isAfter(targetDate)) {
-      throw new ScheduleFormException(Exceptions.DOMAIN_SCHEDULE_FORM);
     }
     compareWithPeriod(startDate, targetDate, readDate);
   }
