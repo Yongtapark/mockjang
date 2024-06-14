@@ -12,17 +12,15 @@ import myproject.mockjang.domain.schedule.ScheduleStatus;
 @Getter
 @NoArgsConstructor
 public class ScheduleCreateServiceRequest {
+
   private LocalDateTime startDate;
   private LocalDateTime targetDate;
   private String context;
-  private ScheduleStatus scheduleStatus;
 
   @Builder
-  private ScheduleCreateServiceRequest(LocalDateTime startDate, LocalDateTime targetDate,
-      String context, ScheduleStatus scheduleStatus) {
+  private ScheduleCreateServiceRequest(LocalDateTime startDate, LocalDateTime targetDate, String context) {
     this.startDate = startDate;
     this.targetDate = targetDate;
     this.context = context;
-    this.scheduleStatus = scheduleStatus;
   }
 }
