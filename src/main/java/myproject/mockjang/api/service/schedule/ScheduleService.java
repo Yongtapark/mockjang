@@ -14,6 +14,7 @@ import myproject.mockjang.domain.schedule.ScheduleQueryRepository;
 import myproject.mockjang.domain.schedule.ScheduleRepository;
 import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
+import myproject.mockjang.exception.schdules.ScheduleFormException;
 import org.springframework.stereotype.Service;
 
 @Transactional
@@ -25,6 +26,7 @@ public class ScheduleService {
   private final ScheduleQueryRepository scheduleQueryRepository;
 
   public ScheduleResponse create(ScheduleCreateServiceRequest request) {
+    validateSchedule(request.getStartDate(),request.getTargetDate());
     Schedule schedule = Schedule.create(request.getStartDate(), request.getTargetDate(),
         request.getContext());
     scheduleRepository.save(schedule);
@@ -32,18 +34,20 @@ public class ScheduleService {
   }
 
   private Schedule findById(Long id) {
-    return scheduleRepository.findById(id).orElseThrow(()->new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
+    return scheduleRepository.findById(id).orElseThrow(
+        () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
   }
 
-  public ScheduleResponse findScheduleById(Long id){
+  public ScheduleResponse findScheduleById(Long id) {
     return ScheduleResponse.of(findById(id));
   }
 
   public void update(ScheduleUpdateServiceRequest request) {
+    validateSchedule(request.getStartDate(),request.getTargetDate());
     Schedule targetSchedule = findById(request.getId());
     targetSchedule.update(request.getContext(), request.getStartDate(), request.getTargetDate());
-    if(request.getTargetDate()!=null || request.getStartDate()!=null){
-      calculateScheduleStatus(targetSchedule,request.getReadDate());
+    if (request.getTargetDate() != null || request.getStartDate() != null) {
+      calculateScheduleStatus(targetSchedule, request.getReadDate());
     }
     scheduleRepository.save(targetSchedule);
   }
@@ -65,13 +69,19 @@ public class ScheduleService {
     return search.stream().map(ScheduleResponse::of).toList();
   }
 
-  public void calculateScheduleStatus(List<Schedule> schedules,LocalDateTime readDate) {
+  public void calculateScheduleStatus(List<Schedule> schedules, LocalDateTime readDate) {
     for (Schedule schedule : schedules) {
-      calculateScheduleStatus(schedule,readDate);
+      calculateScheduleStatus(schedule, readDate);
     }
   }
 
-  private void calculateScheduleStatus(Schedule schedule,LocalDateTime readDate) {
+  private void calculateScheduleStatus(Schedule schedule, LocalDateTime readDate) {
     schedule.calculateScheduleType(readDate);
+  }
+
+  private void validateSchedule(LocalDateTime startDate, LocalDateTime targetTime) {
+    if(startDate.isAfter(targetTime)){
+      throw new ScheduleFormException(Exceptions.DOMAIN_SCHEDULE_FORM);
+    }
   }
 }
