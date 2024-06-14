@@ -9,7 +9,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordCreateRequest;
-import myproject.mockjang.api.controller.records.simple.request.SimpleRecordRemoveRequest;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordSearchRequest;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordUpdateRequest;
 import myproject.mockjang.domain.records.RecordType;

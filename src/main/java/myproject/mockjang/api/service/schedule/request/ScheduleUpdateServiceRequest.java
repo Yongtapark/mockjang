@@ -15,17 +15,15 @@ public class ScheduleUpdateServiceRequest {
   private LocalDateTime targetDate;
   private LocalDateTime readDate;
   private String context;
-  private ScheduleStatus scheduleStatus;
 
   @Builder
   private ScheduleUpdateServiceRequest(Long id, LocalDateTime startDate, LocalDateTime targetDate,
       LocalDateTime readDate,
-      String context, ScheduleStatus scheduleStatus) {
+      String context) {
     this.id = id;
     this.startDate = startDate;
     this.targetDate = targetDate;
     this.readDate = readDate;
     this.context = context;
-    this.scheduleStatus = scheduleStatus;
   }
 }

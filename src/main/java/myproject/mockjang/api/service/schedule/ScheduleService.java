@@ -6,7 +6,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.schedule.reponse.ScheduleResponse;
 import myproject.mockjang.api.service.schedule.request.ScheduleCreateServiceRequest;
-import myproject.mockjang.api.service.schedule.request.ScheduleRemoveServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleSearchServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleUpdateServiceRequest;
 import myproject.mockjang.domain.schedule.Schedule;
@@ -52,12 +51,12 @@ public class ScheduleService {
     scheduleRepository.save(targetSchedule);
   }
 
-  public void remove(ScheduleRemoveServiceRequest request) {
-    Schedule targetSchedule = findById(request.getId());
+  public void remove(Long id) {
+    Schedule targetSchedule = findById(id);
     scheduleRepository.delete(targetSchedule);
   }
 
-  public List<ScheduleResponse> showThisWeekSchedule(LocalDateTime date) {
+  public List<ScheduleResponse> showThisWeekScheduleFromToday(LocalDateTime date) {
     List<Schedule> scheduleThisWeek = scheduleQueryRepository.findAllScheduleThisDayToEndOfWeek(
         date);
     return scheduleThisWeek.stream().map(ScheduleResponse::of).toList();

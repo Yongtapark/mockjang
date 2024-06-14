@@ -10,7 +10,6 @@ import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.schedule.reponse.ScheduleResponse;
 import myproject.mockjang.api.service.schedule.request.ScheduleCreateServiceRequest;
-import myproject.mockjang.api.service.schedule.request.ScheduleRemoveServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleSearchServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleUpdateServiceRequest;
 import myproject.mockjang.domain.schedule.Schedule;
@@ -149,11 +148,9 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     //given
     Schedule savedSchedule = createAndSave(READ_DATE.minusDays(1), READ_DATE.plusDays(1),
         SCHEDULE_CONTEXT_1);
-    ScheduleRemoveServiceRequest request = ScheduleRemoveServiceRequest.builder()
-        .id(savedSchedule.getId()).build();
 
     //when
-    scheduleService.remove(request);
+    scheduleService.remove(savedSchedule.getId());
 
     //then
     List<Schedule> schedules = scheduleRepository.findAll();
@@ -162,7 +159,7 @@ class ScheduleServiceTest extends IntegrationTestSupport {
 
   @DisplayName("조회일 부터 조회일 주말까지의 일정을 조회한다.")
   @Test
-  void showThisWeekSchedule() {
+  void showThisWeekScheduleFromToday() {
     //given
     Schedule savedSchedule0 = createAndSave(monday, tuesday, SCHEDULE_CONTEXT_1);
     Schedule savedSchedule1 = createAndSave(monday, readDateWednesday, SCHEDULE_CONTEXT_1);
@@ -173,7 +170,7 @@ class ScheduleServiceTest extends IntegrationTestSupport {
         SCHEDULE_CONTEXT_2);
 
     //when
-    List<ScheduleResponse> scheduleResponses = scheduleService.showThisWeekSchedule(READ_DATE);
+    List<ScheduleResponse> scheduleResponses = scheduleService.showThisWeekScheduleFromToday(READ_DATE);
 
     //then
     List<Long> scheduleIds = scheduleResponses.stream().map(ScheduleResponse::getId).toList();
