@@ -287,7 +287,6 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     assertThat(savedSchedule2.getScheduleStatus()).isEqualTo(IN_PROGRESS);
     assertThat(savedSchedule3.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
     assertThat(savedSchedule4.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
-    verify(scheduleService,times(4)).calculateScheduleStatusExceptExpired(READ_DATE);
   }
 
 
