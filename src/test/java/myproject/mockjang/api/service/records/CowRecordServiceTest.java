@@ -140,7 +140,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         .hasMessage(COMMON_NOT_EXIST.formatMessage(RecordType.class));
   }
 
-  @DisplayName("기록 날짜를 입력하지 않으면 예외를 발생시킨다.")
+  @DisplayName("기록를 입력하지 않으면 예외를 발생시킨다.")
   @Test
   void createWithNoDate() {
     //given

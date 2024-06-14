@@ -17,7 +17,7 @@ public class CowRecordCreateRequest {
   private String cowCode;
   @NotNull(message = "기록 타입은 반드시 입력하셔야 합니다.")
   private RecordType recordType;
-  @NotNull(message = "기록 날짜는 반드시 입력하셔야 합니다.")
+  @NotNull(message = "날짜는 반드시 입력하셔야 합니다.")
   private LocalDateTime date;
   @NotBlank(message = "기록 메모는 공백일 수 없습니다.")
   private String memo;

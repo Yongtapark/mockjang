@@ -49,7 +49,7 @@ class SimpleRecordTest extends IntegrationTestSupport {
         Exceptions.COMMON_NOT_EXIST.formatMessage("codeId"));
   }
 
-  @DisplayName("기록 날짜를 등록하지 않으면 예외를 발생시킨다.")
+  @DisplayName("기록를 등록하지 않으면 예외를 발생시킨다.")
   @Test
   void recordsNullCheckWithNoDate() {
     //given

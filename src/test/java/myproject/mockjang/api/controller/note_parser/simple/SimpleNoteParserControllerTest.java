@@ -100,6 +100,6 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print())
         .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("400"))
         .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("기록 날짜는 반드시 입력하셔야 합니다."));
+        .andExpect(jsonPath("$.message").value("날짜는 반드시 입력하셔야 합니다."));
   }
 }

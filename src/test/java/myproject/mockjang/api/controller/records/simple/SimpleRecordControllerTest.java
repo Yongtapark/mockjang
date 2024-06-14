@@ -103,7 +103,7 @@ class SimpleRecordControllerTest extends ControllerTestSupport {
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.code").value("400"))
         .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("기록 날짜는 반드시 입력하셔야 합니다."));
+        .andExpect(jsonPath("$.message").value("날짜는 반드시 입력하셔야 합니다."));
   }
 
   @DisplayName("기록을 생성 할 때, 기록을 등록하지 않으면 예외를 발생시킨다.")
