@@ -104,5 +104,4 @@ class ScheduleTest extends IntegrationTestSupport {
     Assertions.assertThatThrownBy(()->schedule.calculateScheduleType(READ_DATE)).isInstanceOf(ScheduleFormException.class)
             .hasMessage("시작 날짜보다 목표 날짜가 시간상 뒤에 위치할 수 없습니다.");
   }
-
 }
