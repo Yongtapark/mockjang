@@ -38,7 +38,7 @@ public class ScheduleService {
     scheduleRepository.save(targetSchedule);
   }
 
-  public void delete(ScheduleRemoveServiceRequest request) {
+  public void remove(ScheduleRemoveServiceRequest request) {
     Schedule targetSchedule = scheduleRepository.findById(request.getId()).orElseThrow(
         () -> new NotExistException(Exceptions.COMMON_NOT_EXIST.formatMessage(Schedule.class)));
     scheduleRepository.delete(targetSchedule);
