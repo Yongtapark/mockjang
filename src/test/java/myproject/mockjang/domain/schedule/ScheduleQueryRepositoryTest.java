@@ -3,8 +3,6 @@ package myproject.mockjang.domain.schedule;
 import static myproject.mockjang.domain.schedule.ScheduleStatus.EXPIRED;
 import static org.assertj.core.api.Assertions.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
@@ -137,11 +135,11 @@ class ScheduleQueryRepositoryTest extends IntegrationTestSupport {
         .context(SCHEDULE_CONTEXT_2)
         .targetDate(READ_DATE.plusDays(7)).build();
 
-    schedule1.calculateScheduleType(READ_DATE);
-    schedule2.calculateScheduleType(READ_DATE);
-    schedule3.calculateScheduleType(READ_DATE);
-    schedule4.calculateScheduleType(READ_DATE);
-    schedule5.calculateScheduleType(READ_DATE);
+    schedule1.calculateScheduleStatus(READ_DATE);
+    schedule2.calculateScheduleStatus(READ_DATE);
+    schedule3.calculateScheduleStatus(READ_DATE);
+    schedule4.calculateScheduleStatus(READ_DATE);
+    schedule5.calculateScheduleStatus(READ_DATE);
 
     scheduleRepository.saveAll(List.of(schedule1, schedule2, schedule3, schedule4, schedule5));
 
@@ -173,11 +171,11 @@ class ScheduleQueryRepositoryTest extends IntegrationTestSupport {
         .context(SCHEDULE_CONTEXT_2)
         .targetDate(READ_DATE.plusDays(7)).build();
 
-    schedule1.calculateScheduleType(READ_DATE);
-    schedule2.calculateScheduleType(READ_DATE);
-    schedule3.calculateScheduleType(READ_DATE);
-    schedule4.calculateScheduleType(READ_DATE);
-    schedule5.calculateScheduleType(READ_DATE);
+    schedule1.calculateScheduleStatus(READ_DATE);
+    schedule2.calculateScheduleStatus(READ_DATE);
+    schedule3.calculateScheduleStatus(READ_DATE);
+    schedule4.calculateScheduleStatus(READ_DATE);
+    schedule5.calculateScheduleStatus(READ_DATE);
 
     scheduleRepository.saveAll(List.of(schedule1, schedule2, schedule3, schedule4, schedule5));
 

@@ -64,7 +64,7 @@ public class Schedule extends AuditingEntity {
     this.scheduleStatus = scheduleStatus;
   }
 
-  public void calculateScheduleType(LocalDateTime readDate) {
+  public void calculateScheduleStatus(LocalDateTime readDate) {
     if (startDate == null) {
       startDate = targetDate;
     }

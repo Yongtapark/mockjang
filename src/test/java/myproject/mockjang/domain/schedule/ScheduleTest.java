@@ -17,7 +17,7 @@ class ScheduleTest extends IntegrationTestSupport {
         .build();
 
     //when
-    schedule.calculateScheduleType(READ_DATE);
+    schedule.calculateScheduleStatus(READ_DATE);
 
     //then
     Assertions.assertThat(schedule.getScheduleStatus()).isEqualTo(ScheduleStatus.IN_PROGRESS);
@@ -31,7 +31,7 @@ class ScheduleTest extends IntegrationTestSupport {
         .build();
 
     //when
-    schedule.calculateScheduleType(READ_DATE);
+    schedule.calculateScheduleStatus(READ_DATE);
 
     //then
     Assertions.assertThat(schedule.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
@@ -45,7 +45,7 @@ class ScheduleTest extends IntegrationTestSupport {
         .build();
 
     //when
-    schedule.calculateScheduleType(READ_DATE);
+    schedule.calculateScheduleStatus(READ_DATE);
 
     //then
     Assertions.assertThat(schedule.getScheduleStatus()).isEqualTo(ScheduleStatus.EXPIRED);
@@ -59,7 +59,7 @@ class ScheduleTest extends IntegrationTestSupport {
         .startDate(READ_DATE_BEFORE).build();
 
     //when
-    schedule.calculateScheduleType(READ_DATE);
+    schedule.calculateScheduleStatus(READ_DATE);
 
     //then
     Assertions.assertThat(schedule.getScheduleStatus()).isEqualTo(ScheduleStatus.IN_PROGRESS);
@@ -73,7 +73,7 @@ class ScheduleTest extends IntegrationTestSupport {
             .startDate(READ_DATE_AFTER).build();
 
     //when
-    schedule.calculateScheduleType(READ_DATE);
+    schedule.calculateScheduleStatus(READ_DATE);
 
     //then
     Assertions.assertThat(schedule.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
@@ -87,7 +87,7 @@ class ScheduleTest extends IntegrationTestSupport {
             .startDate(START_DATE_BEFORE_READ).build();
 
     //when
-    schedule.calculateScheduleType(READ_DATE);
+    schedule.calculateScheduleStatus(READ_DATE);
 
     //then
     Assertions.assertThat(schedule.getScheduleStatus()).isEqualTo(ScheduleStatus.EXPIRED);
