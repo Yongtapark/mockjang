@@ -70,7 +70,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
   void searchWithNoCodeIdNoRecordType() {
     //given
     SimpleRecord simpleRecord1 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.DAILY,
-        TEMP_DATE, MEMO_1);
+        TEMP_DATE.plusHours(1), MEMO_1);
     SimpleRecord simpleRecord2 = SimpleRecord.create(PARSER_COW_CODE_ID_1, RecordType.HEALTH,
         TEMP_DATE, MEMO_2);
     SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
