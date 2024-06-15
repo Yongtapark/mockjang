@@ -35,6 +35,12 @@ public class ScheduleController {
     return ApiResponse.ok(scheduleService.showThisWeekScheduleFromToday(date));
   }
 
+  @GetMapping("/trace-status/{date}")
+  public ApiResponse<Void> calculateScheduleStatusExceptExpired(@PathVariable LocalDateTime date) {
+    scheduleService.calculateScheduleStatusExceptExpired(date);
+    return ApiResponse.noContent();
+  }
+
   @PostMapping("/new")
   public ApiResponse<ScheduleResponse> create(@Valid @RequestBody ScheduleCreateRequest request) {
     return ApiResponse.ok(scheduleService.create(request.toServiceRequest()));
