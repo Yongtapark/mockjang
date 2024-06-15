@@ -287,6 +287,29 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     assertThat(savedSchedule4.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
   }
 
+  @DisplayName("조회일 기준 시작일이 되기 1일 남은 일정들을 조회한다.")
+  @Test
+  void calculateUpcomingSchedule() {
+    //given
+    Schedule savedSchedule0 = createAndSave(READ_DATE, READ_DATE,
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule1 = createAndSave(READ_DATE, READ_DATE.plusDays(1),
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule2 = createAndSave(READ_DATE.plusDays(1), READ_DATE.plusDays(1),
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule3 = createAndSave(READ_DATE.plusDays(1), READ_DATE.plusDays(2),
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule4 = createAndSave(READ_DATE.plusDays(2), READ_DATE.plusDays(2),
+        SCHEDULE_CONTEXT_1);
+
+    //when
+    List<Long> ids = scheduleService.calculateUpcomingSchedule(READ_DATE);
+
+    //then
+    assertThat(ids).containsExactly(savedSchedule2.getId(),savedSchedule3.getId());
+    assertThat(ids).doesNotContain(savedSchedule0.getId(),savedSchedule1.getId(),savedSchedule4.getId());
+  }
+
   private Schedule createAndSave(LocalDateTime startDate, LocalDateTime targetDate,
       String context) {
     Schedule schedule = Schedule.create(startDate, targetDate,
