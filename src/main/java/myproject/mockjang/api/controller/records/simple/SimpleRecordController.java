@@ -36,7 +36,7 @@ public class SimpleRecordController {
         return ApiResponse.ok(simpleRecordService.findSimpleRecordById(id));
     }
 
-    @PostMapping("/update")
+    @PutMapping("/update")
     public ApiResponse<Void> update(@Valid @RequestBody SimpleRecordUpdateRequest request) {
         simpleRecordService.update(request.toServiceRequest());
         return ApiResponse.noContent();
