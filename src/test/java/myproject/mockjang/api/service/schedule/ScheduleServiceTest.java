@@ -3,6 +3,8 @@ package myproject.mockjang.api.service.schedule;
 import static myproject.mockjang.domain.schedule.ScheduleStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -288,6 +290,44 @@ class ScheduleServiceTest extends IntegrationTestSupport {
     assertThat(savedSchedule3.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
     assertThat(savedSchedule4.getScheduleStatus()).isEqualTo(ScheduleStatus.UPCOMING);
   }
+  @DisplayName("조회일을 비교하며 상태를 추적한다. 만료된 일정은 추적하지 않는다.")
+  @Test
+  void calculateScheduleStatusWithCheck() {
+    //given
+    LocalDateTime readDateMinus6days = READ_DATE.minusDays(6);
+    LocalDateTime readDateMinus7days = readDateMinus6days.minusDays(1);
+    Schedule savedSchedule0 = createAndSave(readDateMinus6days, readDateMinus7days, readDateMinus7days,
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule1 = createAndSave(readDateMinus6days, monday, readDateWednesday,
+        SCHEDULE_CONTEXT_1);
+    Schedule savedSchedule2 = createAndSave(readDateMinus6days, readDateWednesday,
+        readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule3 = createAndSave(readDateMinus6days, sunday, sunday,
+        SCHEDULE_CONTEXT_2);
+    Schedule savedSchedule4 = createAndSave(readDateMinus6days, nextWeekMonday,
+        readDayPlusNextWeek,
+        SCHEDULE_CONTEXT_2);
+
+    savedSchedule0.calculateScheduleType(readDateMinus6days);
+    savedSchedule1.calculateScheduleType(readDateMinus6days);
+    savedSchedule2.calculateScheduleType(readDateMinus6days);
+    savedSchedule3.calculateScheduleType(readDateMinus6days);
+    savedSchedule4.calculateScheduleType(readDateMinus6days);
+
+    //when
+    scheduleService.calculateScheduleStatusExceptExpired(READ_DATE);
+
+    //then
+    verify(scheduleService,times(4)).calculateScheduleStatus(any(),any());
+
+    verify(scheduleService,never()).calculateScheduleStatus(savedSchedule0,READ_DATE);
+    verify(scheduleService,times(1)).calculateScheduleStatus(savedSchedule1,READ_DATE);
+    verify(scheduleService,times(1)).calculateScheduleStatus(savedSchedule2,READ_DATE);
+    verify(scheduleService,times(1)).calculateScheduleStatus(savedSchedule3,READ_DATE);
+    verify(scheduleService,times(1)).calculateScheduleStatus(savedSchedule4,READ_DATE);
+  }
+
 
 
   private Schedule createAndSave(LocalDateTime startDate, LocalDateTime targetDate,
