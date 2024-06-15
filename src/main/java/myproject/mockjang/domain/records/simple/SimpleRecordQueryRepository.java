@@ -4,7 +4,9 @@ import static myproject.mockjang.domain.records.simple.QSimpleRecord.simpleRecor
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import myproject.mockjang.domain.records.RecordType;
 import org.springframework.stereotype.Repository;
@@ -43,7 +45,9 @@ public class SimpleRecordQueryRepository {
       predicate.and(simpleRecord.recordType.eq(recordType));
     }
     if (date != null) {
-      predicate.and(simpleRecord.date.eq(date));
+      LocalDateTime startDate = date.toLocalDate().atStartOfDay();
+      LocalDateTime endDate = date.toLocalDate().atTime(LocalTime.MAX);
+      predicate.and(simpleRecord.date.between(startDate, endDate));
     }
     return predicate;
   }
