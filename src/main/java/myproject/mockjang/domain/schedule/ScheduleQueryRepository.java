@@ -8,6 +8,7 @@ import static myproject.mockjang.domain.schedule.ScheduleStatus.*;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.domain.records.RecordType;
@@ -57,10 +58,14 @@ public class ScheduleQueryRepository {
       predicate.and(schedule.scheduleStatus.eq(scheduleStatus));
     }
     if (targetDate != null) {
-      predicate.and(schedule.targetDate.eq(targetDate));
+      LocalDateTime startOfDay = targetDate.toLocalDate().atStartOfDay();
+      LocalDateTime endOfDay = targetDate.toLocalDate().atTime(LocalTime.MAX);
+      predicate.and(schedule.targetDate.between(startOfDay, endOfDay));
     }
     if (startDate != null) {
-      predicate.and(schedule.startDate.eq(startDate));
+      LocalDateTime startOfDay = startDate.toLocalDate().atStartOfDay();
+      LocalDateTime endOfDay = startDate.toLocalDate().atTime(LocalTime.MAX);
+      predicate.and(schedule.startDate.between(startOfDay, endOfDay));
     }
     return predicate;
   }
