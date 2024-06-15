@@ -79,8 +79,8 @@ public class ScheduleService {
     return scheduleQueryRepository.findAllScheduleExceptExpired();
   }
 
-  public void calculateScheduleStatus(Schedule schedule, LocalDateTime readDate) {
-    schedule.calculateScheduleType(readDate);
+  private void calculateScheduleStatus(Schedule schedule, LocalDateTime readDate) {
+    schedule.calculateScheduleStatus(readDate);
   }
 
   private void validateSchedule(LocalDateTime startDate, LocalDateTime targetTime) {
