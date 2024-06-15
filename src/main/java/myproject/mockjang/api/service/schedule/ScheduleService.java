@@ -88,4 +88,8 @@ public class ScheduleService {
       throw new ScheduleFormException(Exceptions.DOMAIN_SCHEDULE_FORM);
     }
   }
+
+  public List<Long> calculateUpcomingSchedule(LocalDateTime date) {
+    return scheduleQueryRepository.findAllUpcomingSchedules(date);
+  }
 }

@@ -35,6 +35,11 @@ public class ScheduleController {
     return ApiResponse.ok(scheduleService.showThisWeekScheduleFromToday(date));
   }
 
+  @GetMapping("/upcoming/{date}")
+  public ApiResponse<List<Long>> calculateUpcomingSchedule(@PathVariable LocalDateTime date) {
+    return ApiResponse.ok(scheduleService.calculateUpcomingSchedule(date));
+  }
+
   @GetMapping("/trace-status/{date}")
   public ApiResponse<Void> calculateScheduleStatusExceptExpired(@PathVariable LocalDateTime date) {
     scheduleService.calculateScheduleStatusExceptExpired(date);
@@ -53,12 +58,12 @@ public class ScheduleController {
   }
 
   @PostMapping("/update")
-  public ApiResponse<ScheduleResponse> update(@Valid @RequestBody ScheduleUpdateRequest request) {
+  public ApiResponse<Void> update(@Valid @RequestBody ScheduleUpdateRequest request) {
     scheduleService.update(request.toServiceRequest());
     return ApiResponse.noContent();
   }
 
-  @DeleteMapping("{id}")
+  @DeleteMapping("/{id}")
   public ApiResponse<Void> remove(@PathVariable Long id) {
     scheduleService.remove(id);
     return ApiResponse.noContent();

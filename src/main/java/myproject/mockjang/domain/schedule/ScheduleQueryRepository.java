@@ -19,6 +19,13 @@ public class ScheduleQueryRepository {
 
   private final JPAQueryFactory queryFactory;
 
+  public List<Long> findAllUpcomingSchedules(LocalDateTime date){
+    return queryFactory.select(schedule.id)
+        .from(schedule)
+        .where(schedule.startDate.eq(date.plusDays(1)))
+        .fetch();
+  }
+
   public List<Schedule> findAllScheduleExceptExpired() {
     return queryFactory.selectFrom(schedule)
         .where(schedule.scheduleStatus.ne(EXPIRED))

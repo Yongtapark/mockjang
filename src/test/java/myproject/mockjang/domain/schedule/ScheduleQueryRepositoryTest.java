@@ -3,6 +3,7 @@ package myproject.mockjang.domain.schedule;
 import static myproject.mockjang.domain.schedule.ScheduleStatus.EXPIRED;
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
@@ -185,5 +186,28 @@ class ScheduleQueryRepositoryTest extends IntegrationTestSupport {
     //then
     assertThat(schedules).containsOnly(schedule1, schedule2, schedule3, schedule5);
     assertThat(schedules).doesNotContain(schedule4);
+  }
+
+  @DisplayName("조회일 기준 다음날 시작하는 일정들의 id값을 조회한다.")
+  @Test
+  void findAllUpcomingSchedules() {
+    //given
+    Schedule schedule0 = createAndSave(READ_DATE.minusDays(1), READ_DATE.plusDays(1));
+    Schedule schedule1 = createAndSave(READ_DATE, READ_DATE.plusDays(1));
+    Schedule schedule2 = createAndSave(READ_DATE.plusDays(1), READ_DATE.plusDays(1));
+    Schedule schedule3 = createAndSave(READ_DATE.plusDays(2), READ_DATE.plusDays(3));
+
+    //when
+    List<Long> ids = scheduleQueryRepository.findAllUpcomingSchedules(READ_DATE);
+
+    //then
+    assertThat(ids).containsExactly(schedule2.getId());
+    assertThat(ids).doesNotContain(schedule0.getId(),schedule1.getId(), schedule3.getId());
+  }
+
+  private Schedule createAndSave(LocalDateTime startDate, LocalDateTime targetDate) {
+    Schedule schedule = Schedule.create(startDate, targetDate,
+        myproject.mockjang.TestConstants.SCHEDULE_CONTEXT_1);
+    return scheduleRepository.save(schedule);
   }
 }
