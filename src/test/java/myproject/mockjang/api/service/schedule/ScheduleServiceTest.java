@@ -3,10 +3,6 @@ package myproject.mockjang.api.service.schedule;
 import static myproject.mockjang.domain.schedule.ScheduleStatus.IN_PROGRESS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -17,7 +13,6 @@ import myproject.mockjang.api.service.schedule.request.ScheduleCreateServiceRequ
 import myproject.mockjang.api.service.schedule.request.ScheduleSearchServiceRequest;
 import myproject.mockjang.api.service.schedule.request.ScheduleUpdateServiceRequest;
 import myproject.mockjang.domain.schedule.Schedule;
-import myproject.mockjang.domain.schedule.ScheduleQueryRepository;
 import myproject.mockjang.domain.schedule.ScheduleRepository;
 import myproject.mockjang.domain.schedule.ScheduleStatus;
 import myproject.mockjang.exception.Exceptions;
@@ -25,14 +20,12 @@ import myproject.mockjang.exception.schdules.ScheduleFormException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 
 class ScheduleServiceTest extends IntegrationTestSupport {
 
   @Autowired
   private ScheduleService scheduleService;
-  @SpyBean
-  private ScheduleQueryRepository scheduleQueryRepository;
+
   @Autowired
   private ScheduleRepository scheduleRepository;
 
