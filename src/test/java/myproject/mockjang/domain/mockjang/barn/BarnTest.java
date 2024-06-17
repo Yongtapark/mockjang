@@ -8,6 +8,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.exception.common.AlreadyExistException;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,6 +28,23 @@ class BarnTest extends IntegrationTestSupport {
     barn.addPen(pen);
 
     //then
+    assertThat(barn.getPens()).hasSize(1);
+    assertThat(barn.getPens()).contains(pen);
+  }
+
+  @DisplayName("축사에서 동일 id로 축사칸을 등록하면 예외를 발생시킨다.")
+  @Test
+  void registerWithDuplicatedPen() {
+    //given
+    Barn barn = Barn.createBarn("1번축사");
+
+    Pen pen = Pen.createPen("1-1");
+
+    //then //when
+    barn.addPen(pen);
+    assertThatThrownBy(()->barn.addPen(pen)).isInstanceOf(AlreadyExistException.class).hasMessage(
+        Exceptions.COMMON_ALREADY_EXIST.formatMessage(pen.getCodeId()));
+
     assertThat(barn.getPens()).hasSize(1);
     assertThat(barn.getPens()).contains(pen);
   }
