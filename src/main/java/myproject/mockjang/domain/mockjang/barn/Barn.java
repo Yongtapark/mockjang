@@ -19,6 +19,7 @@ import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
 import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.exception.common.AlreadyExistException;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -56,6 +57,9 @@ public class Barn implements Mockjang {
   }
 
   public void addPen(Pen pen) {
+    if(pens.contains(pen)){
+      throw new AlreadyExistException(Exceptions.COMMON_ALREADY_EXIST.formatMessage(pen.getCodeId()));
+    }
     pens.add(pen);
   }
 
@@ -70,7 +74,9 @@ public class Barn implements Mockjang {
   }
 
   public void registerDailyRecord(BarnRecord record) {
-    records.add(record);
+    if(!records.contains(record)){
+      records.add(record);
+    }
   }
 
   @Override
@@ -90,9 +96,6 @@ public class Barn implements Mockjang {
 
   @Override
   public void removeOneOfUnderGroups(Mockjang mockjang) {
-    if (pens.isEmpty()) {
-      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
-    }
     if (!pens.remove(mockjang)) {
       throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
     }
