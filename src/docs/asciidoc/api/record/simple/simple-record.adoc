@@ -1,0 +1,33 @@
+[[simpleRecord-create]]
+=== 신규 노트 등록
+
+==== HTTP Request
+include::{snippets}/simpleRecord-new/http-request.adoc[]
+include::{snippets}/simpleRecord-new/request-fields.adoc[]
+
+==== HTTP Response
+include::{snippets}/simpleRecord-new/http-response.adoc[]
+include::{snippets}/simpleRecord-new/response-fields.adoc[]
+
+[[simpleRecord-findSimpleRecordById]]
+=== 단일 노트 조회
+
+==== HTTP Request
+include::{snippets}/simpleRecord-findSimpleRecordById/http-request.adoc[]
+
+
+==== HTTP Response
+include::{snippets}/simpleRecord-findSimpleRecordById/http-response.adoc[]
+include::{snippets}/simpleRecord-findSimpleRecordById/response-fields.adoc[]
+
+[[simpleRecord-update]]
+=== 노트 수정
+
+==== HTTP Request
+include::{snippets}/simpleRecord-update/http-request.adoc[]
+include::{snippets}/simpleRecord-update/request-fields.adoc[]
+
+
+==== HTTP Response
+include::{snippets}/simpleRecord-update/http-response.adoc[]
+include::{snippets}/simpleRecord-update/response-fields.adoc[]

@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.HashMap;
 import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.note_parser.simple.request.SimpleNoteParserCreateRequest;
-import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
+import myproject.mockjang.api.service.note_parser.mockjang.response.RecordParserResponse;
 import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // given
     HashMap<String, Integer> names = new HashMap<>();
     names.put(PARSER_BARN_CODE_ID_1, 1);
-    NoteParserResponse response = NoteParserResponse.builder().names(names).build();
+    RecordParserResponse response = RecordParserResponse.builder().names(names).build();
 
     String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
     SimpleNoteParserCreateRequest request = SimpleNoteParserCreateRequest.builder().context(context)
@@ -33,7 +33,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // when // then
     when(simpleNoteParserService.parseNoteAndSaveRecord(any())).thenReturn(response);
     mockMvc.perform(
-        post("/api/v0/simple_records/new").content(objectMapper.writeValueAsString(request))
+        post("/api/v0/simple-parser/new").content(objectMapper.writeValueAsString(request))
             .contentType(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
   }
 
@@ -43,7 +43,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // given
     HashMap<String, Integer> names = new HashMap<>();
     names.put(PARSER_BARN_CODE_ID_1, 1);
-    NoteParserResponse response = NoteParserResponse.builder().names(names).build();
+    RecordParserResponse response = RecordParserResponse.builder().names(names).build();
 
     String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
     SimpleNoteParserCreateRequest request = SimpleNoteParserCreateRequest.builder().context(null)
@@ -52,7 +52,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // when // then
     when(simpleNoteParserService.parseNoteAndSaveRecord(any())).thenReturn(response);
     mockMvc.perform(
-            post("/api/v0/simple_records/new").content(objectMapper.writeValueAsString(request))
+            post("/api/v0/simple-parser/new").content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print())
         .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("400"))
         .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
@@ -65,7 +65,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // given
     HashMap<String, Integer> names = new HashMap<>();
     names.put(PARSER_BARN_CODE_ID_1, 1);
-    NoteParserResponse response = NoteParserResponse.builder().names(names).build();
+    RecordParserResponse response = RecordParserResponse.builder().names(names).build();
 
     String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
     SimpleNoteParserCreateRequest request = SimpleNoteParserCreateRequest.builder().context(context)
@@ -74,7 +74,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // when // then
     when(simpleNoteParserService.parseNoteAndSaveRecord(any())).thenReturn(response);
     mockMvc.perform(
-            post("/api/v0/simple_records/new").content(objectMapper.writeValueAsString(request))
+            post("/api/v0/simple-parser/new").content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print())
         .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("400"))
         .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
@@ -87,7 +87,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // given
     HashMap<String, Integer> names = new HashMap<>();
     names.put(PARSER_BARN_CODE_ID_1, 1);
-    NoteParserResponse response = NoteParserResponse.builder().names(names).build();
+    RecordParserResponse response = RecordParserResponse.builder().names(names).build();
 
     String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
     SimpleNoteParserCreateRequest request = SimpleNoteParserCreateRequest.builder().context(context)
@@ -96,7 +96,7 @@ class SimpleNoteParserControllerTest extends ControllerTestSupport {
     // when // then
     when(simpleNoteParserService.parseNoteAndSaveRecord(any())).thenReturn(response);
     mockMvc.perform(
-            post("/api/v0/simple_records/new").content(objectMapper.writeValueAsString(request))
+            post("/api/v0/simple-parser/new").content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)).andDo(print())
         .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("400"))
         .andExpect(jsonPath("$.status").value("BAD_REQUEST"))

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.note_parser.mockjang.request.NoteParserCreateRequest;
-import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
+import myproject.mockjang.api.service.note_parser.mockjang.response.RecordParserResponse;
 import myproject.mockjang.domain.records.RecordType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ class NoteParserControllerTest extends ControllerTestSupport {
     LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
     HashMap<String, Integer> names = new HashMap<>();
     names.put(PARSER_BARN_CODE_ID_1, 1);
-    NoteParserResponse response = NoteParserResponse.builder().names(names).build();
+    RecordParserResponse response = RecordParserResponse.builder().names(names).build();
 
     String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
     NoteParserCreateRequest request = NoteParserCreateRequest.builder()

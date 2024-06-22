@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.HashMap;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
+import myproject.mockjang.api.service.note_parser.mockjang.response.RecordParserResponse;
 import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserCreateServiceRequest;
 import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserUploadTempDataServiceRequest;
 import myproject.mockjang.domain.note_parser.mockjang.RecordAndCodeId;
@@ -112,7 +112,7 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
         .date(TEMP_DATE).recordType(RecordType.DAILY).names(new HashMap<>()).context(context)
         .build();
     //when
-    NoteParserResponse response = simpleNoteParserService.parseNoteAndSaveRecord(request);
+    RecordParserResponse response = simpleNoteParserService.parseNoteAndSaveRecord(request);
 
     //then
     assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_1, 2);

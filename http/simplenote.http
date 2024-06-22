@@ -1,4 +1,4 @@
-POST http://localhost:8081/api/v0/simple_records/new
+POST http://localhost:8081/api/v0/simple-parser/new
 Content-Type: application/json
 
 {

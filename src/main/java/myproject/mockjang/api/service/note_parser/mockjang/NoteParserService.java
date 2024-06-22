@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.note_parser.mockjang.request.NoteParserCreateServiceRequest;
-import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
+import myproject.mockjang.api.service.note_parser.mockjang.response.RecordParserResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.cow.Cow;
@@ -48,7 +48,7 @@ public class NoteParserService {
   private final CowRecordRepository cowRecordRepository;
   private final NoteParser<MockjangNoteContainer> noteParserV0;
 
-  public NoteParserResponse parseNoteAndSaveRecord(NoteParserCreateServiceRequest request) {
+  public RecordParserResponse parseNoteAndSaveRecord(NoteParserCreateServiceRequest request) {
     String context = request.getContext();
     LocalDateTime date = request.getDate();
     RecordType recordType = request.getRecordType();
@@ -66,7 +66,7 @@ public class NoteParserService {
         saveCowRecord(regex, immutableMap, names, date, recordType);
       }
     }
-    return NoteParserResponse.of(names);
+    return RecordParserResponse.of(names);
   }
 
   private void saveCowRecord(NoteRegex regex, Map<NoteRegex, List<RecordAndCodeId>> immutableMap,

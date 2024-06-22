@@ -22,6 +22,8 @@ import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
+import myproject.mockjang.exception.Exceptions;
+import myproject.mockjang.exception.common.AlreadyExistException;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
 import org.hibernate.annotations.SQLDelete;
@@ -92,17 +94,16 @@ public class Pen implements Mockjang {
   }
 
   public void addCow(Cow cow) {
+    if (cows.contains(cow)) {
+      throw new AlreadyExistException(COMMON_ALREADY_EXIST.formatMessage(cow.getCodeId()));
+    }
     cows.add(cow);
   }
 
-  public void addCow(List<Cow> cows) {
-    for (Cow cow : cows) {
-      addCow(cow);
-    }
-  }
-
   public void registerDailyRecord(PenRecord record) {
-    records.add(record);
+    if (!records.contains(record)) {
+      records.add(record);
+    }
   }
 
   public void deleteCow(Cow cow) {
@@ -119,9 +120,6 @@ public class Pen implements Mockjang {
 
   @Override
   public void removeOneOfUnderGroups(Mockjang mockjang) {
-    if (cows.isEmpty()) {
-      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
-    }
     if (!cows.remove(mockjang)) {
       throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
     }

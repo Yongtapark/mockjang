@@ -122,7 +122,6 @@ public class Cow implements Mockjang {
   }
 
   private void changeBarn(Barn barn) {
-    this.barn = null;
     this.barn = barn;
   }
 

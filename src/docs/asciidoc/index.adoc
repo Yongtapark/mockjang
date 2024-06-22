@@ -1,0 +1,20 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= Mockjang REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[SimpleNoteParser-API]]
+== Simple Note Parser API
+
+include::api/note_parser/simple/simple-note-parser.adoc[]
+
+[[SimpleRecord-API]]
+== Simple Record API
+
+include::api/record/simple/simple-record.adoc[]

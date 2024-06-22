@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.note_parser.mockjang.request.NoteParserCreateServiceRequest;
-import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
+import myproject.mockjang.api.service.note_parser.mockjang.response.RecordParserResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.cow.Cow;
@@ -139,7 +139,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
     NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
         .names(new HashMap<>()).context(context).recordType(RecordType.DAILY).date(TEMP_DATE)
         .build();
-    NoteParserResponse response = noteParserService.parseNoteAndSaveRecord(request);
+    RecordParserResponse response = noteParserService.parseNoteAndSaveRecord(request);
 
     //then
     assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_1, 2);

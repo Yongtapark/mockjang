@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
+import myproject.mockjang.api.service.note_parser.mockjang.response.RecordParserResponse;
 import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserCreateServiceRequest;
 import myproject.mockjang.api.service.note_parser.simple.request.SimpleNoteParserUploadTempDataServiceRequest;
 import myproject.mockjang.domain.note_parser.NoteParser;
@@ -25,7 +25,7 @@ public class SimpleNoteParserService {
   private final SimpleRecordRepository simpleRecordRepository;
   private final NoteParser<SimpleRecordContainer> simpleNoteParserV0;
 
-  public NoteParserResponse parseNoteAndSaveRecord(SimpleNoteParserCreateServiceRequest request) {
+  public RecordParserResponse parseNoteAndSaveRecord(SimpleNoteParserCreateServiceRequest request) {
     String context = request.getContext();
     LocalDateTime date = request.getDate();
     RecordType recordType = request.getRecordType();
@@ -40,7 +40,7 @@ public class SimpleNoteParserService {
       simpleRecordRepository.save(SimpleRecord.create(codeId, recordType, date, note));
     }
 
-    return NoteParserResponse.of(names);
+    return RecordParserResponse.of(names);
   }
 
   private List<RecordAndCodeId> parseNote(String context) {

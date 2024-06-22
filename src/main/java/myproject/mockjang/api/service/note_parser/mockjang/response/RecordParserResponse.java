@@ -5,17 +5,17 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class NoteParserResponse {
+public class RecordParserResponse {
 
   private HashMap<String, Integer> names;
 
   @Builder
-  private NoteParserResponse(HashMap<String, Integer> names) {
+  private RecordParserResponse(HashMap<String, Integer> names) {
     this.names = names;
   }
 
-  public static NoteParserResponse of(HashMap<String, Integer> names) {
-    return NoteParserResponse.builder()
+  public static RecordParserResponse of(HashMap<String, Integer> names) {
+    return RecordParserResponse.builder()
         .names(names)
         .build();
   }

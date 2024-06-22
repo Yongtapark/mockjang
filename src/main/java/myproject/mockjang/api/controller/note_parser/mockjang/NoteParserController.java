@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.ApiResponse;
 import myproject.mockjang.api.controller.note_parser.mockjang.request.NoteParserCreateRequest;
 import myproject.mockjang.api.service.note_parser.mockjang.NoteParserService;
-import myproject.mockjang.api.service.note_parser.mockjang.response.NoteParserResponse;
+import myproject.mockjang.api.service.note_parser.mockjang.response.RecordParserResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ public class NoteParserController {
   private final NoteParserService noteParserService;
 
   @PostMapping("/api/v0/records/new")
-  public ApiResponse<NoteParserResponse> createRecords(
+  public ApiResponse<RecordParserResponse> createRecords(
       @Valid @RequestBody NoteParserCreateRequest request) {
     return ApiResponse.ok(
         noteParserService.parseNoteAndSaveRecord(request.toServiceRequest(new HashMap<>())));
