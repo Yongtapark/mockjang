@@ -10,6 +10,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -17,8 +18,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.List;
 import myproject.mockjang.api.controller.records.simple.SimpleRecordController;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordCreateRequest;
+import myproject.mockjang.api.controller.records.simple.request.SimpleRecordSearchRequest;
 import myproject.mockjang.api.controller.records.simple.request.SimpleRecordUpdateRequest;
 import myproject.mockjang.api.service.records.simple.SimpleRecordService;
 import myproject.mockjang.api.service.records.simple.request.SimpleRecordCreateServiceRequest;
@@ -154,4 +157,94 @@ public class SimpleRecordControllerDocsTest extends RestDocsSupport {
             )
         );
   }
+
+  @DisplayName("코드id, 기록타입, 기록날짜를 통해 기록을 조회한다.")
+  @Test
+  void search() throws Exception {
+    SimpleRecordSearchRequest request = SimpleRecordSearchRequest.builder()
+        .codeId(PARSER_COW_CODE_ID_1)
+        .recordType(RecordType.DAILY)
+        .date(TEMP_DATE)
+        .build();
+
+    SimpleRecordResponse response1 = SimpleRecordResponse.builder().id(1L)
+        .codeId(PARSER_COW_CODE_ID_1).recordType(RecordType.DAILY).date(TEMP_DATE)
+        .record(PARSER_COW_NOTE_1).build();
+
+    SimpleRecordResponse response2 = SimpleRecordResponse.builder().id(2L)
+        .codeId(PARSER_COW_CODE_ID_1).recordType(RecordType.DAILY).date(TEMP_DATE)
+        .record(PARSER_COW_NOTE_2).build();
+
+    given(service.search(any())).willReturn(List.of(response1, response2));
+    mockMvc.perform(post("/api/v0/records/simple")
+            .content(objectMapper.writeValueAsString(request))
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(
+            document("SimpleRecord-search",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                requestFields(
+                    fieldWithPath("codeId").type(JsonFieldType.STRING).optional().description("이름"),
+                    fieldWithPath("recordType").type(JsonFieldType.STRING).optional()
+                        .description("기록 유형"),
+                    fieldWithPath("date").type(JsonFieldType.ARRAY).optional().description("기록 날짜")
+                ),
+                responseFields(
+                    fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+                    fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+                    fieldWithPath("data").type(JsonFieldType.ARRAY).description("응답 데이터"),
+                    fieldWithPath("data[].id").type(JsonFieldType.NUMBER).description("id"),
+                    fieldWithPath("data[].codeId").type(JsonFieldType.STRING).description("이름"),
+                    fieldWithPath("data[].recordType").type(JsonFieldType.STRING)
+                        .description("기록 유형"),
+                    fieldWithPath("data[].date").type(JsonFieldType.ARRAY).description("기록 날짜"),
+                    fieldWithPath("data[].record").type(JsonFieldType.STRING).description("기록 내용")
+                )
+
+            )
+        );
+  }
+
+  @DisplayName("코드 id 이름들을 조회한다.")
+  @Test
+  void getAutoCompleteList() throws Exception {
+
+    given(service.findAllCodeIdWithDistinct()).willReturn(List.of("0001", "0002", "0003"));
+
+    mockMvc.perform(get("/api/v0/records/simple/codeids")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(
+            document(
+                "SimpleRecord-autoComplete",
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+                    fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+                    fieldWithPath("data[]").type(JsonFieldType.ARRAY).description("자동완성 명단")
+                )
+            )
+        );
+  }
+
+  @DisplayName("고유번호를 기반으로 기록을 제거한다")
+  @Test
+  void remove() throws Exception {
+    mockMvc.perform(delete("/api/v0/records/simple/" + 1L)
+            .contentType(MediaType.APPLICATION_JSON))
+        .andDo(
+            document(
+                "SimpleRecord-remove",
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
+                    fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
+                    fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
+                    fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
+                )
+            )
+        );
+  }
+
 }

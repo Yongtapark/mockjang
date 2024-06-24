@@ -31,3 +31,35 @@ include::{snippets}/simpleRecord-update/request-fields.adoc[]
 ==== HTTP Response
 include::{snippets}/simpleRecord-update/http-response.adoc[]
 include::{snippets}/simpleRecord-update/response-fields.adoc[]
+
+[[simpleRecord-remove]]
+=== 노트 제거
+
+==== HTTP Request
+include::{snippets}/simpleRecord-remove/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/simpleRecord-remove/http-response.adoc[]
+include::{snippets}/simpleRecord-remove/response-fields.adoc[]
+
+[[simpleRecord-search]]
+=== 노트 검색
+
+==== HTTP Request
+include::{snippets}/simpleRecord-search/http-request.adoc[]
+include::{snippets}/simpleRecord-search/request-fields.adoc[]
+
+
+==== HTTP Response
+include::{snippets}/simpleRecord-search/http-response.adoc[]
+include::{snippets}/simpleRecord-search/response-fields.adoc[]
+
+[[simpleRecord-autoComplete]]
+=== 자동 완성 명단 반환
+
+==== HTTP Request
+include::{snippets}/simpleRecord-autoComplete/http-request.adoc[]
+
+==== HTTP Response
+include::{snippets}/simpleRecord-autoComplete/http-response.adoc[]
+include::{snippets}/simpleRecord-autoComplete/response-fields.adoc[]
