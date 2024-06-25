@@ -49,10 +49,9 @@ public class CowService extends MockjangServiceAbstract {
   }
 
   public void registerParents(CowRegisterParentsServiceRequest request) {
-    Cow cow = request.getCow();
-    List<Cow> parents = request.getParents();
-    for (Cow parent : parents) {
-      cow.registerParent(parent);
+    Cow cow =findByCodeId(request.getCowId());
+    for (Long parentsId : request.getParentsIds()) {
+      cow.registerParent(findByCodeId(parentsId));
     }
   }
 
@@ -84,6 +83,11 @@ public class CowService extends MockjangServiceAbstract {
     Cow cow = cowRepository.findByCodeId(codeId)
         .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId));
     return CowResponse.of(cow);
+  }
+
+  private Cow findByCodeId(Long cowId) {
+   return cowRepository.findById(cowId)
+            .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST.formatMessage(Cow.class)));
   }
 
   public void delete(Cow cow) {
