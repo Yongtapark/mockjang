@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -235,6 +236,44 @@ class CowServiceTest extends IntegrationTestSupport {
     assertThat(savedCow.getDad()).isEqualTo(dad);
     assertThat(savedMom.getChildren()).containsOnly(cow);
     assertThat(savedDad.getChildren()).containsOnly(cow);
+  }
+
+  @DisplayName("소의 부모 자식 관계를 제거 한다.")
+  @Test
+  void removeParents() {
+    //given
+    LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
+    Cow cow = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, birthDate);
+    Cow mom = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
+    Cow dad = Cow.createCow("0003", Gender.MALE, CowStatus.RAISING, birthDate);
+
+      for (Cow parent : List.of(mom, dad)) {
+      cow.registerParent(parent);
+    }
+
+    cowRepository.save(cow);
+    cowRepository.save(mom);
+    cowRepository.save(dad);
+
+
+
+    //when
+    CowRemoveParentsServiceRequest request = CowRemoveParentsServiceRequest.builder()
+            .cow(cow)
+            .parents(List.of(mom, dad))
+            .build();
+
+    cowService.removeParents(request);
+
+
+    //then
+    Cow savedCow = cowRepository.findById(cow.getId()).orElseThrow();
+    Cow savedMom = cowRepository.findById(mom.getId()).orElseThrow();
+    Cow savedDad = cowRepository.findById(dad.getId()).orElseThrow();
+    assertThat(savedCow.getMom()).isNull();
+    assertThat(savedCow.getDad()).isNull();
+    assertThat(savedMom.getChildren()).doesNotContain(cow);
+    assertThat(savedDad.getChildren()).doesNotContain(cow);
   }
 
   @DisplayName("소 리스트 조회")
