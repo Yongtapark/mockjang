@@ -221,8 +221,8 @@ class CowServiceTest extends IntegrationTestSupport {
     cowRepository.save(dad);
 
     CowRegisterParentsServiceRequest request = CowRegisterParentsServiceRequest.builder()
-            .cow(cow)
-            .parents(List.of(mom, dad))
+            .cowId(cow.getId())
+            .parentsIds(List.of(mom.getId(), dad.getId()))
             .build();
 
     //when
@@ -259,8 +259,8 @@ class CowServiceTest extends IntegrationTestSupport {
 
     //when
     CowRemoveParentsServiceRequest request = CowRemoveParentsServiceRequest.builder()
-            .cow(cow)
-            .parents(List.of(mom, dad))
+            .cowId(cow.getId())
+            .parentsIds(List.of(mom.getId(), dad.getId()))
             .build();
 
     cowService.removeParents(request);

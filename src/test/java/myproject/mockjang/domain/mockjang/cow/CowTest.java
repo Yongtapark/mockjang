@@ -11,8 +11,10 @@ import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
+import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
+import myproject.mockjang.exception.cow.CowParentsException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -146,6 +148,55 @@ class CowTest extends IntegrationTestSupport {
     assertThat(child1.getMom()).isNull();
     assertThat(mom.getChildren()).doesNotContain(child1);
     assertThat(dad.getChildren()).doesNotContain(child1);
+  }
+
+  @DisplayName("자식 소에서 부모 소의 관계를 제거할 때, 어미의 정보가 다르면 예외를 발생 시킨다.")
+  @Test
+  void removeParentWithFakeMom() {
+    //given
+    Cow mom = createCow("0001", Gender.FEMALE);
+    Cow fakeMom = createCow("0005", Gender.FEMALE);
+    Cow dad = createCow("0002", Gender.MALE);
+    Cow child1 = createCow("0003", Gender.MALE);
+
+    child1.registerParent(mom);
+    child1.registerParent(dad);
+
+    //when //then
+    assertThatThrownBy(()->child1.removeParent(fakeMom)).isInstanceOf(CowParentsException.class).hasMessage(
+            Exceptions.DOMAIN_PARENTS_ERROR.formatMessage(fakeMom.getCodeId(),mom.getCodeId()));
+  }
+
+  @DisplayName("자식 소에서 부모 소의 관계를 제거할 때, 아비의 정보가 다르면 예외를 발생 시킨다.")
+  @Test
+  void removeParentWithFakeDad() {
+    //given
+    Cow mom = createCow("0001", Gender.FEMALE);
+    Cow dad = createCow("0002", Gender.MALE);
+    Cow fakeDad = createCow("0005", Gender.FEMALE);
+    Cow child1 = createCow("0003", Gender.MALE);
+
+    child1.registerParent(mom);
+    child1.registerParent(dad);
+
+    //when //then
+    assertThatThrownBy(()->child1.removeParent(fakeDad)).isInstanceOf(CowParentsException.class).hasMessage(
+            Exceptions.DOMAIN_PARENTS_ERROR.formatMessage(fakeDad.getCodeId(),mom.getCodeId()));
+  }
+
+  @DisplayName("자식 소에서 부모 소의 관계를 제거할 때, 제거 하려는 부모 소를 null로 입력 하면 예외를 발생시킨다.")
+  @Test
+  void removeParentWithNull() {
+    //given
+    Cow mom = createCow("0001", Gender.FEMALE);
+    Cow dad = createCow("0002", Gender.MALE);
+    Cow child1 = createCow("0003", Gender.MALE);
+
+    child1.registerParent(mom);
+    child1.registerParent(dad);
+
+    //when //then
+    assertThatThrownBy(()->child1.removeParent(null)).isInstanceOf(NullPointerException.class).hasMessage("parent is null");
   }
 
   @DisplayName("소의 도축상태를 변경한다.")

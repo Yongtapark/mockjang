@@ -68,7 +68,7 @@ class BarnTest extends IntegrationTestSupport {
 
   @DisplayName("축사의 축사칸을 제거한다")
   @Test
-  void deletePen() {
+  void removeOneOfUnderGroups() {
     //given
     Barn barn = Barn.createBarn("1번축사");
     Pen pen1 = Pen.createPen("1-1");
@@ -77,7 +77,7 @@ class BarnTest extends IntegrationTestSupport {
     pen2.registerUpperGroup(barn);
 
     //when
-    barn.deletePen(pen1);
+    barn.removeOneOfUnderGroups(pen1);
 
     List<Pen> pens = barn.getPens();
 
