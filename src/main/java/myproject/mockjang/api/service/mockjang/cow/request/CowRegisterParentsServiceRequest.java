@@ -9,12 +9,12 @@ import myproject.mockjang.domain.mockjang.cow.Cow;
 @Getter
 @NoArgsConstructor
 public class CowRegisterParentsServiceRequest {
-    private Cow cow;
-    private List<Cow> parents;
+    private Long cowId;
+    private List<Long> parentsIds;
 
     @Builder
-    private CowRegisterParentsServiceRequest(Cow cow, List<Cow> parents) {
-        this.cow = cow;
-        this.parents = parents;
+    private CowRegisterParentsServiceRequest(Long cowId, List<Long> parentsIds) {
+        this.cowId = cowId;
+        this.parentsIds = parentsIds;
     }
 }
