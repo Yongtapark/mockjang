@@ -14,6 +14,7 @@ public enum Exceptions {
   COMMON_ALREADY_EXIST("%s(이)가 이미 존재함"),
   //cow,
   DOMAIN_ONLY_SLAUGHTERED_ERROR("cowStatus.slaughtered 이외 설정 시 예외"),
+  DOMAIN_PARENTS_ERROR("부모 제거에 실패. expect codeId : %s, actual codeId : %s"),
   //feed
   DOMAIN_NEGATIVE_ERROR("음수 입력 시 예외 발생"),
   //record
@@ -38,5 +39,9 @@ public enum Exceptions {
 
   public String formatMessage(String content) {
     return String.format(getMessage(), content);
+  }
+
+  public String formatMessage(String content1,String content2) {
+    return String.format(getMessage(), content1,content2);
   }
 }
