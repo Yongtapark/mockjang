@@ -126,6 +126,28 @@ class CowTest extends IntegrationTestSupport {
     assertThat(mom.getChildren()).hasSize(1);
   }
 
+  @DisplayName("자식 소에서 부모 소의 관계를 제거한다.")
+  @Test
+  void removeParent() {
+    //given
+    Cow mom = createCow("0001", Gender.FEMALE);
+    Cow dad = createCow("0002", Gender.MALE);
+    Cow child1 = createCow("0003", Gender.MALE);
+
+    child1.registerParent(mom);
+    child1.registerParent(dad);
+
+    //when
+    child1.removeParent(mom);
+    child1.removeParent(dad);
+
+    //then
+    assertThat(child1.getDad()).isNull();
+    assertThat(child1.getMom()).isNull();
+    assertThat(mom.getChildren()).doesNotContain(child1);
+    assertThat(dad.getChildren()).doesNotContain(child1);
+  }
+
   @DisplayName("소의 도축상태를 변경한다.")
   @Test
   void changeCowStatus() {
