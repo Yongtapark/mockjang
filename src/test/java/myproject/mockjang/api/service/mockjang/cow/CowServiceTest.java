@@ -13,6 +13,7 @@ import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -218,8 +219,13 @@ class CowServiceTest extends IntegrationTestSupport {
     cowRepository.save(mom);
     cowRepository.save(dad);
 
+    CowRegisterParentsServiceRequest request = CowRegisterParentsServiceRequest.builder()
+            .cow(cow)
+            .parents(List.of(mom, dad))
+            .build();
+
     //when
-    cowService.registerParents(cow, List.of(mom, dad));
+    cowService.registerParents(request);
 
     //then
     Cow savedCow = cowRepository.findById(cow.getId()).orElseThrow();
