@@ -69,10 +69,6 @@ public class Barn implements Mockjang {
     }
   }
 
-  public void deletePen(Pen pen) {
-    pens.remove(pen);
-  }
-
   public void registerDailyRecord(BarnRecord record) {
     if(!records.contains(record)){
       records.add(record);
