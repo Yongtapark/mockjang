@@ -8,6 +8,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowRepository;
@@ -46,9 +47,17 @@ public class CowService extends MockjangServiceAbstract {
     cow.changeUpperGroup(pen);
   }
 
-  public void registerParents(Cow cow, List<Cow> parents) {
+  public void registerParents(CowRegisterParentsServiceRequest request) {
+    Cow cow = request.getCow();
+    List<Cow> parents = request.getParents();
     for (Cow parent : parents) {
       cow.registerParent(parent);
+    }
+  }
+
+  public void removeParents(Cow cow, List<Cow> parents){
+    for (Cow parent : parents) {
+      cow.removeParent(parent);
     }
   }
 
