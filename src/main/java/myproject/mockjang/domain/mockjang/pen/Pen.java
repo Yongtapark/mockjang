@@ -87,7 +87,7 @@ public class Pen implements Mockjang {
   @Override
   public void changeUpperGroup(Mockjang mockjang) {
     if (mockjang instanceof Barn barn) {
-      this.barn.deletePen(this);
+      this.barn.removeOneOfUnderGroups(this);
       this.barn = null;
       registerUpperGroup(barn);
     }
@@ -104,10 +104,6 @@ public class Pen implements Mockjang {
     if (!records.contains(record)) {
       records.add(record);
     }
-  }
-
-  public void deleteCow(Cow cow) {
-    cows.remove(cow);
   }
 
   @Override
