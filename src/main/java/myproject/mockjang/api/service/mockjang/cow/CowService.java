@@ -56,10 +56,9 @@ public class CowService extends MockjangServiceAbstract {
   }
 
   public void removeParents(CowRemoveParentsServiceRequest request){
-    Cow cow = request.getCow();
-    List<Cow> parents = request.getParents();
-    for (Cow parent : parents) {
-      cow.removeParent(parent);
+    Cow cow =findByCodeId(request.getCowId());
+    for (Long parentsId : request.getParentsIds()) {
+      cow.removeParent(findByCodeId(parentsId));
     }
   }
 
