@@ -17,9 +17,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,9 +31,11 @@ import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
+import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.NotExistException;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
+import myproject.mockjang.exception.cow.CowParentsException;
 import myproject.mockjang.exception.cow.CowStatusException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -164,13 +168,37 @@ public class Cow implements Mockjang {
     }
 
     public void removeParent(Cow parent) {
-        if (parent.gender.equals(Gender.FEMALE)) {
-            this.mom.removeChild(this);
-            this.mom=null;
-            return;
+        try {
+            if (parent == null) {
+                throw new NullPointerException("parent is null");
+            }
+
+            if (removeIfParent(parent, "mom")) {
+                return;
+            } else if (removeIfParent(parent, "dad")) {
+                return;
+            }
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException(String.format("classLoader error : %s", e));
         }
-        this.dad.removeChild(this);
-        this.dad=null;
+
+    }
+
+    private boolean removeIfParent(Cow parent, String parentType)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field findField = this.getClass().getDeclaredField(parentType);
+        findField.setAccessible(true);
+        Cow actualParent = (Cow) findField.get(this);
+
+        if (actualParent == null) {
+            return false;
+        }
+        if (actualParent.equals(parent)) {
+            actualParent.removeChild(this);
+            findField.set(this, null);
+            return true;
+        }
+        throw new CowParentsException(Exceptions.DOMAIN_PARENTS_ERROR.formatMessage(parent.getCodeId(), actualParent.getCodeId()));
     }
 
     public void registerRecord(CowRecord record) {
@@ -206,8 +234,32 @@ public class Cow implements Mockjang {
     }
 
     public void removeChild(Cow child) {
-        if(!children.remove(child)){
+        if (!children.remove(child)) {
             throw new NotExistException(COMMON_NOT_EXIST, child.getCodeId());
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Cow cow = (Cow) o;
+        return deleted == cow.deleted && Objects.equals(id, cow.id) && Objects.equals(codeId,
+                cow.codeId) && Objects.equals(birthDate, cow.birthDate) && gender == cow.gender
+                && cowStatus == cow.cowStatus && Objects.equals(barn, cow.barn) && Objects.equals(pen,
+                cow.pen) && Objects.equals(mom, cow.mom) && Objects.equals(dad, cow.dad)
+                && Objects.equals(children, cow.children) && Objects.equals(feedConsumptions,
+                cow.feedConsumptions) && Objects.equals(records, cow.records) && Objects.equals(
+                unitPrice, cow.unitPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, codeId, birthDate, gender, cowStatus, barn, pen, mom, dad, children, feedConsumptions,
+                records, unitPrice, deleted);
     }
 }
