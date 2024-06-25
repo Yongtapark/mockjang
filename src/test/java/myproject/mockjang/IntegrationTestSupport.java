@@ -17,8 +17,8 @@ public abstract class IntegrationTestSupport extends TestConstants {
     return Cow.builder().codeId(number).build();
   }
 
-  protected static Cow createCow(String cowCode, Gender gender) {
-    return Cow.builder().codeId(cowCode).gender(gender).build();
+  protected static Cow createCow(String codeId, Gender gender) {
+    return Cow.builder().codeId(codeId).gender(gender).build();
   }
 
   protected static Cow createCow(String cowCode, Gender gender, CowStatus cowStatus) {
