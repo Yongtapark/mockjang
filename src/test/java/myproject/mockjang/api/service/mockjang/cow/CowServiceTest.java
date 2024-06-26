@@ -12,8 +12,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.api.service.mockjang.cow.request.CowChangeCowStatusServiceRequest;
-import myproject.mockjang.api.service.mockjang.cow.request.CowChangePenServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowUpdateCowStatusServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowUpdatePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterUnitPriceServiceRequest;
@@ -74,18 +75,18 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("소의 상태를 변경한다.")
   @Test
-  void changeCowStatus() {
+  void updateCowStatus() {
     //given
     Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE);
     cowRepository.save(cow);
 
-    CowChangeCowStatusServiceRequest request = CowChangeCowStatusServiceRequest.builder()
+    CowUpdateCowStatusServiceRequest request = CowUpdateCowStatusServiceRequest.builder()
             .cowId(cow.getId())
             .cowStatus(CowStatus.SLAUGHTERED)
             .build();
 
     //when
-    cowService.changeCowStatus(request);
+    cowService.updateCowStatus(request);
 
     //then
     assertThat(cow.getCowStatus()).isEqualTo(CowStatus.SLAUGHTERED);
@@ -131,7 +132,7 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사칸을 변경 할 수 있다.")
   @Test
-  void changePen() {
+  void updatePen() {
     //given
     Barn barn1 = Barn.createBarn(PARSER_BARN_CODE_ID_1);
     Barn barn2 = Barn.createBarn(PARSER_BARN_CODE_ID_2);
@@ -150,12 +151,12 @@ class CowServiceTest extends IntegrationTestSupport {
     cow.registerUpperGroup(pen1);
     cowRepository.save(cow);
 
-    CowChangePenServiceRequest request = CowChangePenServiceRequest.builder()
+    CowUpdatePenServiceRequest request = CowUpdatePenServiceRequest.builder()
             .cowId(cow.getId())
             .penId(pen2.getId()).build();
 
     //when
-    cowService.changePen(request);
+    cowService.updatePen(request);
 
     List<Cow> cows1 = penRepository.findById(pen1.getId()).orElseThrow().getCows();
     List<Cow> cows2 = penRepository.findById(pen2.getId()).orElseThrow().getCows();
@@ -169,16 +170,17 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("소를 제거하면 축사칸의 리스트에서도 제거된다.")
   @Test
-  void delete() {
+  void remove() {
     //given
     Pen pen = Pen.createPen(PARSER_BARN_CODE_ID_1);
     penRepository.save(pen);
     Cow cow = createCow(PARSER_COW_CODE_ID_1);
     cow.registerUpperGroup(pen);
     cowRepository.save(cow);
+    CowRemoveServiceRequest request = CowRemoveServiceRequest.builder().cowId(cow.getId()).build();
 
     //when
-    cowService.delete(cow);
+    cowService.remove(request);
 
     //then
     assertThatThrownBy(() -> cowRepository.findById(cow.getId()).orElseThrow())
