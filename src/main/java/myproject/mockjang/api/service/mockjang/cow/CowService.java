@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
+import myproject.mockjang.api.service.mockjang.cow.request.CowChangePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveParentsServiceRequest;
@@ -44,21 +45,23 @@ public class CowService extends MockjangServiceAbstract {
 
   }
 
-  public void changeUpperGroup(Cow cow, Pen pen) {
+  public void changePen(CowChangePenServiceRequest request) {
+    Cow cow = findCowById(request.getCowId());
+    Pen pen = findPenById(request.getPenId());
     cow.changeUpperGroup(pen);
   }
 
   public void registerParents(CowRegisterParentsServiceRequest request) {
-    Cow cow =findByCodeId(request.getCowId());
+    Cow cow =findCowById(request.getCowId());
     for (Long parentsId : request.getParentsIds()) {
-      cow.registerParent(findByCodeId(parentsId));
+      cow.registerParent(findCowById(parentsId));
     }
   }
 
   public void removeParents(CowRemoveParentsServiceRequest request){
-    Cow cow =findByCodeId(request.getCowId());
+    Cow cow =findCowById(request.getCowId());
     for (Long parentsId : request.getParentsIds()) {
-      cow.removeParent(findByCodeId(parentsId));
+      cow.removeParent(findCowById(parentsId));
     }
   }
 
@@ -84,9 +87,14 @@ public class CowService extends MockjangServiceAbstract {
     return CowResponse.of(cow);
   }
 
-  private Cow findByCodeId(Long cowId) {
+  private Cow findCowById(Long cowId) {
    return cowRepository.findById(cowId)
             .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST.formatMessage(Cow.class)));
+  }
+
+  private Pen findPenById(Long penId){
+    return penRepository.findById(penId)
+            .orElseThrow(()->new NotExistException(COMMON_NOT_EXIST.formatMessage(Pen.class)));
   }
 
   public void delete(Cow cow) {
