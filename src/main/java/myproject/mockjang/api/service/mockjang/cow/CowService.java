@@ -7,9 +7,11 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
+import myproject.mockjang.api.service.mockjang.cow.request.CowChangeCowStatusServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowChangePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterUnitPriceServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.domain.mockjang.cow.Cow;
@@ -65,15 +67,16 @@ public class CowService extends MockjangServiceAbstract {
     }
   }
 
-  public void registerUnitPrice(Cow cow, Integer unitPrice) {
+  public void registerUnitPrice(CowRegisterUnitPriceServiceRequest request) {
+    Cow cow =findCowById(request.getCowId());
     if (cow.getCowStatus() == null || !cow.getCowStatus().equals(CowStatus.SLAUGHTERED)) {
       throw new CowStatusException(BUSINESS_ONLY_SLAUGHTERED_ERROR);
     }
-    cow.registerUnitPrice(unitPrice);
+    cow.registerUnitPrice(request.getUnitPrice());
   }
 
-  public void changeCowStatus(Cow cow, CowStatus cowStatus) {
-    cow.changeCowStatus(cowStatus);
+  public void changeCowStatus(CowChangeCowStatusServiceRequest request) {
+    findCowById(request.getCowId()).changeCowStatus(request.getCowStatus());
   }
 
   public List<CowResponse> findAll() {
