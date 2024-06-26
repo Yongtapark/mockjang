@@ -15,6 +15,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import myproject.mockjang.domain.AuditingEntity;
 import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.mockjang.barn.BarnRecord;
@@ -31,7 +32,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @SQLDelete(sql = "UPDATE barn SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @EntityListeners(AuditingEntityListener.class)
-public class Barn implements Mockjang {
+public class Barn extends AuditingEntity implements Mockjang{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

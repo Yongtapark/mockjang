@@ -28,6 +28,7 @@ public class PenRecord extends Records {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
   @ManyToOne(fetch = FetchType.LAZY)
   private Pen pen;
 

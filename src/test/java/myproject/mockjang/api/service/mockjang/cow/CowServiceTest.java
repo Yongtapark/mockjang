@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.api.service.mockjang.cow.request.CowChangePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveParentsServiceRequest;
@@ -113,7 +114,7 @@ class CowServiceTest extends IntegrationTestSupport {
 
   @DisplayName("축사칸을 변경 할 수 있다.")
   @Test
-  void changeUpperGroup() {
+  void changePen() {
     //given
     Barn barn1 = Barn.createBarn(PARSER_BARN_CODE_ID_1);
     Barn barn2 = Barn.createBarn(PARSER_BARN_CODE_ID_2);
@@ -132,8 +133,12 @@ class CowServiceTest extends IntegrationTestSupport {
     cow.registerUpperGroup(pen1);
     cowRepository.save(cow);
 
+    CowChangePenServiceRequest request = CowChangePenServiceRequest.builder()
+            .cowId(cow.getId())
+            .penId(pen2.getId()).build();
+
     //when
-    cow.changeUpperGroup(pen2);
+    cowService.changePen(request);
 
     List<Cow> cows1 = penRepository.findById(pen1.getId()).orElseThrow().getCows();
     List<Cow> cows2 = penRepository.findById(pen2.getId()).orElseThrow().getCows();

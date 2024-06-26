@@ -5,6 +5,9 @@ import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -18,7 +21,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public abstract class Records extends AuditingEntity {
 
   private String record;
+
   private LocalDateTime date;
+
   @Enumerated(EnumType.STRING)
   private RecordType recordType;
 
