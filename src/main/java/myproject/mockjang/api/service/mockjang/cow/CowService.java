@@ -7,8 +7,9 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
-import myproject.mockjang.api.service.mockjang.cow.request.CowChangeCowStatusServiceRequest;
-import myproject.mockjang.api.service.mockjang.cow.request.CowChangePenServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowUpdateCowStatusServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowUpdatePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterUnitPriceServiceRequest;
@@ -47,7 +48,7 @@ public class CowService extends MockjangServiceAbstract {
 
   }
 
-  public void changePen(CowChangePenServiceRequest request) {
+  public void updatePen(CowUpdatePenServiceRequest request) {
     Cow cow = findCowById(request.getCowId());
     Pen pen = findPenById(request.getPenId());
     cow.changeUpperGroup(pen);
@@ -75,7 +76,7 @@ public class CowService extends MockjangServiceAbstract {
     cow.registerUnitPrice(request.getUnitPrice());
   }
 
-  public void changeCowStatus(CowChangeCowStatusServiceRequest request) {
+  public void updateCowStatus(CowUpdateCowStatusServiceRequest request) {
     findCowById(request.getCowId()).changeCowStatus(request.getCowStatus());
   }
 
@@ -90,18 +91,19 @@ public class CowService extends MockjangServiceAbstract {
     return CowResponse.of(cow);
   }
 
+  public void remove(CowRemoveServiceRequest request) {
+    Cow cow =findCowById(request.getCowId());
+    unlinkUpperGroup(cow);
+    cowRepository.delete(cow);
+  }
+
   private Cow findCowById(Long cowId) {
-   return cowRepository.findById(cowId)
+    return cowRepository.findById(cowId)
             .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST.formatMessage(Cow.class)));
   }
 
   private Pen findPenById(Long penId){
     return penRepository.findById(penId)
             .orElseThrow(()->new NotExistException(COMMON_NOT_EXIST.formatMessage(Pen.class)));
-  }
-
-  public void delete(Cow cow) {
-    unlinkUpperGroup(cow);
-    cowRepository.delete(cow);
   }
 }
