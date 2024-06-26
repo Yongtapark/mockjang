@@ -7,12 +7,12 @@ import myproject.mockjang.domain.mockjang.cow.CowStatus;
 
 @Getter
 @NoArgsConstructor
-public class CowChangeCowStatusServiceRequest {
+public class CowUpdateCowStatusServiceRequest {
     private Long cowId;
     private CowStatus cowStatus;
 
     @Builder
-    private CowChangeCowStatusServiceRequest(Long cowId, CowStatus cowStatus) {
+    private CowUpdateCowStatusServiceRequest(Long cowId, CowStatus cowStatus) {
         this.cowId = cowId;
         this.cowStatus = cowStatus;
     }
