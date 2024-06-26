@@ -12,9 +12,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
+import myproject.mockjang.api.service.mockjang.cow.request.CowChangeCowStatusServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowChangePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
+import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterUnitPriceServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
@@ -77,8 +79,13 @@ class CowServiceTest extends IntegrationTestSupport {
     Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE);
     cowRepository.save(cow);
 
+    CowChangeCowStatusServiceRequest request = CowChangeCowStatusServiceRequest.builder()
+            .cowId(cow.getId())
+            .cowStatus(CowStatus.SLAUGHTERED)
+            .build();
+
     //when
-    cowService.changeCowStatus(cow, CowStatus.SLAUGHTERED);
+    cowService.changeCowStatus(request);
 
     //then
     assertThat(cow.getCowStatus()).isEqualTo(CowStatus.SLAUGHTERED);
@@ -91,8 +98,13 @@ class CowServiceTest extends IntegrationTestSupport {
     Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.SLAUGHTERED);
     cowRepository.save(cow);
 
+    CowRegisterUnitPriceServiceRequest request = CowRegisterUnitPriceServiceRequest.builder()
+            .cowId(cow.getId())
+            .unitPrice(UNIT_PRICE_100_000_000)
+            .build();
+
     //when
-    cowService.registerUnitPrice(cow, UNIT_PRICE_100_000_000);
+    cowService.registerUnitPrice(request);
 
     //then
     assertThat(cow.getUnitPrice()).isEqualTo(UNIT_PRICE_100_000_000);
@@ -105,9 +117,14 @@ class CowServiceTest extends IntegrationTestSupport {
     Cow cow = createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE);
     cowRepository.save(cow);
 
+    CowRegisterUnitPriceServiceRequest request = CowRegisterUnitPriceServiceRequest.builder()
+            .cowId(cow.getId())
+            .unitPrice(UNIT_PRICE_100_000_000)
+            .build();
+
     //when //then
     assertThatThrownBy(
-        () -> cowService.registerUnitPrice(cow, UNIT_PRICE_100_000_000)).isInstanceOf(
+        () -> cowService.registerUnitPrice(request)).isInstanceOf(
             CowStatusException.class)
         .hasMessage(BUSINESS_ONLY_SLAUGHTERED_ERROR.getMessage());
   }
