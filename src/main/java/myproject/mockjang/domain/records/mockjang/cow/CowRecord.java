@@ -63,17 +63,7 @@ public class CowRecord extends Records {
     }
 
     public void recordsNullCheck(CowRecord cowRecord) {
-        emptyRelationCheck(cowRecord);
         basicNullCheck(cowRecord);
-    }
-
-    private void emptyRelationCheck(CowRecord cowRecord) {
-        if (cowRecord.getBarn() == null) {
-            throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Barn.class));
-        }
-        if (cowRecord.getPen() == null) {
-            throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Pen.class));
-        }
     }
 
     public void registerRecordType(RecordType recordType) {
