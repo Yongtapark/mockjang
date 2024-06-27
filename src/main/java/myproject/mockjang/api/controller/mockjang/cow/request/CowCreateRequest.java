@@ -11,13 +11,13 @@ import myproject.mockjang.domain.mockjang.cow.Gender;
 @Getter
 public class CowCreateRequest {
 
-  @NotBlank(message = "소 이름은 공백일 수 없습니다.")
+  @NotBlank(message = "{exception.cow.codId.blank}")
   private String cowCode;
-  @NotNull(message = "소 성별 공백일 수 없습니다.")
+  @NotNull(message = "{exception.cow.gender.null}")
   private Gender gender;
-  @NotBlank(message = "축사칸 이름은 공백일 수 없습니다.")
+  @NotBlank(message = "{exception.pen.codId.blank}")
   private String penCode;
-  @NotNull(message = "소 생일은 공백일 수 없습니다.")
+  @NotNull(message = "{exception.cow.date.null}")
   private LocalDateTime birthDate;
 
   @Builder

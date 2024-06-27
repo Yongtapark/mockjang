@@ -1,6 +1,5 @@
 package myproject.mockjang.api.service.mockjang.cow.request;
 
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

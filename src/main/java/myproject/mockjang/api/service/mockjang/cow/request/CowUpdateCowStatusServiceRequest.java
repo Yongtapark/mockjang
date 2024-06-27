@@ -8,6 +8,7 @@ import myproject.mockjang.domain.mockjang.cow.CowStatus;
 @Getter
 @NoArgsConstructor
 public class CowUpdateCowStatusServiceRequest {
+
     private Long cowId;
     private CowStatus cowStatus;
 

@@ -7,7 +7,6 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
-import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowUpdateCowStatusServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowUpdatePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
@@ -91,8 +90,8 @@ public class CowService extends MockjangServiceAbstract {
     return CowResponse.of(cow);
   }
 
-  public void remove(CowRemoveServiceRequest request) {
-    Cow cow =findCowById(request.getCowId());
+  public void remove(Long cowId) {
+    Cow cow =findCowById(cowId);
     unlinkUpperGroup(cow);
     cowRepository.delete(cow);
   }

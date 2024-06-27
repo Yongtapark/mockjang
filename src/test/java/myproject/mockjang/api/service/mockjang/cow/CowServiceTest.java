@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import myproject.mockjang.IntegrationTestSupport;
-import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowUpdateCowStatusServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowUpdatePenServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowCreateServiceRequest;
@@ -177,10 +176,9 @@ class CowServiceTest extends IntegrationTestSupport {
     Cow cow = createCow(PARSER_COW_CODE_ID_1);
     cow.registerUpperGroup(pen);
     cowRepository.save(cow);
-    CowRemoveServiceRequest request = CowRemoveServiceRequest.builder().cowId(cow.getId()).build();
 
     //when
-    cowService.remove(request);
+    cowService.remove(cow.getId());
 
     //then
     assertThatThrownBy(() -> cowRepository.findById(cow.getId()).orElseThrow())
