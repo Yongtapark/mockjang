@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PenCreateServiceRequest {
 
-  private String penCodeId;
-  private String barnCodeId;
+    private String penCodeId;
+    private String barnCodeId;
 
-  @Builder
-  private PenCreateServiceRequest(String penCodeId, String barnCodeId) {
-    this.penCodeId = penCodeId;
-    this.barnCodeId = barnCodeId;
-  }
+    @Builder
+    private PenCreateServiceRequest(String penCodeId, String barnCodeId) {
+        this.penCodeId = penCodeId;
+        this.barnCodeId = barnCodeId;
+    }
 
 
 }

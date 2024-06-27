@@ -7,11 +7,11 @@ import myproject.mockjang.exception.MockjangException;
 @Getter
 public class CowParentsException extends MockjangException {
 
-  public CowParentsException(Exceptions exception) {
-    super(exception.getMessage());
-  }
+    public CowParentsException(Exceptions exception) {
+        super(exception.getMessage());
+    }
 
-  public CowParentsException(String message) {
-    super(message);
-  }
+    public CowParentsException(String message) {
+        super(message);
+    }
 }

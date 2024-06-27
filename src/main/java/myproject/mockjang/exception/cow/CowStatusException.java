@@ -7,8 +7,8 @@ import myproject.mockjang.exception.MockjangException;
 @Getter
 public class CowStatusException extends MockjangException {
 
-  public CowStatusException(Exceptions exception) {
-    super(exception.getMessage());
-  }
+    public CowStatusException(Exceptions exception) {
+        super(exception.getMessage());
+    }
 
 }

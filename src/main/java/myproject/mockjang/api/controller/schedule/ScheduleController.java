@@ -23,49 +23,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v0/schedule")
 public class ScheduleController {
 
-  private final ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
-  @GetMapping("/{id}")
-  public ApiResponse<ScheduleResponse> findScheduleById(@PathVariable Long id) {
-    return ApiResponse.ok(scheduleService.findScheduleById(id));
-  }
+    @GetMapping("/{id}")
+    public ApiResponse<ScheduleResponse> findScheduleById(@PathVariable Long id) {
+        return ApiResponse.ok(scheduleService.findScheduleById(id));
+    }
 
-  @GetMapping("/weeks/{date}")
-  public ApiResponse<List<ScheduleResponse>> showThisWeekScheduleFromToday(@PathVariable LocalDateTime date) {
-    return ApiResponse.ok(scheduleService.showThisWeekScheduleFromToday(date));
-  }
+    @GetMapping("/weeks/{date}")
+    public ApiResponse<List<ScheduleResponse>> showThisWeekScheduleFromToday(@PathVariable LocalDateTime date) {
+        return ApiResponse.ok(scheduleService.showThisWeekScheduleFromToday(date));
+    }
 
-  @GetMapping("/upcoming/{date}")
-  public ApiResponse<List<Long>> calculateUpcomingSchedule(@PathVariable LocalDateTime date) {
-    return ApiResponse.ok(scheduleService.calculateUpcomingSchedule(date));
-  }
+    @GetMapping("/upcoming/{date}")
+    public ApiResponse<List<Long>> calculateUpcomingSchedule(@PathVariable LocalDateTime date) {
+        return ApiResponse.ok(scheduleService.calculateUpcomingSchedule(date));
+    }
 
-  @GetMapping("/trace-status/{date}")
-  public ApiResponse<Void> calculateScheduleStatusExceptExpired(@PathVariable LocalDateTime date) {
-    scheduleService.calculateScheduleStatusExceptExpired(date);
-    return ApiResponse.noContent();
-  }
+    @GetMapping("/trace-status/{date}")
+    public ApiResponse<Void> calculateScheduleStatusExceptExpired(@PathVariable LocalDateTime date) {
+        scheduleService.calculateScheduleStatusExceptExpired(date);
+        return ApiResponse.noContent();
+    }
 
-  @PostMapping("/new")
-  public ApiResponse<ScheduleResponse> create(@Valid @RequestBody ScheduleCreateRequest request) {
-    return ApiResponse.ok(scheduleService.create(request.toServiceRequest()));
-  }
+    @PostMapping("/new")
+    public ApiResponse<ScheduleResponse> create(@Valid @RequestBody ScheduleCreateRequest request) {
+        return ApiResponse.ok(scheduleService.create(request.toServiceRequest()));
+    }
 
-  @PostMapping
-  public ApiResponse<List<ScheduleResponse>> search(
-      @Valid @RequestBody ScheduleSearchRequest request) {
-    return ApiResponse.ok(scheduleService.search(request.toServiceRequest()));
-  }
+    @PostMapping
+    public ApiResponse<List<ScheduleResponse>> search(
+            @Valid @RequestBody ScheduleSearchRequest request) {
+        return ApiResponse.ok(scheduleService.search(request.toServiceRequest()));
+    }
 
-  @PostMapping("/update")
-  public ApiResponse<Void> update(@Valid @RequestBody ScheduleUpdateRequest request) {
-    scheduleService.update(request.toServiceRequest());
-    return ApiResponse.noContent();
-  }
+    @PostMapping("/update")
+    public ApiResponse<Void> update(@Valid @RequestBody ScheduleUpdateRequest request) {
+        scheduleService.update(request.toServiceRequest());
+        return ApiResponse.noContent();
+    }
 
-  @DeleteMapping("/{id}")
-  public ApiResponse<Void> remove(@PathVariable Long id) {
-    scheduleService.remove(id);
-    return ApiResponse.noContent();
-  }
+    @DeleteMapping("/{id}")
+    public ApiResponse<Void> remove(@PathVariable Long id) {
+        scheduleService.remove(id);
+        return ApiResponse.noContent();
+    }
 }

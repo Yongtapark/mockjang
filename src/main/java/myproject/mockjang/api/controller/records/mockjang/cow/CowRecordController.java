@@ -20,31 +20,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CowRecordController {
 
-  private final CowRecordService cowRecordService;
+    private final CowRecordService cowRecordService;
 
-  @PostMapping("/api/v0/records/cow/new")
-  public ApiResponse<CowRecordResponse> create(CowRecordCreateRequest request) {
-    return ApiResponse.ok(cowRecordService.create(request.toServiceRequest()));
-  }
+    @PostMapping("/api/v0/records/cow/new")
+    public ApiResponse<CowRecordResponse> create(CowRecordCreateRequest request) {
+        return ApiResponse.ok(cowRecordService.create(request.toServiceRequest()));
+    }
 
-  @GetMapping("/api/v0/records/cow/{codeId}")
-  public ApiResponse<List<CowRecordResponse>> findAllByCodeId(@PathVariable String codeId) {
-    return ApiResponse.ok(cowRecordService.findAllByCodeId(codeId));
-  }
+    @GetMapping("/api/v0/records/cow/{codeId}")
+    public ApiResponse<List<CowRecordResponse>> findAllByCodeId(@PathVariable String codeId) {
+        return ApiResponse.ok(cowRecordService.findAllByCodeId(codeId));
+    }
 
-  @PostMapping("/api/v0/records/cow/remove")
-  public ApiResponse<CowRecordResponse> remove(@Valid @RequestBody CowRecordRemoveRequest request) {
-    cowRecordService.remove(request.toServiceRequest());
-    return ApiResponse.noContent();
-  }
+    @PostMapping("/api/v0/records/cow/remove")
+    public ApiResponse<CowRecordResponse> remove(@Valid @RequestBody CowRecordRemoveRequest request) {
+        cowRecordService.remove(request.toServiceRequest());
+        return ApiResponse.noContent();
+    }
 
-  @GetMapping("/api/v0/records/cow/{codeId}/{recordType}")
-  public ApiResponse<List<CowRecordResponse>> findAllByCodeIdWhereRecordType(
-      @Valid @PathVariable String codeId, @Valid @PathVariable RecordType recordType) {
-    return ApiResponse.ok(cowRecordService.findAllByCodeIdWhereRecordType(
-        CowRecordFindAllByCodeIdAndRecordTypeRequest.builder().cowCode(codeId)
-            .recordType(recordType).build()
-            .toServiceRequest()));
-  }
+    @GetMapping("/api/v0/records/cow/{codeId}/{recordType}")
+    public ApiResponse<List<CowRecordResponse>> findAllByCodeIdWhereRecordType(
+            @Valid @PathVariable String codeId, @Valid @PathVariable RecordType recordType) {
+        return ApiResponse.ok(cowRecordService.findAllByCodeIdWhereRecordType(
+                CowRecordFindAllByCodeIdAndRecordTypeRequest.builder().cowCode(codeId)
+                        .recordType(recordType).build()
+                        .toServiceRequest()));
+    }
 
 }

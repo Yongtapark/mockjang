@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SimpleRecordRepository extends JpaRepository<SimpleRecord, Long> {
 
-  List<SimpleRecord> findAllByCodeId(String codeId);
+    List<SimpleRecord> findAllByCodeId(String codeId);
 }

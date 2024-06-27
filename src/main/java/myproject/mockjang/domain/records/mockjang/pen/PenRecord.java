@@ -25,33 +25,33 @@ import org.hibernate.annotations.Where;
 @Where(clause = "deleted = false")
 public class PenRecord extends Records {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Pen pen;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Pen pen;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Barn barn;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Barn barn;
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @Builder
-  private PenRecord(Barn barn, Pen pen) {
-    this.pen = pen;
-    this.barn = barn;
-  }
+    @Builder
+    private PenRecord(Barn barn, Pen pen) {
+        this.pen = pen;
+        this.barn = barn;
+    }
 
-  public static PenRecord createRecord(Pen pen, RecordType recordType, LocalDateTime date) {
-    PenRecord penRecord = PenRecord.builder().pen(pen).barn(pen.getBarn()).build();
-    penRecord.registerDate(date);
-    penRecord.registerRecordType(recordType);
-    return penRecord;
-  }
+    public static PenRecord createRecord(Pen pen, RecordType recordType, LocalDateTime date) {
+        PenRecord penRecord = PenRecord.builder().pen(pen).barn(pen.getBarn()).build();
+        penRecord.registerDate(date);
+        penRecord.registerRecordType(recordType);
+        return penRecord;
+    }
 
-  public void writeNote(String memo) {
-    registerRecord(memo);
-    pen.registerDailyRecord(this);
-  }
+    public void writeNote(String memo) {
+        registerRecord(memo);
+        pen.registerDailyRecord(this);
+    }
 }

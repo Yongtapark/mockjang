@@ -6,19 +6,19 @@ import myproject.mockjang.exception.common.StringException;
 
 public abstract class MockjangServiceAbstract {
 
-  static final int MAXIMUM_LENGTH = 10;
+    static final int MAXIMUM_LENGTH = 10;
 
-  protected void codeIdFilter(String codeId) {
-    if (codeId.isBlank()) {
-      throw new StringException(Exceptions.COMMON_BLANK_STRING);
+    protected void codeIdFilter(String codeId) {
+        if (codeId.isBlank()) {
+            throw new StringException(Exceptions.COMMON_BLANK_STRING);
+        }
+        if (codeId.length() > MAXIMUM_LENGTH) {
+            throw new StringException(Exceptions.COMMON_STRING_OVER_10);
+        }
     }
-    if (codeId.length() > MAXIMUM_LENGTH) {
-      throw new StringException(Exceptions.COMMON_STRING_OVER_10);
-    }
-  }
 
-  protected void unlinkUpperGroup(Mockjang mockjang) {
-    Mockjang upperGroup = mockjang.getUpperGroup();
-    upperGroup.removeOneOfUnderGroups(mockjang);
-  }
+    protected void unlinkUpperGroup(Mockjang mockjang) {
+        Mockjang upperGroup = mockjang.getUpperGroup();
+        upperGroup.removeOneOfUnderGroups(mockjang);
+    }
 }

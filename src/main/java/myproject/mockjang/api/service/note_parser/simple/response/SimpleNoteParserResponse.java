@@ -7,16 +7,16 @@ import lombok.Getter;
 @Getter
 public class SimpleNoteParserResponse {
 
-  private HashMap<String, Integer> names;
+    private final HashMap<String, Integer> names;
 
-  @Builder
-  private SimpleNoteParserResponse(HashMap<String, Integer> names) {
-    this.names = names;
-  }
+    @Builder
+    private SimpleNoteParserResponse(HashMap<String, Integer> names) {
+        this.names = names;
+    }
 
-  public static SimpleNoteParserResponse of(HashMap<String, Integer> names) {
-    return SimpleNoteParserResponse.builder()
-        .names(names)
-        .build();
-  }
+    public static SimpleNoteParserResponse of(HashMap<String, Integer> names) {
+        return SimpleNoteParserResponse.builder()
+                .names(names)
+                .build();
+    }
 }

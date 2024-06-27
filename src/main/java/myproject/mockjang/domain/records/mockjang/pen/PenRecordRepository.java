@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface PenRecordRepository extends JpaRepository<PenRecord, Long> {
 
-  List<PenRecord> findAllByPen_CodeId(String codeId);
+    List<PenRecord> findAllByPen_CodeId(String codeId);
 
-  @Query(value = "SELECT * FROM pen_record WHERE deleted = true", nativeQuery = true)
-  List<PenRecord> findAllWhereDeletedTrue();
+    @Query(value = "SELECT * FROM pen_record WHERE deleted = true", nativeQuery = true)
+    List<PenRecord> findAllWhereDeletedTrue();
 }

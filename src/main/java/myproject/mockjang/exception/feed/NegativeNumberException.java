@@ -7,8 +7,8 @@ import myproject.mockjang.exception.MockjangException;
 @Getter
 public class NegativeNumberException extends MockjangException {
 
-  public NegativeNumberException(Exceptions exception) {
-    super(exception.getMessage());
-  }
+    public NegativeNumberException(Exceptions exception) {
+        super(exception.getMessage());
+    }
 
 }

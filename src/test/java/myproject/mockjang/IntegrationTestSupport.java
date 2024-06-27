@@ -13,15 +13,15 @@ import org.springframework.test.context.ActiveProfiles;
 public abstract class IntegrationTestSupport extends TestConstants {
 
 
-  public Cow createCow(String number) {
-    return Cow.builder().codeId(number).build();
-  }
+    public Cow createCow(String number) {
+        return Cow.builder().codeId(number).build();
+    }
 
-  protected static Cow createCow(String codeId, Gender gender) {
-    return Cow.builder().codeId(codeId).gender(gender).build();
-  }
+    protected static Cow createCow(String codeId, Gender gender) {
+        return Cow.builder().codeId(codeId).gender(gender).build();
+    }
 
-  protected static Cow createCow(String cowCode, Gender gender, CowStatus cowStatus) {
-    return Cow.builder().codeId(cowCode).gender(gender).cowStatus(cowStatus).build();
-  }
+    protected static Cow createCow(String cowCode, Gender gender, CowStatus cowStatus) {
+        return Cow.builder().codeId(cowCode).gender(gender).cowStatus(cowStatus).build();
+    }
 }

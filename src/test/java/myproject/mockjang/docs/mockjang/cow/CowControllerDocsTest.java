@@ -103,7 +103,8 @@ public class CowControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("data.dadId").type(JsonFieldType.NULL).description("아빠 소 id"),
                                 fieldWithPath("data.children").type(JsonFieldType.ARRAY).description("자식 id"),
                                 fieldWithPath("data.records").type(JsonFieldType.ARRAY).description("기록 id"),
-                                fieldWithPath("data.feedConsumptions").type(JsonFieldType.ARRAY).description("먹이 소비 기록 id"),
+                                fieldWithPath("data.feedConsumptions").type(JsonFieldType.ARRAY)
+                                        .description("먹이 소비 기록 id"),
                                 fieldWithPath("data.unitPrice").type(JsonFieldType.NULL).description("판매가")
                         )
                 ));
@@ -114,7 +115,8 @@ public class CowControllerDocsTest extends RestDocsSupport {
     @Test
     void registerParents() throws Exception {
         //given
-        CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parents(List.of(2L,3L)).build();
+        CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parents(List.of(2L, 3L))
+                .build();
 
         //when //then
         mockMvc.perform(
@@ -134,7 +136,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
                                 fieldWithPath("data").type(JsonFieldType.NULL).description("응답 데이터")
-                                )
+                        )
                 ));
     }
 
@@ -142,7 +144,8 @@ public class CowControllerDocsTest extends RestDocsSupport {
     @Test
     void registerUnitPrice() throws Exception {
         //given
-        CowRegisterUnitPriceRequest request = CowRegisterUnitPriceRequest.builder().cowId(1L).unitPrice(UNIT_PRICE_100_000_000).build();
+        CowRegisterUnitPriceRequest request = CowRegisterUnitPriceRequest.builder().cowId(1L)
+                .unitPrice(UNIT_PRICE_100_000_000).build();
 
         //when //then
         mockMvc.perform(
@@ -198,8 +201,8 @@ public class CowControllerDocsTest extends RestDocsSupport {
     @Test
     void updateCowStatus() throws Exception {
         //given
-        CowUpdateCowStatusRequest request = CowUpdateCowStatusRequest.builder().cowId(1L).cowStatus(CowStatus.SLAUGHTERED).build();
-
+        CowUpdateCowStatusRequest request = CowUpdateCowStatusRequest.builder().cowId(1L)
+                .cowStatus(CowStatus.SLAUGHTERED).build();
 
         //when //then
         mockMvc.perform(
@@ -227,8 +230,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
     @Test
     void removeParents() throws Exception {
         //given
-        CowRemoveParentsRequest request = CowRemoveParentsRequest.builder().cowId(1L).parents(List.of(2L,3L)).build();
-
+        CowRemoveParentsRequest request = CowRemoveParentsRequest.builder().cowId(1L).parents(List.of(2L, 3L)).build();
 
         //when //then
         mockMvc.perform(
@@ -308,7 +310,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
                 .unitPrice(null)
                 .build();
 
-        List<CowResponse> response = List.of(cowResponse1,cowResponse2);
+        List<CowResponse> response = List.of(cowResponse1, cowResponse2);
         //when //then
         when(service.findAll()).thenReturn(response);
 
@@ -333,7 +335,8 @@ public class CowControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("data[].dadId").type(JsonFieldType.NULL).description("아빠 소 id"),
                                 fieldWithPath("data[].children").type(JsonFieldType.ARRAY).description("자식 id"),
                                 fieldWithPath("data[].records").type(JsonFieldType.ARRAY).description("기록 id"),
-                                fieldWithPath("data[].feedConsumptions").type(JsonFieldType.ARRAY).description("먹이 소비 기록 id"),
+                                fieldWithPath("data[].feedConsumptions").type(JsonFieldType.ARRAY)
+                                        .description("먹이 소비 기록 id"),
                                 fieldWithPath("data[].unitPrice").type(JsonFieldType.NULL).description("판매가")
                         )
                 ));
@@ -360,7 +363,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
 
         when(service.findByCodeId(any())).thenReturn(response);
 
-        mockMvc.perform(get("/api/v0/cows/{codeId}",COW_CODE_ID_1))
+        mockMvc.perform(get("/api/v0/cows/{codeId}", COW_CODE_ID_1))
                 .andDo(document(
                         "Cow-findByCodeId",
                         preprocessResponse(prettyPrint()),
@@ -381,7 +384,8 @@ public class CowControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("data.dadId").type(JsonFieldType.NULL).description("아빠 소 id"),
                                 fieldWithPath("data.children").type(JsonFieldType.ARRAY).description("자식 id"),
                                 fieldWithPath("data.records").type(JsonFieldType.ARRAY).description("기록 id"),
-                                fieldWithPath("data.feedConsumptions").type(JsonFieldType.ARRAY).description("먹이 소비 기록 id"),
+                                fieldWithPath("data.feedConsumptions").type(JsonFieldType.ARRAY)
+                                        .description("먹이 소비 기록 id"),
                                 fieldWithPath("data.unitPrice").type(JsonFieldType.NULL).description("판매가")
                         )
                 ));

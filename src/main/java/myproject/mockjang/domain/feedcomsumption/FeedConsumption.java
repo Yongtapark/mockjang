@@ -23,34 +23,34 @@ import org.hibernate.annotations.Where;
 @Where(clause = "deleted = false")
 public class FeedConsumption {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "cow_id")
-  private Cow cow;
+    @ManyToOne
+    @JoinColumn(name = "cow_id")
+    private Cow cow;
 
-  @ManyToOne
-  @JoinColumn(name = "feed_id")
-  private Feed feed;
+    @ManyToOne
+    @JoinColumn(name = "feed_id")
+    private Feed feed;
 
-  private LocalDate date;
+    private LocalDate date;
 
-  private Double dailyConsumptionAmount;
+    private Double dailyConsumptionAmount;
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @Builder
-  private FeedConsumption(Cow cow, Feed feed, LocalDate date, Double dailyConsumptionAmount) {
-    this.cow = cow;
-    this.feed = feed;
-    this.date = date;
-    this.dailyConsumptionAmount = dailyConsumptionAmount;
-  }
+    @Builder
+    private FeedConsumption(Cow cow, Feed feed, LocalDate date, Double dailyConsumptionAmount) {
+        this.cow = cow;
+        this.feed = feed;
+        this.date = date;
+        this.dailyConsumptionAmount = dailyConsumptionAmount;
+    }
 
-  public void registerDailyCowConsumption() {
-    cow.registerFeedConsumptions(this);
-  }
+    public void registerDailyCowConsumption() {
+        cow.registerFeedConsumptions(this);
+    }
 
 }

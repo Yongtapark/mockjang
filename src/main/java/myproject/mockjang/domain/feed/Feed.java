@@ -18,7 +18,6 @@ import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.feed.NegativeNumberException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.data.jpa.domain.AbstractAuditable;
 
 @Entity
 @Getter
@@ -27,115 +26,115 @@ import org.springframework.data.jpa.domain.AbstractAuditable;
 @Where(clause = "deleted = false")
 public class Feed {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String codeId;
+    private String codeId;
 
-  private String name;
+    private String name;
 
-  private LocalDate storeDate;
+    private LocalDate storeDate;
 
-  private LocalDate expirationDate;
+    private LocalDate expirationDate;
 
-  private LocalDate expectedDepletionDate;
+    private LocalDate expectedDepletionDate;
 
-  private Integer stock;
+    private Integer stock;
 
-  private Double amountPerStock;
+    private Double amountPerStock;
 
-  private Double amount;
+    private Double amount;
 
-  private String description;
+    private String description;
 
-  private Double dailyConsumption;
+    private Double dailyConsumption;
 
-  private FeedUsageStatus usageStatus;
+    private FeedUsageStatus usageStatus;
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @OneToMany(mappedBy = "feed")
-  private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
+    @OneToMany(mappedBy = "feed")
+    private final List<FeedConsumption> feedConsumptions = new ArrayList<>();
 
-  @Builder
-  private Feed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate,
-      Integer stock,
-      Double amountPerStock,
-      Double amount,
-      String description, Double dailyConsumption, List<FeedConsumption> feedConsumptions,
-      LocalDate expectedDepletionDate, FeedUsageStatus usageStatus) {
-    this.codeId = codeId;
-    this.name = name;
-    this.storeDate = storeDate;
-    this.stock = stock;
-    this.amountPerStock = amountPerStock;
-    this.amount = amount;
-    this.description = description;
-    this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
-    this.expectedDepletionDate = expectedDepletionDate;
-    this.usageStatus = usageStatus;
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    @Builder
+    private Feed(String codeId, String name, LocalDate storeDate, LocalDate expirationDate,
+                 Integer stock,
+                 Double amountPerStock,
+                 Double amount,
+                 String description, Double dailyConsumption, List<FeedConsumption> feedConsumptions,
+                 LocalDate expectedDepletionDate, FeedUsageStatus usageStatus) {
+        this.codeId = codeId;
+        this.name = name;
+        this.storeDate = storeDate;
+        this.stock = stock;
+        this.amountPerStock = amountPerStock;
+        this.amount = amount;
+        this.description = description;
+        this.dailyConsumption = dailyConsumption != null ? dailyConsumption : 0.0;
+        this.expectedDepletionDate = expectedDepletionDate;
+        this.usageStatus = usageStatus;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Feed feed = (Feed) o;
+        return deleted == feed.deleted && Objects.equals(id, feed.id)
+                && Objects.equals(codeId, feed.codeId) && Objects.equals(name, feed.name)
+                && Objects.equals(storeDate, feed.storeDate) && Objects.equals(
+                expirationDate, feed.expirationDate) && Objects.equals(expectedDepletionDate,
+                feed.expectedDepletionDate) && Objects.equals(stock, feed.stock)
+                && Objects.equals(amountPerStock, feed.amountPerStock) && Objects.equals(
+                amount, feed.amount) && Objects.equals(description, feed.description)
+                && Objects.equals(dailyConsumption, feed.dailyConsumption)
+                && usageStatus == feed.usageStatus && Objects.equals(feedConsumptions,
+                feed.feedConsumptions);
     }
-    Feed feed = (Feed) o;
-    return deleted == feed.deleted && Objects.equals(id, feed.id)
-        && Objects.equals(codeId, feed.codeId) && Objects.equals(name, feed.name)
-        && Objects.equals(storeDate, feed.storeDate) && Objects.equals(
-        expirationDate, feed.expirationDate) && Objects.equals(expectedDepletionDate,
-        feed.expectedDepletionDate) && Objects.equals(stock, feed.stock)
-        && Objects.equals(amountPerStock, feed.amountPerStock) && Objects.equals(
-        amount, feed.amount) && Objects.equals(description, feed.description)
-        && Objects.equals(dailyConsumption, feed.dailyConsumption)
-        && usageStatus == feed.usageStatus && Objects.equals(feedConsumptions,
-        feed.feedConsumptions);
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, codeId, name, storeDate, expirationDate, expectedDepletionDate, stock,
-        amountPerStock, amount, description, dailyConsumption, usageStatus, deleted,
-        feedConsumptions);
-  }
-
-  public static Feed createFeed(String codeId, String name, Integer stock, Double amountPerStock,
-      LocalDate storeDate,
-      LocalDate expirationDate, String description) {
-    return Feed.builder().codeId(codeId).name(name).storeDate(storeDate)
-        .expirationDate(expirationDate)
-        .stock(stock)
-        .amountPerStock(amountPerStock)
-        .amount((stock * amountPerStock))
-        .description(description).build();
-
-  }
-
-  public void addDailyConsumptionAmount(Double dailyConsumptionAmount) {
-    if (dailyConsumptionAmount < 0) {
-      throw new NegativeNumberException(Exceptions.DOMAIN_NEGATIVE_ERROR);
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, codeId, name, storeDate, expirationDate, expectedDepletionDate, stock,
+                amountPerStock, amount, description, dailyConsumption, usageStatus, deleted,
+                feedConsumptions);
     }
-    this.dailyConsumption += dailyConsumptionAmount;
-  }
 
-  public void resetDailyConsumption() {
-    this.dailyConsumption = 0.0;
-  }
+    public static Feed createFeed(String codeId, String name, Integer stock, Double amountPerStock,
+                                  LocalDate storeDate,
+                                  LocalDate expirationDate, String description) {
+        return Feed.builder().codeId(codeId).name(name).storeDate(storeDate)
+                .expirationDate(expirationDate)
+                .stock(stock)
+                .amountPerStock(amountPerStock)
+                .amount((stock * amountPerStock))
+                .description(description).build();
 
-  public void calculateExpectedDepletionDate(LocalDate date) {
-    double leftDays = (this.amount - this.dailyConsumption) / this.dailyConsumption;
-    this.expectedDepletionDate = date.plusDays((long) Math.floor(leftDays));
-  }
+    }
 
-  public void registerUsageStatus(FeedUsageStatus usageStatus) {
-    this.usageStatus = usageStatus;
-  }
+    public void addDailyConsumptionAmount(Double dailyConsumptionAmount) {
+        if (dailyConsumptionAmount < 0) {
+            throw new NegativeNumberException(Exceptions.DOMAIN_NEGATIVE_ERROR);
+        }
+        this.dailyConsumption += dailyConsumptionAmount;
+    }
+
+    public void resetDailyConsumption() {
+        this.dailyConsumption = 0.0;
+    }
+
+    public void calculateExpectedDepletionDate(LocalDate date) {
+        double leftDays = (this.amount - this.dailyConsumption) / this.dailyConsumption;
+        this.expectedDepletionDate = date.plusDays((long) Math.floor(leftDays));
+    }
+
+    public void registerUsageStatus(FeedUsageStatus usageStatus) {
+        this.usageStatus = usageStatus;
+    }
 
 }
 

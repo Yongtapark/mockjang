@@ -10,20 +10,20 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class SimpleRecordCreateServiceRequest {
 
-  private String codeId;
+    private String codeId;
 
-  private RecordType recordType;
+    private RecordType recordType;
 
-  private LocalDateTime date;
+    private LocalDateTime date;
 
-  private String record;
+    private String record;
 
-  @Builder
-  private SimpleRecordCreateServiceRequest(String codeId, LocalDateTime date, String record,
-      RecordType recordType) {
-    this.codeId = codeId;
-    this.date = date;
-    this.record = record;
-    this.recordType = recordType;
-  }
+    @Builder
+    private SimpleRecordCreateServiceRequest(String codeId, LocalDateTime date, String record,
+                                             RecordType recordType) {
+        this.codeId = codeId;
+        this.date = date;
+        this.record = record;
+        this.recordType = recordType;
+    }
 }

@@ -26,7 +26,7 @@ class ScheduleRepositoryTest extends IntegrationTestSupport {
         List<Schedule> schedules = scheduleRepository.findAllByStartDateGreaterThanEqual(READ_DATE);
 
         //then
-        assertThat(schedules).containsExactly(schedule1,schedule2,schedule3);
+        assertThat(schedules).containsExactly(schedule1, schedule2, schedule3);
         assertThat(schedules).doesNotContain(schedule0);
     }
 

@@ -15,21 +15,21 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 @ExtendWith(RestDocumentationExtension.class)
 public abstract class RestDocsSupport extends TestConstants {
 
-  protected MockMvc mockMvc;
-  protected ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    protected MockMvc mockMvc;
+    protected ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-  @BeforeEach
-  void setUp(RestDocumentationContextProvider provider) {
-    this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
-        .apply(documentationConfiguration(provider)
-        .uris()
-        .withScheme("http")
-        .withHost("localhost")
-        .withPort(8081))
-        .build();
-  }
+    @BeforeEach
+    void setUp(RestDocumentationContextProvider provider) {
+        this.mockMvc = MockMvcBuilders.standaloneSetup(initController())
+                .apply(documentationConfiguration(provider)
+                        .uris()
+                        .withScheme("http")
+                        .withHost("localhost")
+                        .withPort(8081))
+                .build();
+    }
 
-  protected abstract Object initController();
+    protected abstract Object initController();
 
 
 }

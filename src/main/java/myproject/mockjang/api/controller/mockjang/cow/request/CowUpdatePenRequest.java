@@ -20,7 +20,7 @@ public class CowUpdatePenRequest {
         this.penId = penId;
     }
 
-    public CowUpdatePenServiceRequest toServiceRequest(){
+    public CowUpdatePenServiceRequest toServiceRequest() {
         return CowUpdatePenServiceRequest.builder()
                 .cowId(cowId)
                 .penId(penId)

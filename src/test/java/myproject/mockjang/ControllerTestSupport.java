@@ -24,47 +24,46 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 
-
 @WebMvcTest(controllers = {
-    NoteParserController.class,
-    BarnController.class,
-    PenController.class,
-    CowController.class,
-    CowRecordController.class,
-    SimpleRecordController.class,
-    SimpleNoteParserController.class,
-    ScheduleController.class
+        NoteParserController.class,
+        BarnController.class,
+        PenController.class,
+        CowController.class,
+        CowRecordController.class,
+        SimpleRecordController.class,
+        SimpleNoteParserController.class,
+        ScheduleController.class
 })
 @MockBean(JpaMetamodelMappingContext.class)
 public abstract class ControllerTestSupport extends TestConstants {
 
-  @Autowired
-  protected MockMvc mockMvc;
+    @Autowired
+    protected MockMvc mockMvc;
 
-  @Autowired
-  protected ObjectMapper objectMapper;
+    @Autowired
+    protected ObjectMapper objectMapper;
 
-  @MockBean
-  protected NoteParserService noteParserService;
+    @MockBean
+    protected NoteParserService noteParserService;
 
-  @MockBean
-  protected BarnService barnService;
+    @MockBean
+    protected BarnService barnService;
 
-  @MockBean
-  protected PenService penService;
+    @MockBean
+    protected PenService penService;
 
-  @MockBean
-  protected CowService cowService;
+    @MockBean
+    protected CowService cowService;
 
-  @MockBean
-  protected CowRecordService cowRecordService;
+    @MockBean
+    protected CowRecordService cowRecordService;
 
-  @MockBean
-  protected SimpleRecordService simpleRecordService;
+    @MockBean
+    protected SimpleRecordService simpleRecordService;
 
-  @MockBean
-  protected SimpleNoteParserService simpleNoteParserService;
+    @MockBean
+    protected SimpleNoteParserService simpleNoteParserService;
 
-  @MockBean
-  protected ScheduleService scheduleService;
+    @MockBean
+    protected ScheduleService scheduleService;
 }

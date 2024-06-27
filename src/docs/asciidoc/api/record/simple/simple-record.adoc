@@ -2,10 +2,12 @@
 === 신규 노트 등록
 
 ==== HTTP Request
+
 include::{snippets}/simpleRecord-new/http-request.adoc[]
 include::{snippets}/simpleRecord-new/request-fields.adoc[]
 
 ==== HTTP Response
+
 include::{snippets}/simpleRecord-new/http-response.adoc[]
 include::{snippets}/simpleRecord-new/response-fields.adoc[]
 
@@ -13,10 +15,11 @@ include::{snippets}/simpleRecord-new/response-fields.adoc[]
 === 단일 노트 조회
 
 ==== HTTP Request
+
 include::{snippets}/simpleRecord-findSimpleRecordById/http-request.adoc[]
 
-
 ==== HTTP Response
+
 include::{snippets}/simpleRecord-findSimpleRecordById/http-response.adoc[]
 include::{snippets}/simpleRecord-findSimpleRecordById/response-fields.adoc[]
 
@@ -24,11 +27,12 @@ include::{snippets}/simpleRecord-findSimpleRecordById/response-fields.adoc[]
 === 노트 수정
 
 ==== HTTP Request
+
 include::{snippets}/simpleRecord-update/http-request.adoc[]
 include::{snippets}/simpleRecord-update/request-fields.adoc[]
 
-
 ==== HTTP Response
+
 include::{snippets}/simpleRecord-update/http-response.adoc[]
 include::{snippets}/simpleRecord-update/response-fields.adoc[]
 
@@ -36,9 +40,11 @@ include::{snippets}/simpleRecord-update/response-fields.adoc[]
 === 노트 제거
 
 ==== HTTP Request
+
 include::{snippets}/simpleRecord-remove/http-request.adoc[]
 
 ==== HTTP Response
+
 include::{snippets}/simpleRecord-remove/http-response.adoc[]
 include::{snippets}/simpleRecord-remove/response-fields.adoc[]
 
@@ -46,11 +52,12 @@ include::{snippets}/simpleRecord-remove/response-fields.adoc[]
 === 노트 검색
 
 ==== HTTP Request
+
 include::{snippets}/simpleRecord-search/http-request.adoc[]
 include::{snippets}/simpleRecord-search/request-fields.adoc[]
 
-
 ==== HTTP Response
+
 include::{snippets}/simpleRecord-search/http-response.adoc[]
 include::{snippets}/simpleRecord-search/response-fields.adoc[]
 
@@ -58,8 +65,10 @@ include::{snippets}/simpleRecord-search/response-fields.adoc[]
 === 자동 완성 명단 반환
 
 ==== HTTP Request
+
 include::{snippets}/simpleRecord-autoComplete/http-request.adoc[]
 
 ==== HTTP Response
+
 include::{snippets}/simpleRecord-autoComplete/http-response.adoc[]
 include::{snippets}/simpleRecord-autoComplete/response-fields.adoc[]

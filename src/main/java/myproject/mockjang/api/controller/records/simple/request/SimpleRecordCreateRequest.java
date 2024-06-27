@@ -13,30 +13,30 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class SimpleRecordCreateRequest {
 
-  @NotBlank(message = "{exception.codeId.blank}")
-  private String codeId;
+    @NotBlank(message = "{exception.codeId.blank}")
+    private String codeId;
 
-  @NotNull(message = "{exception.recordType.null}")
-  private RecordType recordType;
+    @NotNull(message = "{exception.recordType.null}")
+    private RecordType recordType;
 
-  @NotNull(message = "{exception.date.null}")
-  private LocalDateTime date;
+    @NotNull(message = "{exception.date.null}")
+    private LocalDateTime date;
 
-  @NotBlank(message = "{exception.record.blank}")
-  private String record;
+    @NotBlank(message = "{exception.record.blank}")
+    private String record;
 
 
-  @Builder
-  private SimpleRecordCreateRequest(String codeId, RecordType recordType, LocalDateTime date,
-      String record) {
-    this.codeId = codeId;
-    this.recordType = recordType;
-    this.date = date;
-    this.record = record;
-  }
+    @Builder
+    private SimpleRecordCreateRequest(String codeId, RecordType recordType, LocalDateTime date,
+                                      String record) {
+        this.codeId = codeId;
+        this.recordType = recordType;
+        this.date = date;
+        this.record = record;
+    }
 
-  public SimpleRecordCreateServiceRequest toServiceRequest() {
-    return SimpleRecordCreateServiceRequest.builder().codeId(codeId).recordType(recordType)
-        .date(date).record(record).build();
-  }
+    public SimpleRecordCreateServiceRequest toServiceRequest() {
+        return SimpleRecordCreateServiceRequest.builder().codeId(codeId).recordType(recordType)
+                .date(date).record(record).build();
+    }
 }

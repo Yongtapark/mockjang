@@ -10,26 +10,26 @@ import myproject.mockjang.domain.schedule.ScheduleStatus;
 @Getter
 @NoArgsConstructor
 public class ScheduleSearchRequest {
-  private LocalDateTime startDate;
-  private LocalDateTime targetDate;
-  private String context;
-  private ScheduleStatus scheduleStatus;
+    private LocalDateTime startDate;
+    private LocalDateTime targetDate;
+    private String context;
+    private ScheduleStatus scheduleStatus;
 
-  @Builder
-  private ScheduleSearchRequest(LocalDateTime startDate, LocalDateTime targetDate, String context,
-      ScheduleStatus scheduleStatus) {
-    this.startDate = startDate;
-    this.targetDate = targetDate;
-    this.context = context;
-    this.scheduleStatus = scheduleStatus;
-  }
+    @Builder
+    private ScheduleSearchRequest(LocalDateTime startDate, LocalDateTime targetDate, String context,
+                                  ScheduleStatus scheduleStatus) {
+        this.startDate = startDate;
+        this.targetDate = targetDate;
+        this.context = context;
+        this.scheduleStatus = scheduleStatus;
+    }
 
-  public ScheduleSearchServiceRequest toServiceRequest() {
-    return ScheduleSearchServiceRequest.builder()
-        .startDate(startDate)
-        .targetDate(targetDate)
-        .context(context)
-        .scheduleStatus(scheduleStatus)
-        .build();
-  }
+    public ScheduleSearchServiceRequest toServiceRequest() {
+        return ScheduleSearchServiceRequest.builder()
+                .startDate(startDate)
+                .targetDate(targetDate)
+                .context(context)
+                .scheduleStatus(scheduleStatus)
+                .build();
+    }
 }

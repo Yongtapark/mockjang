@@ -14,21 +14,21 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class NoteParserCreateRequest {
 
-  @NotBlank(message = "내용은 필수로 입력하셔야 합니다.")
-  private String context;
-  @NotNull(message = "기록 타입은 반드시 입력하셔야 합니다.")
-  private RecordType recordType;
-  @NotNull(message = "입력 날짜는 반드시 입력하셔야 합니다.")
-  private LocalDateTime date;
+    @NotBlank(message = "내용은 필수로 입력하셔야 합니다.")
+    private String context;
+    @NotNull(message = "기록 타입은 반드시 입력하셔야 합니다.")
+    private RecordType recordType;
+    @NotNull(message = "입력 날짜는 반드시 입력하셔야 합니다.")
+    private LocalDateTime date;
 
-  @Builder
-  public NoteParserCreateRequest(String context, RecordType recordType, LocalDateTime date) {
-    this.context = context;
-    this.recordType = recordType;
-    this.date = date;
-  }
+    @Builder
+    public NoteParserCreateRequest(String context, RecordType recordType, LocalDateTime date) {
+        this.context = context;
+        this.recordType = recordType;
+        this.date = date;
+    }
 
-  public NoteParserCreateServiceRequest toServiceRequest(HashMap<String, Integer> names) {
-    return NoteParserCreateServiceRequest.builder().context(context).names(names).build();
-  }
+    public NoteParserCreateServiceRequest toServiceRequest(HashMap<String, Integer> names) {
+        return NoteParserCreateServiceRequest.builder().context(context).names(names).build();
+    }
 }

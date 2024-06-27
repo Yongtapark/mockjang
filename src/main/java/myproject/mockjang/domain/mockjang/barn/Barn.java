@@ -32,69 +32,69 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @SQLDelete(sql = "UPDATE barn SET deleted = true WHERE id = ?")
 @Where(clause = "deleted = false")
 @EntityListeners(AuditingEntityListener.class)
-public class Barn extends AuditingEntity implements Mockjang{
+public class Barn extends AuditingEntity implements Mockjang {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String codeId;
+    private String codeId;
 
-  @OneToMany(mappedBy = "barn")
-  private final List<Pen> pens = new ArrayList<>();
+    @OneToMany(mappedBy = "barn")
+    private final List<Pen> pens = new ArrayList<>();
 
-  @OneToMany(mappedBy = "barn")
-  private final List<BarnRecord> records = new ArrayList<>();
+    @OneToMany(mappedBy = "barn")
+    private final List<BarnRecord> records = new ArrayList<>();
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @Builder
-  private Barn(String codeId) {
-    this.codeId = codeId;
-  }
-
-  public static Barn createBarn(String codeId) {
-    return Barn.builder().codeId(codeId).build();
-  }
-
-  public void addPen(Pen pen) {
-    if(pens.contains(pen)){
-      throw new AlreadyExistException(Exceptions.COMMON_ALREADY_EXIST.formatMessage(pen.getCodeId()));
+    @Builder
+    private Barn(String codeId) {
+        this.codeId = codeId;
     }
-    pens.add(pen);
-  }
 
-  public void addPen(List<Pen> pens) {
-    for (Pen pen : pens) {
-      addPen(pen);
+    public static Barn createBarn(String codeId) {
+        return Barn.builder().codeId(codeId).build();
     }
-  }
 
-  public void registerDailyRecord(BarnRecord record) {
-    if(!records.contains(record)){
-      records.add(record);
+    public void addPen(Pen pen) {
+        if (pens.contains(pen)) {
+            throw new AlreadyExistException(Exceptions.COMMON_ALREADY_EXIST.formatMessage(pen.getCodeId()));
+        }
+        pens.add(pen);
     }
-  }
 
-  @Override
-  public Mockjang getUpperGroup() {
-    throw new ThereIsNoGroupException(Exceptions.COMMON_NO_UPPER_GROUP, this);
-  }
-
-  @Override
-  public void registerUpperGroup(Mockjang upperGroup) {
-    throw new ThereIsNoGroupException(Exceptions.COMMON_NO_UPPER_GROUP, this);
-  }
-
-  @Override
-  public void changeUpperGroup(Mockjang mockjang) {
-    throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP, this);
-  }
-
-  @Override
-  public void removeOneOfUnderGroups(Mockjang mockjang) {
-    if (!pens.remove(mockjang)) {
-      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
+    public void addPen(List<Pen> pens) {
+        for (Pen pen : pens) {
+            addPen(pen);
+        }
     }
-  }
+
+    public void registerDailyRecord(BarnRecord record) {
+        if (!records.contains(record)) {
+            records.add(record);
+        }
+    }
+
+    @Override
+    public Mockjang getUpperGroup() {
+        throw new ThereIsNoGroupException(Exceptions.COMMON_NO_UPPER_GROUP, this);
+    }
+
+    @Override
+    public void registerUpperGroup(Mockjang upperGroup) {
+        throw new ThereIsNoGroupException(Exceptions.COMMON_NO_UPPER_GROUP, this);
+    }
+
+    @Override
+    public void changeUpperGroup(Mockjang mockjang) {
+        throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP, this);
+    }
+
+    @Override
+    public void removeOneOfUnderGroups(Mockjang mockjang) {
+        if (!pens.remove(mockjang)) {
+            throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
+        }
+    }
 }

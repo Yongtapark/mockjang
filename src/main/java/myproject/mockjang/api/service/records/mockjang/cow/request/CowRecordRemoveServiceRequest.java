@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CowRecordRemoveServiceRequest {
 
-  private Long id;
+    private Long id;
 
-  @Builder
-  private CowRecordRemoveServiceRequest(Long id) {
-    this.id = id;
-  }
+    @Builder
+    private CowRecordRemoveServiceRequest(Long id) {
+        this.id = id;
+    }
 }

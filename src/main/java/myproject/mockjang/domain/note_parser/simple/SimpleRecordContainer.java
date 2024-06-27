@@ -13,22 +13,22 @@ import myproject.mockjang.domain.records.RecordType;
 @Getter
 public class SimpleRecordContainer implements NoteContainer {
 
-  private List<RecordAndCodeId> notes;
-  private RecordType recordType;
-  private LocalDateTime date;
+    private List<RecordAndCodeId> notes;
+    private RecordType recordType;
+    private LocalDateTime date;
 
-  public void registerNoteAndIds(List<RecordAndCodeId> recordAndCodeIds) {
-    this.notes = recordAndCodeIds;
-  }
+    public void registerNoteAndIds(List<RecordAndCodeId> recordAndCodeIds) {
+        this.notes = recordAndCodeIds;
+    }
 
-  public List<RecordAndCodeId> getNotes() {
-    return List.copyOf(notes);
-  }
+    public List<RecordAndCodeId> getNotes() {
+        return List.copyOf(notes);
+    }
 
-  @Builder
-  private SimpleRecordContainer(List<RecordAndCodeId> notes, RecordType recordType, LocalDateTime date) {
-    this.notes = notes;
-      this.recordType = recordType;
-      this.date = date;
-  }
+    @Builder
+    private SimpleRecordContainer(List<RecordAndCodeId> notes, RecordType recordType, LocalDateTime date) {
+        this.notes = notes;
+        this.recordType = recordType;
+        this.date = date;
+    }
 }

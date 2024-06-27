@@ -17,20 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BarnController {
 
-  private final BarnService barnService;
+    private final BarnService barnService;
 
-  @PostMapping("/api/v0/barns/new")
-  public ApiResponse<BarnResponse> create(@Valid @RequestBody BarnCreateRequest request) {
-    return ApiResponse.ok(barnService.createBarn(request.toServiceRequest()));
-  }
+    @PostMapping("/api/v0/barns/new")
+    public ApiResponse<BarnResponse> create(@Valid @RequestBody BarnCreateRequest request) {
+        return ApiResponse.ok(barnService.createBarn(request.toServiceRequest()));
+    }
 
-  @GetMapping("/api/v0/barns")
-  public ApiResponse<List<BarnResponse>> findAll() {
-    return ApiResponse.ok(barnService.findAll());
-  }
+    @GetMapping("/api/v0/barns")
+    public ApiResponse<List<BarnResponse>> findAll() {
+        return ApiResponse.ok(barnService.findAll());
+    }
 
-  @GetMapping("/api/v0/barns/{codeId}")
-  public ApiResponse<BarnResponse> findByCodeId(@PathVariable String codeId) {
-    return ApiResponse.ok(barnService.findByCodeId(codeId));
-  }
+    @GetMapping("/api/v0/barns/{codeId}")
+    public ApiResponse<BarnResponse> findByCodeId(@PathVariable String codeId) {
+        return ApiResponse.ok(barnService.findByCodeId(codeId));
+    }
 }

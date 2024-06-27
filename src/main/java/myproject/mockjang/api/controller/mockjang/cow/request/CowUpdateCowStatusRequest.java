@@ -1,11 +1,9 @@
 package myproject.mockjang.api.controller.mockjang.cow.request;
 
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowUpdateCowStatusServiceRequest;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
 
@@ -23,7 +21,7 @@ public class CowUpdateCowStatusRequest {
         this.cowStatus = cowStatus;
     }
 
-    public CowUpdateCowStatusServiceRequest toServiceRequest(){
+    public CowUpdateCowStatusServiceRequest toServiceRequest() {
         return CowUpdateCowStatusServiceRequest.builder()
                 .cowId(cowId)
                 .cowStatus(cowStatus)

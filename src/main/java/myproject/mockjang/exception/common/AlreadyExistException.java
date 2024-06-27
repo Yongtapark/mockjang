@@ -5,11 +5,11 @@ import myproject.mockjang.exception.MockjangException;
 
 public class AlreadyExistException extends MockjangException {
 
-  public AlreadyExistException(String message) {
-    super(message);
-  }
+    public AlreadyExistException(String message) {
+        super(message);
+    }
 
-  public AlreadyExistException(Exceptions exception, String message) {
-    super(exception, message);
-  }
+    public AlreadyExistException(Exceptions exception, String message) {
+        super(exception, message);
+    }
 }

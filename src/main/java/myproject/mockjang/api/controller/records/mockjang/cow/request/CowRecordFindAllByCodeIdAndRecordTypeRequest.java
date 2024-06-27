@@ -10,20 +10,20 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class CowRecordFindAllByCodeIdAndRecordTypeRequest {
 
-  private String cowCode;
-  private RecordType recordType;
+    private String cowCode;
+    private RecordType recordType;
 
-  @Builder
-  private CowRecordFindAllByCodeIdAndRecordTypeRequest(String cowCode, RecordType recordType) {
-    this.cowCode = cowCode;
-    this.recordType = recordType;
-  }
+    @Builder
+    private CowRecordFindAllByCodeIdAndRecordTypeRequest(String cowCode, RecordType recordType) {
+        this.cowCode = cowCode;
+        this.recordType = recordType;
+    }
 
-  public CowRecordFindAllByCodeIdAndRecordTypeServiceRequest toServiceRequest() {
-    return CowRecordFindAllByCodeIdAndRecordTypeServiceRequest.builder()
-        .cowCode(cowCode)
-        .recordType(recordType)
-        .build();
-  }
+    public CowRecordFindAllByCodeIdAndRecordTypeServiceRequest toServiceRequest() {
+        return CowRecordFindAllByCodeIdAndRecordTypeServiceRequest.builder()
+                .cowCode(cowCode)
+                .recordType(recordType)
+                .build();
+    }
 
 }

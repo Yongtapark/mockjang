@@ -8,14 +8,14 @@ import org.springframework.data.repository.query.Param;
 
 public interface CowRecordRepository extends JpaRepository<CowRecord, Long> {
 
-  List<CowRecord> findAllByCow_CodeId(String codeId);
+    List<CowRecord> findAllByCow_CodeId(String codeId);
 
-  @Query(value = "SELECT * FROM cow_record WHERE deleted = true", nativeQuery = true)
-  List<CowRecord> findAllWhereDeletedTrue();
+    @Query(value = "SELECT * FROM cow_record WHERE deleted = true", nativeQuery = true)
+    List<CowRecord> findAllWhereDeletedTrue();
 
-  @Query("SELECT cr FROM CowRecord cr WHERE cr.cow.codeId = :codeId AND cr.recordType = :recordType")
-  List<CowRecord> findAllByCow_CodeIdAndRecordType(@Param("codeId") String codeId,
-      @Param("recordType") RecordType recordType);
+    @Query("SELECT cr FROM CowRecord cr WHERE cr.cow.codeId = :codeId AND cr.recordType = :recordType")
+    List<CowRecord> findAllByCow_CodeIdAndRecordType(@Param("codeId") String codeId,
+                                                     @Param("recordType") RecordType recordType);
 
 
 }

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterUnitPriceServiceRequest;
-import myproject.mockjang.api.service.mockjang.cow.request.CowUpdatePenServiceRequest;
 
 @NoArgsConstructor
 @Getter
@@ -21,7 +20,7 @@ public class CowRegisterUnitPriceRequest {
         this.unitPrice = unitPrice;
     }
 
-    public CowRegisterUnitPriceServiceRequest toServiceRequest(){
+    public CowRegisterUnitPriceServiceRequest toServiceRequest() {
         return CowRegisterUnitPriceServiceRequest.builder()
                 .cowId(cowId)
                 .unitPrice(unitPrice)

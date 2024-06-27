@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface BarnRepository extends JpaRepository<Barn, Long> {
 
-  Optional<Barn> findByCodeId(String codeId);
+    Optional<Barn> findByCodeId(String codeId);
 
-  @Query(value = "SELECT * FROM barn WHERE deleted = true", nativeQuery = true)
-  List<Barn> findAllWhereDeletedTrue();
+    @Query(value = "SELECT * FROM barn WHERE deleted = true", nativeQuery = true)
+    List<Barn> findAllWhereDeletedTrue();
 }

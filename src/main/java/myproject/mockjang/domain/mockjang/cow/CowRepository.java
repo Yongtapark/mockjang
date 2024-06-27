@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CowRepository extends JpaRepository<Cow, Long> {
 
-  Optional<Cow> findByCodeId(String codeId);
+    Optional<Cow> findByCodeId(String codeId);
 
-  List<Cow> findAllByCowStatus(CowStatus cowStatus);
+    List<Cow> findAllByCowStatus(CowStatus cowStatus);
 
-  @Query(value = "SELECT * FROM cow WHERE deleted = true", nativeQuery = true)
-  List<Cow> findAllWhereDeletedTrue();
+    @Query(value = "SELECT * FROM cow WHERE deleted = true", nativeQuery = true)
+    List<Cow> findAllWhereDeletedTrue();
 
 }

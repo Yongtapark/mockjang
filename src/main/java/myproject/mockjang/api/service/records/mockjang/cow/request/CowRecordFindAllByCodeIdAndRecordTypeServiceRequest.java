@@ -9,13 +9,13 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class CowRecordFindAllByCodeIdAndRecordTypeServiceRequest {
 
-  private String cowCode;
-  private RecordType recordType;
+    private String cowCode;
+    private RecordType recordType;
 
-  @Builder
-  private CowRecordFindAllByCodeIdAndRecordTypeServiceRequest(String cowCode,
-      RecordType recordType) {
-    this.cowCode = cowCode;
-    this.recordType = recordType;
-  }
+    @Builder
+    private CowRecordFindAllByCodeIdAndRecordTypeServiceRequest(String cowCode,
+                                                                RecordType recordType) {
+        this.cowCode = cowCode;
+        this.recordType = recordType;
+    }
 }

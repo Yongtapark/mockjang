@@ -22,7 +22,6 @@ import myproject.mockjang.domain.mockjang.Mockjang;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
-import myproject.mockjang.exception.Exceptions;
 import myproject.mockjang.exception.common.AlreadyExistException;
 import myproject.mockjang.exception.common.ThereIsNoGroupException;
 import myproject.mockjang.exception.common.UpperGroupAlreadyExistException;
@@ -38,86 +37,86 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public class Pen implements Mockjang {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String codeId;
+    private String codeId;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Barn barn;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Barn barn;
 
-  @OneToMany(mappedBy = "pen")
-  private List<Cow> cows = new ArrayList<>();
+    @OneToMany(mappedBy = "pen")
+    private List<Cow> cows = new ArrayList<>();
 
-  @OneToMany(mappedBy = "pen")
-  private List<PenRecord> records = new ArrayList<>();
+    @OneToMany(mappedBy = "pen")
+    private List<PenRecord> records = new ArrayList<>();
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @Builder
-  private Pen(String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {
-    this.codeId = codeId;
-    this.barn = barn;
-    if (cows != null) {
-      this.cows = cows;
+    @Builder
+    private Pen(String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {
+        this.codeId = codeId;
+        this.barn = barn;
+        if (cows != null) {
+            this.cows = cows;
+        }
+        if (records != null) {
+            this.records = records;
+        }
     }
-    if (records != null) {
-      this.records = records;
-    }
-  }
 
-  public static Pen createPen(String penCode) {
-    return Pen.builder()
-        .codeId(penCode)
-        .build();
-  }
-
-  @Override
-  public void registerUpperGroup(Mockjang mockjang) {
-    if (mockjang instanceof Barn barn) {
-      if (this.barn != null) {
-        throw new UpperGroupAlreadyExistException(barn, COMMON_ALREADY_EXIST);
-      }
-      barn.addPen(this);
-      this.barn = barn;
+    public static Pen createPen(String penCode) {
+        return Pen.builder()
+                .codeId(penCode)
+                .build();
     }
-  }
 
-  @Override
-  public void changeUpperGroup(Mockjang mockjang) {
-    if (mockjang instanceof Barn barn) {
-      this.barn.removeOneOfUnderGroups(this);
-      this.barn = null;
-      registerUpperGroup(barn);
+    @Override
+    public void registerUpperGroup(Mockjang mockjang) {
+        if (mockjang instanceof Barn barn) {
+            if (this.barn != null) {
+                throw new UpperGroupAlreadyExistException(barn, COMMON_ALREADY_EXIST);
+            }
+            barn.addPen(this);
+            this.barn = barn;
+        }
     }
-  }
 
-  public void addCow(Cow cow) {
-    if (cows.contains(cow)) {
-      throw new AlreadyExistException(COMMON_ALREADY_EXIST.formatMessage(cow.getCodeId()));
+    @Override
+    public void changeUpperGroup(Mockjang mockjang) {
+        if (mockjang instanceof Barn barn) {
+            this.barn.removeOneOfUnderGroups(this);
+            this.barn = null;
+            registerUpperGroup(barn);
+        }
     }
-    cows.add(cow);
-  }
 
-  public void registerDailyRecord(PenRecord record) {
-    if (!records.contains(record)) {
-      records.add(record);
+    public void addCow(Cow cow) {
+        if (cows.contains(cow)) {
+            throw new AlreadyExistException(COMMON_ALREADY_EXIST.formatMessage(cow.getCodeId()));
+        }
+        cows.add(cow);
     }
-  }
 
-  @Override
-  public Mockjang getUpperGroup() {
-    if (barn == null) {
-      throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP, this);
+    public void registerDailyRecord(PenRecord record) {
+        if (!records.contains(record)) {
+            records.add(record);
+        }
     }
-    return barn;
-  }
 
-  @Override
-  public void removeOneOfUnderGroups(Mockjang mockjang) {
-    if (!cows.remove(mockjang)) {
-      throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
+    @Override
+    public Mockjang getUpperGroup() {
+        if (barn == null) {
+            throw new ThereIsNoGroupException(COMMON_NO_UPPER_GROUP, this);
+        }
+        return barn;
     }
-  }
+
+    @Override
+    public void removeOneOfUnderGroups(Mockjang mockjang) {
+        if (!cows.remove(mockjang)) {
+            throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
+        }
+    }
 }

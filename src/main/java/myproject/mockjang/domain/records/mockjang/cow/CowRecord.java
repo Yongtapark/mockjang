@@ -29,63 +29,63 @@ import org.hibernate.annotations.Where;
 @Where(clause = "deleted = false")
 public class CowRecord extends Records {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Cow cow;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cow cow;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Pen pen;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Pen pen;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Barn barn;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Barn barn;
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @Builder
-  private CowRecord(Cow cow, Pen pen, Barn barn) {
-    this.cow = cow;
-    this.pen = pen;
-    this.barn = barn;
-  }
-
-  public static CowRecord createRecord(Cow cow, RecordType recordType, LocalDateTime date) {
-    CowRecord cowRecord = CowRecord.builder()
-        .cow(cow)
-        .pen(cow.getPen())
-        .barn(cow.getBarn())
-        .build();
-    cowRecord.registerRecordType(recordType);
-    cowRecord.registerDate(date);
-    return cowRecord;
-  }
-
-  public void recordsNullCheck(CowRecord cowRecord) {
-    emptyRelationCheck(cowRecord);
-    basicNullCheck(cowRecord);
-  }
-
-  private void emptyRelationCheck(CowRecord cowRecord) {
-    if (cowRecord.getBarn() == null) {
-      throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Barn.class));
+    @Builder
+    private CowRecord(Cow cow, Pen pen, Barn barn) {
+        this.cow = cow;
+        this.pen = pen;
+        this.barn = barn;
     }
-    if (cowRecord.getPen() == null) {
-      throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Pen.class));
+
+    public static CowRecord createRecord(Cow cow, RecordType recordType, LocalDateTime date) {
+        CowRecord cowRecord = CowRecord.builder()
+                .cow(cow)
+                .pen(cow.getPen())
+                .barn(cow.getBarn())
+                .build();
+        cowRecord.registerRecordType(recordType);
+        cowRecord.registerDate(date);
+        return cowRecord;
     }
-  }
 
-  public void registerRecordType(RecordType recordType) {
-    super.registerRecordType(recordType);
-  }
+    public void recordsNullCheck(CowRecord cowRecord) {
+        emptyRelationCheck(cowRecord);
+        basicNullCheck(cowRecord);
+    }
 
-  public void registerDate(LocalDateTime dateTime) {
-    super.registerDate(dateTime);
-  }
+    private void emptyRelationCheck(CowRecord cowRecord) {
+        if (cowRecord.getBarn() == null) {
+            throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Barn.class));
+        }
+        if (cowRecord.getPen() == null) {
+            throw new NotExistException(COMMON_NOT_EXIST.formatMessage(Pen.class));
+        }
+    }
 
-  public void recordMemo(String memo) {
-    registerRecord(memo);
-    cow.registerRecord(this);
-  }
+    public void registerRecordType(RecordType recordType) {
+        super.registerRecordType(recordType);
+    }
+
+    public void registerDate(LocalDateTime dateTime) {
+        super.registerDate(dateTime);
+    }
+
+    public void recordMemo(String memo) {
+        registerRecord(memo);
+        cow.registerRecord(this);
+    }
 }

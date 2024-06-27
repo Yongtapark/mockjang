@@ -6,7 +6,7 @@ import myproject.mockjang.exception.MockjangException;
 
 public class ThereIsNoGroupException extends MockjangException {
 
-  public ThereIsNoGroupException(Exceptions exception, Mockjang mockjang) {
-    super(mockjang, exception);
-  }
+    public ThereIsNoGroupException(Exceptions exception, Mockjang mockjang) {
+        super(mockjang, exception);
+    }
 }

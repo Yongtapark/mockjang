@@ -10,17 +10,17 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class CowRecordCreateServiceRequest {
 
-  private String cowCode;
-  private String memo;
-  private LocalDateTime date;
-  private RecordType recordType;
+    private String cowCode;
+    private String memo;
+    private LocalDateTime date;
+    private RecordType recordType;
 
-  @Builder
-  private CowRecordCreateServiceRequest(String cowCode, String memo, LocalDateTime date,
-      RecordType recordType) {
-    this.cowCode = cowCode;
-    this.memo = memo;
-    this.date = date;
-    this.recordType = recordType;
-  }
+    @Builder
+    private CowRecordCreateServiceRequest(String cowCode, String memo, LocalDateTime date,
+                                          RecordType recordType) {
+        this.cowCode = cowCode;
+        this.memo = memo;
+        this.date = date;
+        this.recordType = recordType;
+    }
 }

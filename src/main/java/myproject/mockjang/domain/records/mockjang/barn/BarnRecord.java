@@ -24,31 +24,31 @@ import org.hibernate.annotations.Where;
 @Where(clause = "deleted = false")
 public class BarnRecord extends Records {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  @ManyToOne(fetch = FetchType.LAZY)
-  private Barn barn;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Barn barn;
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @Builder
-  private BarnRecord(Barn barn) {
-    this.barn = barn;
-  }
-
-  public static BarnRecord creatRecord(Barn barn, RecordType recordType, LocalDateTime date) {
-    BarnRecord barnRecord = BarnRecord.builder().barn(barn).build();
-    barnRecord.registerRecordType(recordType);
-    barnRecord.registerDate(date);
-    return barnRecord;
-  }
-
-  public void writeNote(String memo) {
-    if (barn == null) {
-      throw new RuntimeException("there is no barn or cow");
+    @Builder
+    private BarnRecord(Barn barn) {
+        this.barn = barn;
     }
-    registerRecord(memo);
-    barn.registerDailyRecord(this);
-  }
+
+    public static BarnRecord creatRecord(Barn barn, RecordType recordType, LocalDateTime date) {
+        BarnRecord barnRecord = BarnRecord.builder().barn(barn).build();
+        barnRecord.registerRecordType(recordType);
+        barnRecord.registerDate(date);
+        return barnRecord;
+    }
+
+    public void writeNote(String memo) {
+        if (barn == null) {
+            throw new RuntimeException("there is no barn or cow");
+        }
+        registerRecord(memo);
+        barn.registerDailyRecord(this);
+    }
 }

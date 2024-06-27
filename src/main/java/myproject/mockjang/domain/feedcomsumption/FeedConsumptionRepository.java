@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface FeedConsumptionRepository extends JpaRepository<FeedConsumption, Long> {
 
-  List<FeedConsumption> findAllByDate(LocalDate date);
+    List<FeedConsumption> findAllByDate(LocalDate date);
 
-  @Query(value = "SELECT * FROM feed_consumption WHERE deleted = true", nativeQuery = true)
-  List<FeedConsumption> findAllWhereDeletedTrue();
+    @Query(value = "SELECT * FROM feed_consumption WHERE deleted = true", nativeQuery = true)
+    List<FeedConsumption> findAllWhereDeletedTrue();
 }

@@ -9,11 +9,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PenRepository extends JpaRepository<Pen, Long> {
 
-  Optional<Pen> findByCodeId(String codeId);
+    Optional<Pen> findByCodeId(String codeId);
 
-  List<Pen> findAll();
+    List<Pen> findAll();
 
-  @Query(value = "SELECT * FROM pen WHERE deleted = true", nativeQuery = true)
-  List<Pen> findAllWhereDeletedTrue();
+    @Query(value = "SELECT * FROM pen WHERE deleted = true", nativeQuery = true)
+    List<Pen> findAllWhereDeletedTrue();
 
 }

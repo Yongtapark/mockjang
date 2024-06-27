@@ -89,7 +89,7 @@ public class Cow extends AuditingEntity implements Mockjang {
 
     private Integer unitPrice;
 
-    private boolean deleted = false;
+    private final boolean deleted = false;
 
     @Builder
     private Cow(String codeId, LocalDateTime birthDate, Gender gender, Barn barn, Pen pen,
@@ -175,9 +175,7 @@ public class Cow extends AuditingEntity implements Mockjang {
             }
 
             if (removeIfParent(parent, "mom")) {
-                return;
             } else if (removeIfParent(parent, "dad")) {
-                return;
             }
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException(String.format("classLoader error : %s", e));
@@ -199,7 +197,8 @@ public class Cow extends AuditingEntity implements Mockjang {
             findField.set(this, null);
             return true;
         }
-        throw new CowParentsException(Exceptions.DOMAIN_PARENTS_ERROR.formatMessage(parent.getCodeId(), actualParent.getCodeId()));
+        throw new CowParentsException(
+                Exceptions.DOMAIN_PARENTS_ERROR.formatMessage(parent.getCodeId(), actualParent.getCodeId()));
     }
 
     public void registerRecord(CowRecord record) {

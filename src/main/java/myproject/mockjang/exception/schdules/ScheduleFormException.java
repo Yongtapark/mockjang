@@ -2,7 +2,7 @@ package myproject.mockjang.exception.schdules;
 
 import myproject.mockjang.exception.Exceptions;
 
-public class ScheduleFormException extends IllegalArgumentException{
+public class ScheduleFormException extends IllegalArgumentException {
     public ScheduleFormException(Exceptions exception) {
         super(exception.getMessage());
     }

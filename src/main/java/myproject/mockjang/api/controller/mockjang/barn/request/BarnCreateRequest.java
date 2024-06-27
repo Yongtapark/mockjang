@@ -10,15 +10,15 @@ import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceReq
 @NoArgsConstructor
 public class BarnCreateRequest {
 
-  @NotBlank(message = "축사명은 공백일 수 없습니다.")
-  private String codeId;
+    @NotBlank(message = "축사명은 공백일 수 없습니다.")
+    private String codeId;
 
-  @Builder
-  public BarnCreateRequest(String codeId) {
-    this.codeId = codeId;
-  }
+    @Builder
+    public BarnCreateRequest(String codeId) {
+        this.codeId = codeId;
+    }
 
-  public BarnCreateServiceRequest toServiceRequest() {
-    return BarnCreateServiceRequest.builder().codeId(codeId).build();
-  }
+    public BarnCreateServiceRequest toServiceRequest() {
+        return BarnCreateServiceRequest.builder().codeId(codeId).build();
+    }
 }

@@ -19,30 +19,30 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BarnService extends MockjangServiceAbstract {
 
-  private final BarnRepository barnRepository;
+    private final BarnRepository barnRepository;
 
-  public BarnResponse createBarn(BarnCreateServiceRequest request) {
-    String barnCode = request.getCodeId();
-    codeIdFilter(barnCode);
-    Barn barn = Barn.createBarn(barnCode);
-    Barn savedBarn = barnRepository.save(barn);
-    return BarnResponse.of(savedBarn);
-  }
+    public BarnResponse createBarn(BarnCreateServiceRequest request) {
+        String barnCode = request.getCodeId();
+        codeIdFilter(barnCode);
+        Barn barn = Barn.createBarn(barnCode);
+        Barn savedBarn = barnRepository.save(barn);
+        return BarnResponse.of(savedBarn);
+    }
 
-  public List<BarnResponse> findAll() {
-    List<Barn> barns = barnRepository.findAll();
-    return barns.stream().map(BarnResponse::of)
-        .collect(Collectors.toList());
-  }
+    public List<BarnResponse> findAll() {
+        List<Barn> barns = barnRepository.findAll();
+        return barns.stream().map(BarnResponse::of)
+                .collect(Collectors.toList());
+    }
 
-  public BarnResponse findByCodeId(String codeId) {
-    Barn barn = barnRepository.findByCodeId(codeId)
-        .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId));
-    return BarnResponse.of(barn);
-  }
+    public BarnResponse findByCodeId(String codeId) {
+        Barn barn = barnRepository.findByCodeId(codeId)
+                .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId));
+        return BarnResponse.of(barn);
+    }
 
-  public void delete(Barn barn) {
-    barnRepository.delete(barn);
-  }
+    public void delete(Barn barn) {
+        barnRepository.delete(barn);
+    }
 
 }

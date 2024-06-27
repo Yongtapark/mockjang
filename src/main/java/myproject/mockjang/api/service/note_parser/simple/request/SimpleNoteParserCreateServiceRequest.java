@@ -11,18 +11,18 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class SimpleNoteParserCreateServiceRequest {
 
-  private String context;
-  private LocalDateTime date;
-  private RecordType recordType;
-  private HashMap<String, Integer> names;
+    private String context;
+    private LocalDateTime date;
+    private RecordType recordType;
+    private HashMap<String, Integer> names;
 
-  @Builder
-  private SimpleNoteParserCreateServiceRequest(String context, LocalDateTime date,
-      RecordType recordType, HashMap<String, Integer> names) {
-    this.context = context;
-    this.date = date;
-    this.recordType = recordType;
-    this.names = names;
-  }
+    @Builder
+    private SimpleNoteParserCreateServiceRequest(String context, LocalDateTime date,
+                                                 RecordType recordType, HashMap<String, Integer> names) {
+        this.context = context;
+        this.date = date;
+        this.recordType = recordType;
+        this.names = names;
+    }
 
 }

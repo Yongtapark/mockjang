@@ -13,28 +13,28 @@ import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
 @NoArgsConstructor
 public class PenResponse {
 
-  private Long id;
-  private String codeId;
-  private Barn barn;
-  private List<Cow> cows;
-  private List<PenRecord> records;
+    private Long id;
+    private String codeId;
+    private Barn barn;
+    private List<Cow> cows;
+    private List<PenRecord> records;
 
-  @Builder
-  private PenResponse(Long id, String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {
-    this.id = id;
-    this.codeId = codeId;
-    this.barn = barn;
-    this.cows = cows;
-    this.records = records;
-  }
+    @Builder
+    private PenResponse(Long id, String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {
+        this.id = id;
+        this.codeId = codeId;
+        this.barn = barn;
+        this.cows = cows;
+        this.records = records;
+    }
 
-  public static PenResponse of(Pen pen) {
-    return PenResponse.builder()
-        .id(pen.getId())
-        .codeId(pen.getCodeId())
-        .barn(pen.getBarn())
-        .cows(pen.getCows())
-        .records(pen.getRecords())
-        .build();
-  }
+    public static PenResponse of(Pen pen) {
+        return PenResponse.builder()
+                .id(pen.getId())
+                .codeId(pen.getCodeId())
+                .barn(pen.getBarn())
+                .cows(pen.getCows())
+                .records(pen.getRecords())
+                .build();
+    }
 }

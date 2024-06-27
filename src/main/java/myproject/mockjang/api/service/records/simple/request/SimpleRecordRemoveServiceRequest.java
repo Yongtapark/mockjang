@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SimpleRecordRemoveServiceRequest {
 
-  Long id;
+    Long id;
 
-  @Builder
-  private SimpleRecordRemoveServiceRequest(Long id) {
-    this.id = id;
-  }
+    @Builder
+    private SimpleRecordRemoveServiceRequest(Long id) {
+        this.id = id;
+    }
 }

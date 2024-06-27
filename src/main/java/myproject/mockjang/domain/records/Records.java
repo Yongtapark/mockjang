@@ -5,9 +5,6 @@ import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -20,34 +17,34 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Records extends AuditingEntity {
 
-  private String record;
+    private String record;
 
-  private LocalDateTime date;
+    private LocalDateTime date;
 
-  @Enumerated(EnumType.STRING)
-  private RecordType recordType;
+    @Enumerated(EnumType.STRING)
+    private RecordType recordType;
 
-  protected void registerRecord(String memo) {
-    this.record = memo;
-  }
-
-  protected void registerRecordType(RecordType recordType) {
-    this.recordType = recordType;
-  }
-
-  protected void registerDate(LocalDateTime date) {
-    this.date = date;
-  }
-
-  protected void basicNullCheck(Records record) {
-    if (record.getRecordType() == null) {
-      throw new NotExistException(COMMON_NOT_EXIST.formatMessage(RecordType.class));
+    protected void registerRecord(String memo) {
+        this.record = memo;
     }
-    if (record.getDate() == null) {
-      throw new NotExistException(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
+
+    protected void registerRecordType(RecordType recordType) {
+        this.recordType = recordType;
     }
-    if (record.getRecord() == null || record.getRecord().isBlank()) {
-      throw new NotExistException(COMMON_NOT_EXIST.formatMessage("record"));
+
+    protected void registerDate(LocalDateTime date) {
+        this.date = date;
     }
-  }
+
+    protected void basicNullCheck(Records record) {
+        if (record.getRecordType() == null) {
+            throw new NotExistException(COMMON_NOT_EXIST.formatMessage(RecordType.class));
+        }
+        if (record.getDate() == null) {
+            throw new NotExistException(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
+        }
+        if (record.getRecord() == null || record.getRecord().isBlank()) {
+            throw new NotExistException(COMMON_NOT_EXIST.formatMessage("record"));
+        }
+    }
 }

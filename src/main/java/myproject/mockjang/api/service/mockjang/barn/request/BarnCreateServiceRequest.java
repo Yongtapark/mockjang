@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BarnCreateServiceRequest {
 
-  private String codeId;
+    private String codeId;
 
-  @Builder
-  private BarnCreateServiceRequest(String codeId) {
-    this.codeId = codeId;
-  }
+    @Builder
+    private BarnCreateServiceRequest(String codeId) {
+        this.codeId = codeId;
+    }
 
 
 }

@@ -25,69 +25,69 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Where(clause = "deleted = false")
 public class Schedule extends AuditingEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private LocalDateTime startDate;
+    private LocalDateTime startDate;
 
-  private LocalDateTime targetDate;
+    private LocalDateTime targetDate;
 
-  private String context;
+    private String context;
 
-  private ScheduleStatus scheduleStatus;
+    private ScheduleStatus scheduleStatus;
 
-  private boolean deleted = false;
+    private final boolean deleted = false;
 
-  @Builder
-  private Schedule(Long id, LocalDateTime startDate, LocalDateTime targetDate, String context,
-      ScheduleStatus scheduleStatus) {
-    this.id = id;
-    this.startDate = startDate;
-    this.targetDate = targetDate;
-    this.context = context;
-    this.scheduleStatus = scheduleStatus;
-  }
-
-  public static Schedule create(LocalDateTime startDate, LocalDateTime targetDate, String context) {
-    if (startDate.isAfter(targetDate)) {
-      throw new ScheduleFormException(Exceptions.DOMAIN_SCHEDULE_FORM);
+    @Builder
+    private Schedule(Long id, LocalDateTime startDate, LocalDateTime targetDate, String context,
+                     ScheduleStatus scheduleStatus) {
+        this.id = id;
+        this.startDate = startDate;
+        this.targetDate = targetDate;
+        this.context = context;
+        this.scheduleStatus = scheduleStatus;
     }
-    return Schedule.builder()
-        .startDate(startDate)
-        .targetDate(targetDate)
-        .context(context)
-        .build();
-  }
 
-  private void registerScheduleStatus(ScheduleStatus scheduleStatus) {
-    this.scheduleStatus = scheduleStatus;
-  }
-
-  public void calculateScheduleStatus(LocalDateTime readDate) {
-    if (startDate == null) {
-      startDate = targetDate;
+    public static Schedule create(LocalDateTime startDate, LocalDateTime targetDate, String context) {
+        if (startDate.isAfter(targetDate)) {
+            throw new ScheduleFormException(Exceptions.DOMAIN_SCHEDULE_FORM);
+        }
+        return Schedule.builder()
+                .startDate(startDate)
+                .targetDate(targetDate)
+                .context(context)
+                .build();
     }
-    compareWithPeriod(startDate, targetDate, readDate);
-  }
 
-  private void compareWithPeriod(LocalDateTime startDate, LocalDateTime targetDate,
-      LocalDateTime readDate) {
-    if (startDate.isAfter(readDate)) {
-      registerScheduleStatus(ScheduleStatus.UPCOMING);
-      return;
+    private void registerScheduleStatus(ScheduleStatus scheduleStatus) {
+        this.scheduleStatus = scheduleStatus;
     }
-    if ((startDate.isBefore(readDate) || startDate.equals(readDate)) && (
-        targetDate.isAfter(readDate) || targetDate.equals(readDate))) {
-      registerScheduleStatus(ScheduleStatus.IN_PROGRESS);
-      return;
-    }
-    registerScheduleStatus(ScheduleStatus.EXPIRED);
-  }
 
-  public void update(String context, LocalDateTime startDate, LocalDateTime targetDate) {
-    this.context = context;
-    this.startDate = startDate;
-    this.targetDate = targetDate;
-  }
+    public void calculateScheduleStatus(LocalDateTime readDate) {
+        if (startDate == null) {
+            startDate = targetDate;
+        }
+        compareWithPeriod(startDate, targetDate, readDate);
+    }
+
+    private void compareWithPeriod(LocalDateTime startDate, LocalDateTime targetDate,
+                                   LocalDateTime readDate) {
+        if (startDate.isAfter(readDate)) {
+            registerScheduleStatus(ScheduleStatus.UPCOMING);
+            return;
+        }
+        if ((startDate.isBefore(readDate) || startDate.equals(readDate)) && (
+                targetDate.isAfter(readDate) || targetDate.equals(readDate))) {
+            registerScheduleStatus(ScheduleStatus.IN_PROGRESS);
+            return;
+        }
+        registerScheduleStatus(ScheduleStatus.EXPIRED);
+    }
+
+    public void update(String context, LocalDateTime startDate, LocalDateTime targetDate) {
+        this.context = context;
+        this.startDate = startDate;
+        this.targetDate = targetDate;
+    }
 }

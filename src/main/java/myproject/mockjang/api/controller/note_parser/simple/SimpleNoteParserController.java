@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SimpleNoteParserController {
 
-  private final SimpleNoteParserService noteParserService;
+    private final SimpleNoteParserService noteParserService;
 
-  @PostMapping("/api/v0/simple-parser/new")
-  public ApiResponse<RecordParserResponse> createRecords(
-      @Valid @RequestBody SimpleNoteParserCreateRequest request) {
-    return ApiResponse.ok(
-        noteParserService.parseNoteAndSaveRecord(request.toServiceRequest(new HashMap<>())));
-  }
+    @PostMapping("/api/v0/simple-parser/new")
+    public ApiResponse<RecordParserResponse> createRecords(
+            @Valid @RequestBody SimpleNoteParserCreateRequest request) {
+        return ApiResponse.ok(
+                noteParserService.parseNoteAndSaveRecord(request.toServiceRequest(new HashMap<>())));
+    }
 
 }
