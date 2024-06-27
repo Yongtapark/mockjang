@@ -6,7 +6,6 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.api.service.mockjang.cow.request.CowRegisterParentsServiceRequest;
 import myproject.mockjang.api.service.mockjang.cow.request.CowRemoveParentsServiceRequest;
 
 @NoArgsConstructor
@@ -15,19 +14,19 @@ public class CowRemoveParentsRequest {
     @NotNull(message = "{exception.id.null}")
     private Long cowId;
     @NotNull(message = "{exception.id.null}")
-    @Size(min = 1,max = 2,message = "{exception.cow.parents.size}")
-    private List<Long> parentsIds;
+    @Size(min = 1, max = 2, message = "{exception.cow.parents.size}")
+    private List<Long> parents;
 
     @Builder
-    private CowRemoveParentsRequest(Long cowId, List<Long> parentsIds) {
+    private CowRemoveParentsRequest(Long cowId, List<Long> parents) {
         this.cowId = cowId;
-        this.parentsIds = parentsIds;
+        this.parents = parents;
     }
 
-    public CowRemoveParentsServiceRequest toServiceRequest(){
+    public CowRemoveParentsServiceRequest toServiceRequest() {
         return CowRemoveParentsServiceRequest.builder()
                 .cowId(cowId)
-                .parentsIds(parentsIds)
+                .parentsIds(parents)
                 .build();
     }
 }

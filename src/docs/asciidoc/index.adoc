@@ -9,6 +9,11 @@ endif::[]
 :toclevels: 2
 :sectlinks:
 
+[[Cow-API]]
+== Cow API
+
+include::api/mockjang/cow/cow.adoc[]
+
 [[SimpleNoteParser-API]]
 == Simple Note Parser API
 
@@ -18,3 +23,4 @@ include::api/note_parser/simple/simple-note-parser.adoc[]
 == Simple Record API
 
 include::api/record/simple/simple-record.adoc[]
+

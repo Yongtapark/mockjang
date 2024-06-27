@@ -29,58 +29,58 @@ import org.springframework.restdocs.payload.JsonFieldType;
 
 public class SimpleNoteParserControllerDocsTest extends RestDocsSupport {
 
-  private final SimpleNoteParserService service = mock(SimpleNoteParserService.class);
+    private final SimpleNoteParserService service = mock(SimpleNoteParserService.class);
 
-  @Override
-  protected Object initController() {
-    return new SimpleNoteParserController(service);
-  }
+    @Override
+    protected Object initController() {
+        return new SimpleNoteParserController(service);
+    }
 
-  @DisplayName("문자열을 파싱하여 저장하는 api")
-  @Test
-  void createRecords() throws Exception {
+    @DisplayName("문자열을 파싱하여 저장하는 api")
+    @Test
+    void createRecords() throws Exception {
 
-    String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
-    SimpleNoteParserCreateRequest request = SimpleNoteParserCreateRequest.builder().context(context)
-        .date(TEMP_DATE).recordType(RecordType.DAILY).build();
+        String context = "[[" + BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
+        SimpleNoteParserCreateRequest request = SimpleNoteParserCreateRequest.builder().context(context)
+                .date(TEMP_DATE).recordType(RecordType.DAILY).build();
 
-    HashMap<String, Integer> names = new HashMap<>();
-    names.put(PARSER_BARN_CODE_ID_1, 1);
-    RecordParserResponse response = RecordParserResponse.builder().names(names).build();
+        HashMap<String, Integer> names = new HashMap<>();
+        names.put(BARN_CODE_ID_1, 1);
+        RecordParserResponse response = RecordParserResponse.builder().names(names).build();
 
-    given(service.parseNoteAndSaveRecord(any(SimpleNoteParserCreateServiceRequest.class)))
-        .willReturn(response);
+        given(service.parseNoteAndSaveRecord(any(SimpleNoteParserCreateServiceRequest.class)))
+                .willReturn(response);
 
-    mockMvc.perform(
-        post("/api/v0/simple-parser/new").content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andDo(document("simpleParser-new",
-            preprocessRequest(prettyPrint()),
-            preprocessResponse(prettyPrint()),
-            requestFields(
-                fieldWithPath("context").type(JsonFieldType.STRING)
-                    .description("기록 내용"),
-                fieldWithPath("recordType").type(JsonFieldType.STRING)
-                    .description("기록 유형"),
-                fieldWithPath("date").type(JsonFieldType.ARRAY)
-                    .description("기록 날짜")
-            ),
-            responseFields(
-                fieldWithPath("code").type(JsonFieldType.NUMBER)
-                    .description("코드"),
-                fieldWithPath("status").type(JsonFieldType.STRING)
-                    .description("상태"),
-                fieldWithPath("message").type(JsonFieldType.STRING)
-                    .description("메시지"),
-                fieldWithPath("data").type(JsonFieldType.OBJECT)
-                    .description("응답 데이터"),
-                fieldWithPath("data.names").type(JsonFieldType.OBJECT)
-                    .description("이름"),
-                fieldWithPath("data.names.*").type(JsonFieldType.NUMBER).description("저장 완료된 글의 수")
+        mockMvc.perform(
+                        post("/api/v0/simple-parser/new").content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("simpleParser-new",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("context").type(JsonFieldType.STRING)
+                                        .description("기록 내용"),
+                                fieldWithPath("recordType").type(JsonFieldType.STRING)
+                                        .description("기록 유형"),
+                                fieldWithPath("date").type(JsonFieldType.ARRAY)
+                                        .description("기록 날짜")
+                        ),
+                        responseFields(
+                                fieldWithPath("code").type(JsonFieldType.NUMBER)
+                                        .description("코드"),
+                                fieldWithPath("status").type(JsonFieldType.STRING)
+                                        .description("상태"),
+                                fieldWithPath("message").type(JsonFieldType.STRING)
+                                        .description("메시지"),
+                                fieldWithPath("data").type(JsonFieldType.OBJECT)
+                                        .description("응답 데이터"),
+                                fieldWithPath("data.names").type(JsonFieldType.OBJECT)
+                                        .description("이름"),
+                                fieldWithPath("data.names.*").type(JsonFieldType.NUMBER).description("저장 완료된 글의 수")
 
-            )
-            ));
-  }
+                        )
+                ));
+    }
 }

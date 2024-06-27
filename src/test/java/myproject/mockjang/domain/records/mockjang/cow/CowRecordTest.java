@@ -13,28 +13,27 @@ import org.junit.jupiter.api.Test;
 
 class CowRecordTest extends IntegrationTestSupport {
 
-  @DisplayName("단일 메모를 입력하면 소의 메모 리스트에 저장된다.")
-  @Test
-  void writeOneRecord() {
-    //given
-    Barn barn = Barn.builder().codeId(PARSER_BARN_CODE_ID_1).build();
-    Pen pen = Pen.builder().codeId(PARSER_PEN_CODE_ID_1).barn(barn).build();
-    Cow cow = Cow.builder().codeId(PARSER_COW_CODE_ID_1).build();
-    cow.registerUpperGroup(pen);
-    cow.registerBarn(barn);
+    @DisplayName("단일 메모를 입력하면 소의 메모 리스트에 저장된다.")
+    @Test
+    void writeOneRecord() {
+        //given
+        Barn barn = Barn.builder().codeId(BARN_CODE_ID_1).build();
+        Pen pen = Pen.builder().codeId(PEN_CODE_ID_1).barn(barn).build();
+        Cow cow = Cow.builder().codeId(COW_CODE_ID_1).build();
+        cow.registerUpperGroup(pen);
+        cow.registerBarn(barn);
 
-    CowRecord cowRecord1 = CowRecord.createRecord(cow, RecordType.DAILY, TEMP_DATE);
-    CowRecord cowRecord2 = CowRecord.createRecord(cow, RecordType.DAILY, TEMP_DATE);
-    ;
+        CowRecord cowRecord1 = CowRecord.createRecord(cow, RecordType.DAILY, TEMP_DATE);
+        CowRecord cowRecord2 = CowRecord.createRecord(cow, RecordType.DAILY, TEMP_DATE);
 
-    //when
-    cowRecord1.recordMemo("test1");
-    cowRecord2.recordMemo("test2");
-    List<CowRecord> records = cow.getRecords();
+        //when
+        cowRecord1.recordMemo("test1");
+        cowRecord2.recordMemo("test2");
+        List<CowRecord> records = cow.getRecords();
 
-    //then
-    assertThat(records).hasSize(2);
-    assertThat(records).contains(cowRecord1, cowRecord2);
-  }
+        //then
+        assertThat(records).hasSize(2);
+        assertThat(records).contains(cowRecord1, cowRecord2);
+    }
 
 }

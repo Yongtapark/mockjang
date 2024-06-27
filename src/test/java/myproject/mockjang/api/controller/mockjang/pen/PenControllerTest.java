@@ -19,118 +19,118 @@ import org.springframework.http.MediaType;
 
 class PenControllerTest extends ControllerTestSupport {
 
-  @DisplayName("신규 축사칸을 등록한다")
-  @Test
-  void create() throws Exception {
-    //given
-    PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
-        .penCodeId(PARSER_PEN_CODE_ID_1).build();
+    @DisplayName("신규 축사칸을 등록한다")
+    @Test
+    void create() throws Exception {
+        //given
+        PenCreateRequest request = PenCreateRequest.builder().barnCodeId(BARN_CODE_ID_1)
+                .penCodeId(PEN_CODE_ID_1).build();
 
-    //when //then
-    mockMvc.perform(
-            post("/api/v0/pens/new")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("200"))
-        .andExpect(jsonPath("$.status").value("OK"))
-        .andExpect(jsonPath("$.message").value("OK"));
-  }
+        //when //then
+        mockMvc.perform(
+                        post("/api/v0/pens/new")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+    }
 
-  @DisplayName("null 값으로 축사 생성을 시도하면 예외를 발생시킨다.")
-  @Test
-  void createWithCodeIdNull() throws Exception {
-    //given
-    PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
-        .penCodeId(null).build();
+    @DisplayName("null 값으로 축사 생성을 시도하면 예외를 발생시킨다.")
+    @Test
+    void createWithCodeIdNull() throws Exception {
+        //given
+        PenCreateRequest request = PenCreateRequest.builder().barnCodeId(BARN_CODE_ID_1)
+                .penCodeId(null).build();
 
-    //when //then
-    mockMvc.perform(
-            post("/api/v0/pens/new")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("축사칸명은 공백일 수 없습니다."))
-        .andExpect(jsonPath("$.data").isEmpty());
-  }
+        //when //then
+        mockMvc.perform(
+                        post("/api/v0/pens/new")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("축사칸명은 공백일 수 없습니다."))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
 
-  @DisplayName("입력 없이 축사칸 생성을 시도하면 예외를 발생시킨다.")
-  @Test
-  void createWithEmpty() throws Exception {
-    //given
-    PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
-        .penCodeId(STRING_EMPTY).build();
+    @DisplayName("입력 없이 축사칸 생성을 시도하면 예외를 발생시킨다.")
+    @Test
+    void createWithEmpty() throws Exception {
+        //given
+        PenCreateRequest request = PenCreateRequest.builder().barnCodeId(BARN_CODE_ID_1)
+                .penCodeId(STRING_EMPTY).build();
 
-    //when //then
-    mockMvc.perform(
-            post("/api/v0/pens/new")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("축사칸명은 공백일 수 없습니다."))
-        .andExpect(jsonPath("$.data").isEmpty());
-  }
+        //when //then
+        mockMvc.perform(
+                        post("/api/v0/pens/new")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("축사칸명은 공백일 수 없습니다."))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
 
-  @DisplayName("공백으로 축사칸 생성을 시도하면 예외를 발생시킨다.")
-  @Test
-  void createWithBlank() throws Exception {
-    //given
-    PenCreateRequest request = PenCreateRequest.builder().barnCodeId(PARSER_BARN_CODE_ID_1)
-        .penCodeId(STRING_ONLY_SPACE).build();
-    //when //then
-    mockMvc.perform(
-            post("/api/v0/pens/new")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("축사칸명은 공백일 수 없습니다."))
-        .andExpect(jsonPath("$.data").isEmpty());
-  }
+    @DisplayName("공백으로 축사칸 생성을 시도하면 예외를 발생시킨다.")
+    @Test
+    void createWithBlank() throws Exception {
+        //given
+        PenCreateRequest request = PenCreateRequest.builder().barnCodeId(BARN_CODE_ID_1)
+                .penCodeId(STRING_ONLY_SPACE).build();
+        //when //then
+        mockMvc.perform(
+                        post("/api/v0/pens/new")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("축사칸명은 공백일 수 없습니다."))
+                .andExpect(jsonPath("$.data").isEmpty());
+    }
 
-  @DisplayName("축사칸 목록을 조회한다.")
-  @Test
-  void findAll() throws Exception {
-    //given
-    List<PenResponse> response = List.of();
-    //when //then
-    when(penService.findAll()).thenReturn(response);
+    @DisplayName("축사칸 목록을 조회한다.")
+    @Test
+    void findAll() throws Exception {
+        //given
+        List<PenResponse> response = List.of();
+        //when //then
+        when(penService.findAll()).thenReturn(response);
 
-    mockMvc.perform(get("/api/v0/pens"))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("200"))
-        .andExpect(jsonPath("$.status").value("OK"))
-        .andExpect(jsonPath("$.message").value("OK"))
-        .andExpect(jsonPath("$.data").isArray());
-  }
+        mockMvc.perform(get("/api/v0/pens"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data").isArray());
+    }
 
-  @DisplayName("축사칸 단건 조회")
-  @Test
-  void findByCodeId() throws Exception {
-    //given
-    Pen pen = Pen.createPen(PARSER_PEN_CODE_ID_1);
-    PenResponse response = PenResponse.of(pen);
+    @DisplayName("축사칸 단건 조회")
+    @Test
+    void findByCodeId() throws Exception {
+        //given
+        Pen pen = Pen.createPen(PEN_CODE_ID_1);
+        PenResponse response = PenResponse.of(pen);
 
-    //when //then
-    when(penService.findByCodeId(any())).thenReturn(response);
-    mockMvc.perform(get("/api/v0/pens/" + PARSER_PEN_CODE_ID_1))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("200"))
-        .andExpect(jsonPath("$.status").value("OK"))
-        .andExpect(jsonPath("$.message").value("OK"))
-        .andExpect(jsonPath("$.data").exists());
-  }
+        //when //then
+        when(penService.findByCodeId(any())).thenReturn(response);
+        mockMvc.perform(get("/api/v0/pens/" + PEN_CODE_ID_1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"))
+                .andExpect(jsonPath("$.data").exists());
+    }
 
 }

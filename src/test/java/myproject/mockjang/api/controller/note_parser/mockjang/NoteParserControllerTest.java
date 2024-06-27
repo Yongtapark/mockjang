@@ -18,29 +18,29 @@ import org.springframework.http.MediaType;
 
 class NoteParserControllerTest extends ControllerTestSupport {
 
-  @DisplayName("신규 일지를 저장한다.")
-  @Test
-  void createRecords() throws Exception {
-    // given
-    LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
-    HashMap<String, Integer> names = new HashMap<>();
-    names.put(PARSER_BARN_CODE_ID_1, 1);
-    RecordParserResponse response = RecordParserResponse.builder().names(names).build();
+    @DisplayName("신규 일지를 저장한다.")
+    @Test
+    void createRecords() throws Exception {
+        // given
+        LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
+        HashMap<String, Integer> names = new HashMap<>();
+        names.put(BARN_CODE_ID_1, 1);
+        RecordParserResponse response = RecordParserResponse.builder().names(names).build();
 
-    String context = "[[" + PARSER_BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
-    NoteParserCreateRequest request = NoteParserCreateRequest.builder()
-        .context(context)
-        .date(date)
-        .recordType(RecordType.DAILY)
-        .build();
+        String context = "[[" + BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1;
+        NoteParserCreateRequest request = NoteParserCreateRequest.builder()
+                .context(context)
+                .date(date)
+                .recordType(RecordType.DAILY)
+                .build();
 
-    // when // then
-    when(noteParserService.parseNoteAndSaveRecord(any())).thenReturn(response);
-    mockMvc.perform(
-            post("/api/v0/records/new")
-                .content(objectMapper.writeValueAsString(request))
-                .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk());
-  }
+        // when // then
+        when(noteParserService.parseNoteAndSaveRecord(any())).thenReturn(response);
+        mockMvc.perform(
+                        post("/api/v0/records/new")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
 }

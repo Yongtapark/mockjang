@@ -19,218 +19,218 @@ import org.springframework.http.MediaType;
 
 class SimpleRecordControllerTest extends ControllerTestSupport {
 
-  @DisplayName("codeId를 기반으로 한 기록을 생성한다.")
-  @Test
-  void create() throws Exception {
-    //given
-    SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
-        .codeId(PARSER_COW_CODE_ID_1)
-        .recordType(RecordType.DAILY)
-        .date(TEMP_DATE)
-        .record(MEMO_1)
-        .build();
+    @DisplayName("codeId를 기반으로 한 기록을 생성한다.")
+    @Test
+    void create() throws Exception {
+        //given
+        SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
+                .codeId(COW_CODE_ID_1)
+                .recordType(RecordType.DAILY)
+                .date(TEMP_DATE)
+                .record(MEMO_1)
+                .build();
 
-    //when //then
-    mockMvc.perform(post("/api/v0/records/simple/new")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("200"))
-        .andExpect(jsonPath("$.status").value("OK"))
-        .andExpect(jsonPath("$.message").value("OK"));
-  }
+        //when //then
+        mockMvc.perform(post("/api/v0/records/simple/new")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+    }
 
-  @DisplayName("기록을 생성 할 때, codeId를 등록하지 않으면 예외를 발생시킨다.")
-  @Test
-  void createWithNoCodeId() throws Exception {
-    //given
-    SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
-        .codeId(null)
-        .recordType(RecordType.DAILY)
-        .date(TEMP_DATE)
-        .record(MEMO_1)
-        .build();
+    @DisplayName("기록을 생성 할 때, codeId를 등록하지 않으면 예외를 발생시킨다.")
+    @Test
+    void createWithNoCodeId() throws Exception {
+        //given
+        SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
+                .codeId(null)
+                .recordType(RecordType.DAILY)
+                .date(TEMP_DATE)
+                .record(MEMO_1)
+                .build();
 
-    //when //then
-    mockMvc.perform(post("/api/v0/records/simple/new")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("코드명은 공백일 수 없습니다."));
-  }
+        //when //then
+        mockMvc.perform(post("/api/v0/records/simple/new")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("코드명은 공백일 수 없습니다."));
+    }
 
-  @DisplayName("기록을 생성 할 때, 기록 타입을 등록하지 않으면 예외를 발생시킨다.")
-  @Test
-  void createWithNoRecordType() throws Exception {
-    //given
-    SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
-        .codeId(PARSER_COW_CODE_ID_1)
-        .recordType(null)
-        .date(TEMP_DATE)
-        .record(MEMO_1)
-        .build();
+    @DisplayName("기록을 생성 할 때, 기록 타입을 등록하지 않으면 예외를 발생시킨다.")
+    @Test
+    void createWithNoRecordType() throws Exception {
+        //given
+        SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
+                .codeId(COW_CODE_ID_1)
+                .recordType(null)
+                .date(TEMP_DATE)
+                .record(MEMO_1)
+                .build();
 
-    //when //then
-    mockMvc.perform(post("/api/v0/records/simple/new")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("기록 타입은 반드시 입력하셔야 합니다."));
-  }
+        //when //then
+        mockMvc.perform(post("/api/v0/records/simple/new")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("기록 타입은 반드시 입력하셔야 합니다."));
+    }
 
-  @DisplayName("기록을 생성 할 때, 날짜를 등록하지 않으면 예외를 발생시킨다.")
-  @Test
-  void createWithNoDate() throws Exception {
-    //given
-    SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
-        .codeId(PARSER_COW_CODE_ID_1)
-        .recordType(RecordType.DAILY)
-        .date(null)
-        .record(MEMO_1)
-        .build();
+    @DisplayName("기록을 생성 할 때, 날짜를 등록하지 않으면 예외를 발생시킨다.")
+    @Test
+    void createWithNoDate() throws Exception {
+        //given
+        SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
+                .codeId(COW_CODE_ID_1)
+                .recordType(RecordType.DAILY)
+                .date(null)
+                .record(MEMO_1)
+                .build();
 
-    //when //then
-    mockMvc.perform(post("/api/v0/records/simple/new")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("날짜는 반드시 입력하셔야 합니다."));
-  }
+        //when //then
+        mockMvc.perform(post("/api/v0/records/simple/new")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("날짜는 반드시 입력하셔야 합니다."));
+    }
 
-  @DisplayName("기록을 생성 할 때, 기록을 등록하지 않으면 예외를 발생시킨다.")
-  @Test
-  void createWithNoRecord() throws Exception {
-    //given
-    SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
-        .codeId(PARSER_COW_CODE_ID_1)
-        .recordType(RecordType.DAILY)
-        .date(TEMP_DATE)
-        .record(null)
-        .build();
+    @DisplayName("기록을 생성 할 때, 기록을 등록하지 않으면 예외를 발생시킨다.")
+    @Test
+    void createWithNoRecord() throws Exception {
+        //given
+        SimpleRecordCreateRequest request = SimpleRecordCreateRequest.builder()
+                .codeId(COW_CODE_ID_1)
+                .recordType(RecordType.DAILY)
+                .date(TEMP_DATE)
+                .record(null)
+                .build();
 
-    //when //then
-    mockMvc.perform(post("/api/v0/records/simple/new")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("기록 메모는 공백일 수 없습니다."));
-  }
+        //when //then
+        mockMvc.perform(post("/api/v0/records/simple/new")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("기록 메모는 공백일 수 없습니다."));
+    }
 
-  @DisplayName("고유번호를 기반으로 기록을 제거한다")
-  @Test
-  void remove() throws Exception {
-    //given
+    @DisplayName("고유번호를 기반으로 기록을 제거한다")
+    @Test
+    void remove() throws Exception {
+        //given
 
-    //when //then
-    mockMvc.perform(delete("/api/v0/records/simple/" + 1L)
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("204"))
-        .andExpect(jsonPath("$.status").value("NO_CONTENT"))
-        .andExpect(jsonPath("$.message").value("NO_CONTENT"));
-  }
+        //when //then
+        mockMvc.perform(delete("/api/v0/records/simple/" + 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("204"))
+                .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+                .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+    }
 
-  @DisplayName("코드id, 기록타입, 기록날짜를 통해 기록을 조회한다.")
-  @Test
-  void search() throws Exception {
-    //given
-    SimpleRecordSearchRequest request = SimpleRecordSearchRequest.builder()
-        .codeId(PARSER_COW_CODE_ID_1)
-        .recordType(RecordType.DAILY)
-        .date(TEMP_DATE)
-        .build();
+    @DisplayName("코드id, 기록타입, 기록날짜를 통해 기록을 조회한다.")
+    @Test
+    void search() throws Exception {
+        //given
+        SimpleRecordSearchRequest request = SimpleRecordSearchRequest.builder()
+                .codeId(COW_CODE_ID_1)
+                .recordType(RecordType.DAILY)
+                .date(TEMP_DATE)
+                .build();
 
-    //when //then
-    mockMvc.perform(post("/api/v0/records/simple")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("200"))
-        .andExpect(jsonPath("$.status").value("OK"))
-        .andExpect(jsonPath("$.message").value("OK"));
-  }
+        //when //then
+        mockMvc.perform(post("/api/v0/records/simple")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+    }
 
-  @DisplayName("코드 id 이름들을 조회한다.")
-  @Test
-  void getAutoCompleteList() throws Exception {
-    //given//when //then
-    mockMvc.perform(get("/api/v0/records/simple/codeids")
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("200"))
-        .andExpect(jsonPath("$.status").value("OK"))
-        .andExpect(jsonPath("$.message").value("OK"));
-  }
+    @DisplayName("코드 id 이름들을 조회한다.")
+    @Test
+    void getAutoCompleteList() throws Exception {
+        //given//when //then
+        mockMvc.perform(get("/api/v0/records/simple/codeids")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+    }
 
-  @DisplayName("기록을 단일 조회한다.")
-  @Test
-  void findSimpleRecordById() throws Exception {
-    //given//when //then
-    mockMvc.perform(get("/api/v0/records/simple/{id}",1L)
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("200"))
-        .andExpect(jsonPath("$.status").value("OK"))
-        .andExpect(jsonPath("$.message").value("OK"));
-  }
+    @DisplayName("기록을 단일 조회한다.")
+    @Test
+    void findSimpleRecordById() throws Exception {
+        //given//when //then
+        mockMvc.perform(get("/api/v0/records/simple/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("200"))
+                .andExpect(jsonPath("$.status").value("OK"))
+                .andExpect(jsonPath("$.message").value("OK"));
+    }
 
-  @DisplayName("기록을 수정한다.")
-  @Test
-  void update() throws Exception {
-    //given
-    SimpleRecordUpdateRequest request = SimpleRecordUpdateRequest.builder()
-        .id(1L)
-        .record(null)
-        .build();
+    @DisplayName("기록을 수정한다.")
+    @Test
+    void update() throws Exception {
+        //given
+        SimpleRecordUpdateRequest request = SimpleRecordUpdateRequest.builder()
+                .id(1L)
+                .record(null)
+                .build();
 
-    //when //then
-    mockMvc.perform(put("/api/v0/records/simple/update")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isOk())
-        .andExpect(jsonPath("$.code").value("204"))
-        .andExpect(jsonPath("$.status").value("NO_CONTENT"))
-        .andExpect(jsonPath("$.message").value("NO_CONTENT"));
-  }
+        //when //then
+        mockMvc.perform(put("/api/v0/records/simple/update")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("204"))
+                .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+                .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+    }
 
-  @DisplayName("기록을 수정할 때, id값이 없으면 예외를 발생시킨다.")
-  @Test
-  void updateWithNoId() throws Exception {
-    //given
-    SimpleRecordUpdateRequest request = SimpleRecordUpdateRequest.builder()
-        .id(null)
-        .codeId(PARSER_COW_CODE_ID_1)
-        .record(MEMO_1)
-        .recordType(RecordType.HEALTH)
-        .date(TEMP_DATE)
-        .build();
+    @DisplayName("기록을 수정할 때, id값이 없으면 예외를 발생시킨다.")
+    @Test
+    void updateWithNoId() throws Exception {
+        //given
+        SimpleRecordUpdateRequest request = SimpleRecordUpdateRequest.builder()
+                .id(null)
+                .codeId(COW_CODE_ID_1)
+                .record(MEMO_1)
+                .recordType(RecordType.HEALTH)
+                .date(TEMP_DATE)
+                .build();
 
-    //when //then
-    mockMvc.perform(put("/api/v0/records/simple/update")
-            .content(objectMapper.writeValueAsString(request))
-            .contentType(MediaType.APPLICATION_JSON))
-        .andDo(print())
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.code").value("400"))
-        .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
-        .andExpect(jsonPath("$.message").value("고유번호는 반드시 입력하셔야 합니다."));
-  }
+        //when //then
+        mockMvc.perform(put("/api/v0/records/simple/update")
+                        .content(objectMapper.writeValueAsString(request))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("고유번호는 반드시 입력하셔야 합니다."));
+    }
 }
