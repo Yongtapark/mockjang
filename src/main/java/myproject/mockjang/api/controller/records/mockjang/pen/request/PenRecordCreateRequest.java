@@ -14,29 +14,29 @@ import myproject.mockjang.domain.records.RecordType;
 public class PenRecordCreateRequest {
 
     @NotBlank(message = "{exception.pen.codeId.blank}")
-    private String penCodeId;
+    private String codeId;
     @NotNull(message = "{exception.recordType.null}")
     private RecordType recordType;
     @NotNull(message = "{exception.date.null}")
     private LocalDateTime date;
     @NotBlank(message = "{exception.record.blank}")
-    private String memo;
+    private String record;
 
     @Builder
-    private PenRecordCreateRequest(String penCodeId, RecordType recordType, LocalDateTime date,
-                                   String memo) {
-        this.penCodeId = penCodeId;
+    private PenRecordCreateRequest(String codeId, RecordType recordType, LocalDateTime date,
+                                   String record) {
+        this.codeId = codeId;
         this.recordType = recordType;
         this.date = date;
-        this.memo = memo;
+        this.record = record;
     }
 
     public PenRecordCreateServiceRequest toServiceRequest() {
         return PenRecordCreateServiceRequest.builder()
-                .penCodeId(penCodeId)
+                .penCodeId(codeId)
                 .recordType(recordType)
                 .date(date)
-                .memo(memo)
+                .memo(record)
                 .build();
     }
 }

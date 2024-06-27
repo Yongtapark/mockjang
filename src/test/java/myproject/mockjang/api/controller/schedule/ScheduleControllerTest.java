@@ -3,6 +3,7 @@ package myproject.mockjang.api.controller.schedule;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -132,7 +133,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/v0/schedule/update")
+        mockMvc.perform(put("/api/v0/schedule/update")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -154,7 +155,7 @@ class ScheduleControllerTest extends ControllerTestSupport {
                 .build();
 
         //when //then
-        mockMvc.perform(post("/api/v0/schedule/update")
+        mockMvc.perform(put("/api/v0/schedule/update")
                         .content(objectMapper.writeValueAsString(request))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

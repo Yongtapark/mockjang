@@ -31,7 +31,7 @@ public class PenResponse {
         return PenResponse.builder()
                 .id(pen.getId())
                 .codeId(pen.getCodeId())
-                .barnId(pen.getBarn().getId())
+                .barnId(pen.getBarn()==null?null:pen.getBarn().getId())
                 .cows(pen.getCows()==null?List.of():pen.getCows().stream().mapToLong(Cow::getId).boxed().toList())
                 .records(pen.getRecords()==null?List.of():pen.getRecords().stream().mapToLong(PenRecord::getId).boxed().toList())
                 .build();

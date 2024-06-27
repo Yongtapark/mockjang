@@ -48,7 +48,7 @@ public class ScheduleController {
     }
 
     @PostMapping("/new")
-    public ApiResponse<ScheduleResponse> create(@Valid @RequestBody ScheduleCreateRequest request) {
+    public ApiResponse<Long> create(@Valid @RequestBody ScheduleCreateRequest request) {
         return ApiResponse.ok(scheduleService.create(request.toServiceRequest()));
     }
 

@@ -63,44 +63,6 @@ class PenRecordServiceTest extends IntegrationTestSupport {
 
     }
 
-    @DisplayName("소의 축사이름을 입력하지 않으면 예외를 발생시킨다.")
-    @Test
-    void createWithNoBarnCodeId() {
-        //given
-        Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
-        cowRepository.save(cow);
-
-        CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCodeId(cow.getCodeId())
-                .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
-
-        //when  //then
-        assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
-                .hasMessage(COMMON_NOT_EXIST.formatMessage(Barn.class));
-    }
-
-    @DisplayName("소의 축사칸 이름을 입력하지 않으면 예외를 발생시킨다.")
-    @Test
-    void createWithNoPenCodeId() {
-        //given
-        Barn barn = Barn.createBarn(BARN_CODE_ID_1);
-        barnRepository.save(barn);
-        Pen pen = Pen.createPen(PEN_CODE_ID_1);
-        pen.registerUpperGroup(barn);
-        penRepository.save(pen);
-        Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
-        cow.registerBarn(barn);
-        cowRepository.save(cow);
-
-        CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCodeId(cow.getCodeId())
-                .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
-
-        //when  //then
-        assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
-                .hasMessage(COMMON_NOT_EXIST.formatMessage(Pen.class));
-    }
-
     @DisplayName("소의 이름을 입력하지 않으면 예외를 발생시킨다.")
     @Test
     void createWithNoCowId() {

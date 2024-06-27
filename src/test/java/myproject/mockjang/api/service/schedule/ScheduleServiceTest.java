@@ -47,10 +47,10 @@ class ScheduleServiceTest extends IntegrationTestSupport {
                 .build();
 
         //when
-        ScheduleResponse response = scheduleService.create(request);
+        Long savedId = scheduleService.create(request);
 
         //then
-        Schedule schedule = scheduleRepository.findById(response.getId()).orElseThrow();
+        Schedule schedule = scheduleRepository.findById(savedId).orElseThrow();
         assertThat(schedule.getContext()).isEqualTo(SCHEDULE_CONTEXT_1);
         assertThat(schedule.getStartDate()).isEqualTo(request.getStartDate());
         assertThat(schedule.getTargetDate()).isEqualTo(request.getTargetDate());

@@ -47,7 +47,10 @@ class PenServiceTest extends IntegrationTestSupport {
         Long response = penService.createPen(request);
 
         //then
-        assertThat(response).isEqualTo(barn.getId());
+        Pen pen = penRepository.findById(response).orElseThrow();
+        assertThat(response).isEqualTo(pen.getId());
+        assertThat(PEN_CODE_ID_1).isEqualTo(pen.getCodeId());
+        assertThat(BARN_CODE_ID_1).isEqualTo(pen.getBarn().getCodeId());
     }
 
     @DisplayName("해당 축사칸을 제거하고 축사의 축사칸 리스트에서 제거한다.")
@@ -59,6 +62,7 @@ class PenServiceTest extends IntegrationTestSupport {
 
         Pen pen = Pen.createPen(PEN_CODE_ID_1);
         pen.registerUpperGroup(barn);
+        penRepository.save(pen);
 
         //when
         penService.delete(pen.getId());

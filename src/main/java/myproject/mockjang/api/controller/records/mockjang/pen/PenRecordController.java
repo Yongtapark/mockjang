@@ -29,7 +29,7 @@ public class PenRecordController {
         return ApiResponse.ok(penRecordService.create(request.toServiceRequest()));
     }
 
-    @PostMapping("/{codeId}")
+    @PostMapping
     public ApiResponse<List<PenRecordResponse>> search(@Valid @RequestBody PenRecordSearchRequest request) {
         return ApiResponse.ok(penRecordService.search(request.toServiceRequest()));
     }

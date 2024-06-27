@@ -29,7 +29,7 @@ public class BarnRecordController {
         return ApiResponse.ok(barnRecordService.create(request.toServiceRequest()));
     }
 
-    @PostMapping("/{codeId}")
+    @PostMapping
     public ApiResponse<List<BarnRecordResponse>> search(@Valid @RequestBody BarnRecordSearchRequest request) {
         return ApiResponse.ok(barnRecordService.search(request.toServiceRequest()));
     }

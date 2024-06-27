@@ -46,6 +46,7 @@ public class CowRecordService {
         cowRecord.registerDate(request.getDate());
         cowRecord.recordMemo(request.getRecord());
         cowRecord.registerRecordType(request.getRecordType());
+        cowRecordRepository.save(cowRecord);
     }
 
     public void remove(Long id) {

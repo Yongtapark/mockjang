@@ -24,12 +24,11 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleQueryRepository scheduleQueryRepository;
 
-    public ScheduleResponse create(ScheduleCreateServiceRequest request) {
+    public Long create(ScheduleCreateServiceRequest request) {
         validateSchedule(request.getStartDate(), request.getTargetDate());
         Schedule schedule = Schedule.create(request.getStartDate(), request.getTargetDate(),
                 request.getContext());
-        scheduleRepository.save(schedule);
-        return ScheduleResponse.of(schedule);
+        return  scheduleRepository.save(schedule).getId();
     }
 
     public ScheduleResponse findScheduleById(Long id) {

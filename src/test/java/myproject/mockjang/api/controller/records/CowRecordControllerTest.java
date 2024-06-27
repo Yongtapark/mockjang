@@ -18,7 +18,7 @@ import org.springframework.http.MediaType;
 
 class CowRecordControllerTest extends ControllerTestSupport {
 
-    @DisplayName("소 일일기록 생성 테스트")
+    @DisplayName("소의 기록을 생성 한다.")
     @Test
     void create() throws Exception {
         //given
@@ -37,9 +37,9 @@ class CowRecordControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"));
     }
 
-    @DisplayName("소 기록 검색 테스트")
+    @DisplayName("소의 기록을 검색한다.")
     @Test
-    void findAllByCodeId() throws Exception {
+    void search() throws Exception {
         //given
         CowRecordSearchRequest request = CowRecordSearchRequest.builder().record(MEMO_1)
                 .codeId(COW_CODE_ID_1).recordType(
@@ -56,7 +56,7 @@ class CowRecordControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"));
     }
 
-    @DisplayName("소 기록 수정 테스트")
+    @DisplayName("소의 기록을 수정한다.")
     @Test
     void update() throws Exception {
         //given
@@ -76,7 +76,7 @@ class CowRecordControllerTest extends ControllerTestSupport {
 
 
 
-    @DisplayName("소 일일기록 제거 테스트")
+    @DisplayName("소의 기록을 제거한다.")
     @Test
     void remove() throws Exception {
         //given
