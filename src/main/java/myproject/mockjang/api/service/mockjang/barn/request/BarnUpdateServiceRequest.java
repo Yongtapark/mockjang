@@ -1,6 +1,5 @@
 package myproject.mockjang.api.service.mockjang.barn.request;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

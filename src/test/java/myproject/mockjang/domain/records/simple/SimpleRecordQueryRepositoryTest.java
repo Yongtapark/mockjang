@@ -26,7 +26,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
                 TEMP_DATE, MEMO_1);
         SimpleRecord simpleRecord2 = SimpleRecord.create(COW_CODE_ID_1, RecordType.HEALTH,
                 TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        SimpleRecord simpleRecord3 = SimpleRecord.create(COW_CODE_ID_2, RecordType.DAILY,
                 TEMP_DATE, MEMO_1);
 
         simpleRecordRepository.save(simpleRecord1);
@@ -50,7 +50,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
                 TEMP_DATE, MEMO_1);
         SimpleRecord simpleRecord2 = SimpleRecord.create(COW_CODE_ID_1, RecordType.HEALTH,
                 TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        SimpleRecord simpleRecord3 = SimpleRecord.create(COW_CODE_ID_2, RecordType.DAILY,
                 TEMP_DATE, MEMO_1);
 
         simpleRecordRepository.save(simpleRecord1);
@@ -73,7 +73,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
                 TEMP_DATE.plusHours(1), MEMO_1);
         SimpleRecord simpleRecord2 = SimpleRecord.create(COW_CODE_ID_1, RecordType.HEALTH,
                 TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        SimpleRecord simpleRecord3 = SimpleRecord.create(COW_CODE_ID_2, RecordType.DAILY,
                 TEMP_DATE, MEMO_1);
 
         simpleRecordRepository.save(simpleRecord1);
@@ -99,7 +99,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
                 TEMP_DATE, MEMO_1);
         SimpleRecord simpleRecord2 = SimpleRecord.create(COW_CODE_ID_1, RecordType.HEALTH,
                 TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        SimpleRecord simpleRecord3 = SimpleRecord.create(COW_CODE_ID_2, RecordType.DAILY,
                 TEMP_DATE, MEMO_1);
 
         simpleRecordRepository.save(simpleRecord1);
@@ -122,7 +122,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
                 TEMP_DATE, MEMO_1);
         SimpleRecord simpleRecord2 = SimpleRecord.create(COW_CODE_ID_1, RecordType.HEALTH,
                 TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        SimpleRecord simpleRecord3 = SimpleRecord.create(COW_CODE_ID_2, RecordType.DAILY,
                 TEMP_DATE, MEMO_1);
         SimpleRecord simpleRecord4 = SimpleRecord.create(BARN_CODE_ID_1, RecordType.DAILY,
                 TEMP_DATE, MEMO_1);
@@ -139,7 +139,7 @@ class SimpleRecordQueryRepositoryTest extends IntegrationTestSupport {
         List<String> strings = simpleRecordQueryRepository.distinctCodeIds();
 
         //then
-        assertThat(strings).containsExactly(COW_CODE_ID_1, PARSER_COW_CODE_ID_2,
+        assertThat(strings).containsExactly(COW_CODE_ID_1, COW_CODE_ID_2,
                 BARN_CODE_ID_1, PARSER_BARN_CODE_ID_2);
     }
 }

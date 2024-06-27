@@ -1,7 +1,5 @@
 package myproject.mockjang.domain.records.mockjang.cow;
 
-import static myproject.mockjang.exception.Exceptions.COMMON_NOT_EXIST;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,12 +11,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
-import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.Records;
-import myproject.mockjang.exception.common.NotExistException;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -36,26 +31,16 @@ public class CowRecord extends Records {
     @ManyToOne(fetch = FetchType.LAZY)
     private Cow cow;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Pen pen;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Barn barn;
-
     private final boolean deleted = false;
 
     @Builder
-    private CowRecord(Cow cow, Pen pen, Barn barn) {
+    private CowRecord(Cow cow) {
         this.cow = cow;
-        this.pen = pen;
-        this.barn = barn;
     }
 
     public static CowRecord createRecord(Cow cow, RecordType recordType, LocalDateTime date) {
         CowRecord cowRecord = CowRecord.builder()
                 .cow(cow)
-                .pen(cow.getPen())
-                .barn(cow.getBarn())
                 .build();
         cowRecord.registerRecordType(recordType);
         cowRecord.registerDate(date);
@@ -77,5 +62,13 @@ public class CowRecord extends Records {
     public void recordMemo(String memo) {
         registerRecord(memo);
         cow.registerRecord(this);
+    }
+
+    public void removeMemo(){
+        cow.removeRecord(this);
+    }
+
+    public Long getCowId() {
+        return cow.getId();
     }
 }

@@ -20,8 +20,8 @@ class BarnRecordTest extends IntegrationTestSupport {
         BarnRecord barnRecord2 = BarnRecord.creatRecord(barn, RecordType.DAILY, TEMP_DATE);
 
         //when
-        barnRecord1.writeNote("test1");
-        barnRecord2.writeNote("test2");
+        barnRecord1.recordMemo("test1");
+        barnRecord2.recordMemo("test2");
         List<BarnRecord> records = barn.getRecords();
 
         //then

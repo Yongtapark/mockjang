@@ -9,6 +9,16 @@ endif::[]
 :toclevels: 2
 :sectlinks:
 
+[[Barn-API]]
+== Barn API
+
+include::api/mockjang/barn/barn.adoc[]
+
+[[Pen-API]]
+== Pen API
+
+include::api/mockjang/pen/pen.adoc[]
+
 [[Cow-API]]
 == Cow API
 

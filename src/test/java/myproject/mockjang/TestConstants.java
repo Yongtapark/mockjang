@@ -24,11 +24,11 @@ public abstract class TestConstants {
     protected static final String PARSER_BARN_NOTE_2 = "2번축사 입력 테스트";
     protected static final String PEN_CODE_ID_1 = "1-1";
     protected static final String PARSER_PEN_NOTE_1 = "1-1 축사칸 입력 테스트";
-    protected static final String PARSER_PEN_CODE_ID_2 = "1-2";
+    protected static final String PEN_CODE_ID_2 = "1-2";
     protected static final String PARSER_PEN_NOTE_2 = "1-2 축사칸 입력 테스트";
     protected static final String COW_CODE_ID_1 = "0001";
     protected static final String PARSER_COW_NOTE_1 = "0001 소 입력 테스트";
-    protected static final String PARSER_COW_CODE_ID_2 = "0002";
+    protected static final String COW_CODE_ID_2 = "0002";
     protected static final String PARSER_COW_NOTE_2 = "0002 소 입력 테스트";
     protected static final String ANNOTATION_TEMP = "//annotation test";
     protected static final LocalDateTime READ_DATE = LocalDateTime.of(2024, 6, 12, 00, 00);

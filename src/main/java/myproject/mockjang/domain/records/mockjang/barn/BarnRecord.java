@@ -44,11 +44,28 @@ public class BarnRecord extends Records {
         return barnRecord;
     }
 
-    public void writeNote(String memo) {
-        if (barn == null) {
-            throw new RuntimeException("there is no barn or cow");
-        }
+    public void recordsNullCheck(BarnRecord barnRecord) {
+        basicNullCheck(barnRecord);
+    }
+
+    public void registerRecordType(RecordType recordType) {
+        super.registerRecordType(recordType);
+    }
+
+    public void registerDate(LocalDateTime dateTime) {
+        super.registerDate(dateTime);
+    }
+
+    public void recordMemo(String memo) {
         registerRecord(memo);
-        barn.registerDailyRecord(this);
+        barn.registerRecord(this);
+    }
+
+    public void removeMemo(){
+        barn.removeRecord(this);
+    }
+
+    public Long getBarnId() {
+        return barn.getId();
     }
 }

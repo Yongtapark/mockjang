@@ -62,7 +62,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
         cow1.registerUpperGroup(pen);
         cow1.registerBarn(barn);
         cowRepository.save(cow1);
-        Cow cow2 = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
+        Cow cow2 = Cow.createCow(COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
         cow2.registerUpperGroup(pen);
         cow2.registerBarn(barn);
         cowRepository.save(cow2);
@@ -73,7 +73,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
                         "[[" + PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1 + System.lineSeparator() +
                         "[[" + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1 + System.lineSeparator() +
                         "[[" + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_2 + System.lineSeparator() +
-                        "[[" + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
+                        "[[" + COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
 
         NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
                 .date(TEMP_DATE).recordType(RecordType.DAILY).names(new HashMap<>()).context(context)
@@ -87,7 +87,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
                 BARN_CODE_ID_1);
         List<PenRecord> allByPenCodeId = penRecordRepository.findAllByPen_CodeId(PEN_CODE_ID_1);
         List<CowRecord> allByCowCodeId1 = cowRecordRepository.findAllByCow_CodeId(COW_CODE_ID_1);
-        List<CowRecord> allByCowCodeId2 = cowRecordRepository.findAllByCow_CodeId(PARSER_COW_CODE_ID_2);
+        List<CowRecord> allByCowCodeId2 = cowRecordRepository.findAllByCow_CodeId(COW_CODE_ID_2);
 
         assertThat(allByBarnCodeId).hasSize(1);
         assertThat(allByBarnCodeId.getFirst().getBarn()).isEqualTo(barn);
@@ -122,7 +122,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
         cow1.registerUpperGroup(pen);
         cow1.registerBarn(barn);
         cowRepository.save(cow1);
-        Cow cow2 = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
+        Cow cow2 = Cow.createCow(COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
         cow2.registerUpperGroup(pen);
         cow2.registerBarn(barn);
         cowRepository.save(cow2);
@@ -133,7 +133,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
                         "[[" + PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1 + System.lineSeparator() +
                         "[[" + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1 + System.lineSeparator() +
                         "[[" + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_2 + System.lineSeparator() +
-                        "[[" + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
+                        "[[" + COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
 
         //when
         NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
@@ -143,7 +143,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
 
         //then
         assertThat(response.getNames()).containsEntry(COW_CODE_ID_1, 2);
-        assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2, 1);
+        assertThat(response.getNames()).containsEntry(COW_CODE_ID_2, 1);
         assertThat(response.getNames()).containsEntry(PEN_CODE_ID_1, 2);
         assertThat(response.getNames()).containsEntry(BARN_CODE_ID_1, 1);
     }
@@ -158,7 +158,7 @@ class NoteParserServiceTest extends IntegrationTestSupport {
         Pen pen1 = Pen.createPen(PEN_CODE_ID_1);
         pen1.registerUpperGroup(barn);
         penRepository.save(pen1);
-        Pen pen2 = Pen.createPen(PARSER_PEN_CODE_ID_2);
+        Pen pen2 = Pen.createPen(PEN_CODE_ID_2);
         pen2.registerUpperGroup(barn);
         penRepository.save(pen2);
 
@@ -166,16 +166,16 @@ class NoteParserServiceTest extends IntegrationTestSupport {
         cow1.registerUpperGroup(pen1);
         cow1.registerBarn(barn);
         cowRepository.save(cow1);
-        Cow cow2 = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, dateTime);
+        Cow cow2 = Cow.createCow(COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, dateTime);
         cow2.registerUpperGroup(pen1);
         cow2.registerBarn(barn);
         cowRepository.save(cow2);
         //given
         String context =
                 "[[" + BARN_CODE_ID_1 + "]] " + PARSER_BARN_NOTE_1 + System.lineSeparator() +
-                        "[[" + PEN_CODE_ID_1 + "," + PARSER_PEN_CODE_ID_2 + "]] " + PARSER_PEN_NOTE_1
+                        "[[" + PEN_CODE_ID_1 + "," + PEN_CODE_ID_2 + "]] " + PARSER_PEN_NOTE_1
                         + System.lineSeparator() +
-                        "[[" + COW_CODE_ID_1 + "," + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_1;
+                        "[[" + COW_CODE_ID_1 + "," + COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_1;
 
         //when
         NoteParserCreateServiceRequest request = NoteParserCreateServiceRequest.builder()
@@ -187,9 +187,9 @@ class NoteParserServiceTest extends IntegrationTestSupport {
         List<BarnRecord> allByBarnCodeId = barnRecordRepository.findAllByBarn_CodeId(
                 BARN_CODE_ID_1);
         List<PenRecord> allByPenCodeId1 = penRecordRepository.findAllByPen_CodeId(PEN_CODE_ID_1);
-        List<PenRecord> allByPenCodeId2 = penRecordRepository.findAllByPen_CodeId(PARSER_PEN_CODE_ID_2);
+        List<PenRecord> allByPenCodeId2 = penRecordRepository.findAllByPen_CodeId(PEN_CODE_ID_2);
         List<CowRecord> allByCowCodeId1 = cowRecordRepository.findAllByCow_CodeId(COW_CODE_ID_1);
-        List<CowRecord> allByCowCodeId2 = cowRecordRepository.findAllByCow_CodeId(PARSER_COW_CODE_ID_2);
+        List<CowRecord> allByCowCodeId2 = cowRecordRepository.findAllByCow_CodeId(COW_CODE_ID_2);
 
         assertThat(allByBarnCodeId).hasSize(1);
         assertThat(allByBarnCodeId.getFirst().getBarn()).isEqualTo(barn);

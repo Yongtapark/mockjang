@@ -31,7 +31,7 @@ public class CowService extends MockjangServiceAbstract {
     private final CowRepository cowRepository;
     private final PenRepository penRepository;
 
-    public CowResponse createRaisingCow(CowCreateServiceRequest request) {
+    public Long createRaisingCow(CowCreateServiceRequest request) {
         String cowCode = request.getCowCode();
         codeIdFilter(cowCode);
         String penCode = request.getPenCode();
@@ -43,7 +43,7 @@ public class CowService extends MockjangServiceAbstract {
         rasingCow.registerUpperGroup(pen);
         rasingCow.registerBarn(pen.getBarn());
         Cow savedCow = cowRepository.save(rasingCow);
-        return CowResponse.of(savedCow);
+        return savedCow.getId();
 
     }
 

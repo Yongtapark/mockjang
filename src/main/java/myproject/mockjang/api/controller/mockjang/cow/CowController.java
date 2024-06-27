@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,14 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v0/cows")
 public class CowController {
-    //컨트롤러 완성 ok
-    // 테스트 코드 완성 ok
-    // docs 완성
 
     private final CowService cowService;
 
     @PostMapping("/new")
-    public ApiResponse<CowResponse> create(@Valid @RequestBody CowCreateRequest request) {
+    public ApiResponse<Long> create(@Valid @RequestBody CowCreateRequest request) {
         return ApiResponse.ok(cowService.createRaisingCow(request.toServiceRequest()));
     }
 
@@ -47,19 +45,29 @@ public class CowController {
         return ApiResponse.noContent();
     }
 
-    @PostMapping("/update/pen")
+    @GetMapping
+    public ApiResponse<List<CowResponse>> findAll() {
+        return ApiResponse.ok(cowService.findAll());
+    }
+
+    @GetMapping("/{codeId}")
+    public ApiResponse<CowResponse> findByCodeId(@PathVariable String codeId) {
+        return ApiResponse.ok(cowService.findByCodeId(codeId));
+    }
+
+    @PutMapping("/update/pen")
     public ApiResponse<Void> updatePen(@Valid @RequestBody CowUpdatePenRequest request) {
         cowService.updatePen(request.toServiceRequest());
         return ApiResponse.noContent();
     }
 
-    @PostMapping("/update/status")
+    @PutMapping("/update/status")
     public ApiResponse<Void> updateCowStatus(@Valid @RequestBody CowUpdateCowStatusRequest request) {
         cowService.updateCowStatus(request.toServiceRequest());
         return ApiResponse.noContent();
     }
 
-    @PostMapping("/remove/parents")
+    @PutMapping("/remove/parents")
     public ApiResponse<Void> removeParents(@Valid @RequestBody CowRemoveParentsRequest request) {
         cowService.removeParents(request.toServiceRequest());
         return ApiResponse.noContent();
@@ -69,15 +77,5 @@ public class CowController {
     public ApiResponse<Void> remove(@PathVariable Long id) {
         cowService.remove(id);
         return ApiResponse.noContent();
-    }
-
-    @GetMapping
-    public ApiResponse<List<CowResponse>> findAll() {
-        return ApiResponse.ok(cowService.findAll());
-    }
-
-    @GetMapping("/{codeId}")
-    public ApiResponse<CowResponse> findByCodeId(@PathVariable String codeId) {
-        return ApiResponse.ok(cowService.findByCodeId(codeId));
     }
 }

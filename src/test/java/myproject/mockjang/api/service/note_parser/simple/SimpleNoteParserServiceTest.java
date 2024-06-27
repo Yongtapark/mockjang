@@ -35,7 +35,7 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
                         + PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1 + System.lineSeparator() + "[["
                         + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1 + System.lineSeparator() + "[["
                         + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_2 + System.lineSeparator() + "[["
-                        + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
+                        + COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
 
         SimpleNoteParserCreateServiceRequest request = SimpleNoteParserCreateServiceRequest.builder()
                 .date(TEMP_DATE).recordType(RecordType.DAILY).names(new HashMap<>()).context(context)
@@ -64,7 +64,7 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
         assertThat(simpleRecord4.getRecord()).isEqualTo(PARSER_COW_NOTE_1);
         assertThat(simpleRecord5.getCodeId()).isEqualTo(COW_CODE_ID_1);
         assertThat(simpleRecord5.getRecord()).isEqualTo(PARSER_COW_NOTE_2);
-        assertThat(simpleRecord6.getCodeId()).isEqualTo(PARSER_COW_CODE_ID_2);
+        assertThat(simpleRecord6.getCodeId()).isEqualTo(COW_CODE_ID_2);
         assertThat(simpleRecord6.getRecord()).isEqualTo(PARSER_COW_NOTE_2);
     }
 
@@ -106,7 +106,7 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
                         "[[" + PEN_CODE_ID_1 + "]] " + PARSER_PEN_NOTE_1 + System.lineSeparator() +
                         "[[" + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_1 + System.lineSeparator() +
                         "[[" + COW_CODE_ID_1 + "]] " + PARSER_COW_NOTE_2 + System.lineSeparator() +
-                        "[[" + PARSER_COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
+                        "[[" + COW_CODE_ID_2 + "]] " + PARSER_COW_NOTE_2;
 
         SimpleNoteParserCreateServiceRequest request = SimpleNoteParserCreateServiceRequest.builder()
                 .date(TEMP_DATE).recordType(RecordType.DAILY).names(new HashMap<>()).context(context)
@@ -116,7 +116,7 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
 
         //then
         assertThat(response.getNames()).containsEntry(COW_CODE_ID_1, 2);
-        assertThat(response.getNames()).containsEntry(PARSER_COW_CODE_ID_2, 1);
+        assertThat(response.getNames()).containsEntry(COW_CODE_ID_2, 1);
         assertThat(response.getNames()).containsEntry(PEN_CODE_ID_1, 2);
         assertThat(response.getNames()).containsEntry(BARN_CODE_ID_1, 1);
     }
@@ -126,7 +126,7 @@ class SimpleNoteParserServiceTest extends IntegrationTestSupport {
     void uploadTempContents() {
         //given
         RecordAndCodeId recordAndCodeId1 = new RecordAndCodeId(COW_CODE_ID_1, PARSER_COW_NOTE_1);
-        RecordAndCodeId recordAndCodeId2 = new RecordAndCodeId(PARSER_COW_CODE_ID_2, PARSER_COW_NOTE_2);
+        RecordAndCodeId recordAndCodeId2 = new RecordAndCodeId(COW_CODE_ID_2, PARSER_COW_NOTE_2);
         SimpleRecordContainer simpleRecordContainer = SimpleRecordContainer.builder()
                 .notes(List.of(recordAndCodeId1,
                         recordAndCodeId2)).recordType(RecordType.DAILY).date(TEMP_DATE).build();

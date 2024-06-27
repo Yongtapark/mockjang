@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 
@@ -13,16 +12,16 @@ import myproject.mockjang.domain.records.mockjang.cow.CowRecord;
 public class CowRecordResponse {
 
     private Long id;
-    private Cow cow;
+    private Long cowId;
     private String memo;
     private LocalDateTime date;
     private RecordType recordType;
 
     @Builder
-    private CowRecordResponse(Long id, Cow cow, String memo, LocalDateTime date,
+    private CowRecordResponse(Long id, Long cowId, String memo, LocalDateTime date,
                               RecordType recordType) {
         this.id = id;
-        this.cow = cow;
+        this.cowId = cowId;
         this.memo = memo;
         this.date = date;
         this.recordType = recordType;
@@ -31,7 +30,7 @@ public class CowRecordResponse {
     public static CowRecordResponse of(CowRecord record) {
         return CowRecordResponse.builder()
                 .id(record.getId())
-                .cow(record.getCow())
+                .cowId(record.getCowId())
                 .memo(record.getRecord())
                 .date(record.getDate())
                 .recordType(record.getRecordType())

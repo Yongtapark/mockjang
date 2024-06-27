@@ -27,36 +27,36 @@ class BarnServiceTest extends IntegrationTestSupport {
 
     @DisplayName("축사를 생성한다.")
     @Test
-    void createBarn() {
+    void create() {
         //given
 
         BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
                 .codeId(BARN_CODE_ID_1).build();
         //when
-        BarnResponse barnResponse = barnService.createBarn(request);
-        Barn savedBarn = barnRepository.findById(barnResponse.getId()).orElseThrow();
+        Long barnId = barnService.create(request);
+        Barn savedBarn = barnRepository.findById(barnId).orElseThrow();
 
         //then
-        assertThat(barnResponse.getCodeId()).isEqualTo(savedBarn.getCodeId());
+        assertThat(barnId).isEqualTo(savedBarn.getId());
     }
 
     @DisplayName("축사를 제거한다.")
     @Test
-    void delete() {
+    void remove() {
         //given
         BarnCreateServiceRequest request1 = BarnCreateServiceRequest.builder()
                 .codeId(BARN_CODE_ID_1).build();
         BarnCreateServiceRequest request2 = BarnCreateServiceRequest.builder()
                 .codeId(PARSER_BARN_CODE_ID_2).build();
 
-        BarnResponse barnResponse1 = barnService.createBarn(request1);
-        BarnResponse barnResponse2 = barnService.createBarn(request2);
+        Long barnId1 = barnService.create(request1);
+        Long barnId2 = barnService.create(request2);
 
-        Barn savedBarn1 = barnRepository.findById(barnResponse1.getId()).orElseThrow();
-        Barn savedBarn2 = barnRepository.findById(barnResponse2.getId()).orElseThrow();
+        Barn savedBarn1 = barnRepository.findById(barnId1).orElseThrow();
+        Barn savedBarn2 = barnRepository.findById(barnId2).orElseThrow();
 
         //when
-        barnService.delete(savedBarn1);
+        barnService.remove(savedBarn1.getId());
         List<Barn> barns = barnRepository.findAll();
 
         //then
@@ -67,38 +67,38 @@ class BarnServiceTest extends IntegrationTestSupport {
 
     @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
     @Test
-    void createBarnWithEmptybarnCode() {
+    void createWithEmptybarnCode() {
         //given
         BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
                 .codeId(STRING_EMPTY).build();
         //when //then
-        assertThatThrownBy(() -> barnService.createBarn(request)).isInstanceOf(
+        assertThatThrownBy(() -> barnService.create(request)).isInstanceOf(
                         StringException.class)
                 .hasMessage(COMMON_BLANK_STRING.getMessage());
     }
 
     @DisplayName("축사 이름에 공백만 들어올 경우 예외를 발생시킨다.")
     @Test
-    void createBarnWithOnlySpacebarnCode() {
+    void createWithOnlySpacebarnCode() {
         //given
         BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
                 .codeId(STRING_ONLY_SPACE).build();
 
         //when //then
-        assertThatThrownBy(() -> barnService.createBarn(request)).isInstanceOf(
+        assertThatThrownBy(() -> barnService.create(request)).isInstanceOf(
                         StringException.class)
                 .hasMessage(COMMON_BLANK_STRING.getMessage());
     }
 
     @DisplayName("축사 이름이 10글자를 넘어가면 예외를 발생시킨다.")
     @Test
-    void createBarnWithOver10Size() {
+    void createWithOver10Size() {
         //given
         BarnCreateServiceRequest request = BarnCreateServiceRequest.builder()
                 .codeId(STRING_OVER_10).build();
 
         //when //then
-        assertThatThrownBy(() -> barnService.createBarn(request)).isInstanceOf(
+        assertThatThrownBy(() -> barnService.create(request)).isInstanceOf(
                         StringException.class)
                 .hasMessage(COMMON_STRING_OVER_10.getMessage());
     }

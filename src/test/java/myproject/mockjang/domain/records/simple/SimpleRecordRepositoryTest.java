@@ -23,7 +23,7 @@ class SimpleRecordRepositoryTest extends IntegrationTestSupport {
                 TEMP_DATE, MEMO_1);
         SimpleRecord simpleRecord2 = SimpleRecord.create(COW_CODE_ID_1, RecordType.DAILY,
                 TEMP_DATE, MEMO_2);
-        SimpleRecord simpleRecord3 = SimpleRecord.create(PARSER_COW_CODE_ID_2, RecordType.DAILY,
+        SimpleRecord simpleRecord3 = SimpleRecord.create(COW_CODE_ID_2, RecordType.DAILY,
                 TEMP_DATE, MEMO_1);
 
         simpleRecordRepository.save(simpleRecord1);

@@ -11,6 +11,42 @@ include::{snippets}/cow-new/request-fields.adoc[]
 include::{snippets}/cow-new/http-response.adoc[]
 include::{snippets}/cow-new/response-fields.adoc[]
 
+[[cow-findAll]]
+=== 소 목록 조회
+
+==== HTTP Request
+
+include::{snippets}/cow-findAll/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/cow-findAll/http-response.adoc[]
+include::{snippets}/cow-findAll/response-fields.adoc[]
+
+[[cow-findByCodeId]]
+=== 소 단건 조회
+
+==== HTTP Request
+
+include::{snippets}/cow-findByCodeId/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/cow-findByCodeId/http-response.adoc[]
+include::{snippets}/cow-findByCodeId/response-fields.adoc[]
+
+[[cow-remove]]
+=== 소 제거
+
+==== HTTP Request
+
+include::{snippets}/cow-remove/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/cow-remove/http-response.adoc[]
+include::{snippets}/cow-remove/response-fields.adoc[]
+
 [[cow-registerParents]]
 === 소 부모 등록
 
@@ -76,38 +112,4 @@ include::{snippets}/cow-removeParents/request-fields.adoc[]
 include::{snippets}/cow-removeParents/http-response.adoc[]
 include::{snippets}/cow-removeParents/response-fields.adoc[]
 
-[[cow-remove]]
-=== 소 제거
 
-==== HTTP Request
-
-include::{snippets}/cow-remove/http-request.adoc[]
-
-==== HTTP Response
-
-include::{snippets}/cow-remove/http-response.adoc[]
-include::{snippets}/cow-remove/response-fields.adoc[]
-
-[[cow-findAll]]
-=== 소 목록 조회
-
-==== HTTP Request
-
-include::{snippets}/cow-findAll/http-request.adoc[]
-
-==== HTTP Response
-
-include::{snippets}/cow-findAll/http-response.adoc[]
-include::{snippets}/cow-findAll/response-fields.adoc[]
-
-[[cow-findByCodeId]]
-=== 소 단건 조회
-
-==== HTTP Request
-
-include::{snippets}/cow-findByCodeId/http-request.adoc[]
-
-==== HTTP Response
-
-include::{snippets}/cow-findByCodeId/http-response.adoc[]
-include::{snippets}/cow-findByCodeId/response-fields.adoc[]

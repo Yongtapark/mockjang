@@ -63,8 +63,7 @@ class CowServiceTest extends IntegrationTestSupport {
                 .build();
 
         //when
-        CowResponse response = cowService.createRaisingCow(request);
-        Cow findRasisingCow = cowRepository.findById(response.getId()).orElseThrow();
+        Cow findRasisingCow = cowRepository.findById(cowService.createRaisingCow(request)).orElseThrow();
 
         //then
         assertThat(findRasisingCow.getBarn()).isEqualTo(barn);
@@ -140,7 +139,7 @@ class CowServiceTest extends IntegrationTestSupport {
         barnRepository.save(barn2);
 
         Pen pen1 = Pen.createPen(PEN_CODE_ID_1);
-        Pen pen2 = Pen.createPen(PARSER_PEN_CODE_ID_2);
+        Pen pen2 = Pen.createPen(PEN_CODE_ID_2);
         pen1.registerUpperGroup(barn1);
         pen2.registerUpperGroup(barn2);
         penRepository.save(pen1);
@@ -236,7 +235,7 @@ class CowServiceTest extends IntegrationTestSupport {
         //given
         LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
         Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, birthDate);
-        Cow mom = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
+        Cow mom = Cow.createCow(COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
         Cow dad = Cow.createCow("0003", Gender.MALE, CowStatus.RAISING, birthDate);
         cowRepository.save(cow);
         cowRepository.save(mom);
@@ -266,7 +265,7 @@ class CowServiceTest extends IntegrationTestSupport {
         //given
         LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
         Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, birthDate);
-        Cow mom = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
+        Cow mom = Cow.createCow(COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
         Cow dad = Cow.createCow("0003", Gender.MALE, CowStatus.RAISING, birthDate);
 
         for (Cow parent : List.of(mom, dad)) {
@@ -301,7 +300,7 @@ class CowServiceTest extends IntegrationTestSupport {
         //given
         LocalDateTime birthDate = LocalDateTime.of(2024, 1, 1, 1, 1);
         Cow cow1 = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, birthDate);
-        Cow cow2 = Cow.createCow(PARSER_COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
+        Cow cow2 = Cow.createCow(COW_CODE_ID_2, Gender.FEMALE, CowStatus.RAISING, birthDate);
         cowRepository.save(cow1);
         cowRepository.save(cow2);
 

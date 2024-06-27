@@ -72,6 +72,16 @@ public class Pen implements Mockjang {
                 .build();
     }
 
+    public void registerRecord(PenRecord record) {
+        if(!records.contains(record)){
+            records.add(record);
+        }
+    }
+
+    public void removeRecord(PenRecord record){
+        records.remove(record);
+    }
+
     @Override
     public void registerUpperGroup(Mockjang mockjang) {
         if (mockjang instanceof Barn barn) {
@@ -92,17 +102,14 @@ public class Pen implements Mockjang {
         }
     }
 
-    public void addCow(Cow cow) {
-        if (cows.contains(cow)) {
-            throw new AlreadyExistException(COMMON_ALREADY_EXIST.formatMessage(cow.getCodeId()));
-        }
-        cows.add(cow);
-    }
-
     public void registerDailyRecord(PenRecord record) {
         if (!records.contains(record)) {
             records.add(record);
         }
+    }
+
+    public void updateCodeId(String codeId){
+        this.codeId = codeId;
     }
 
     @Override
@@ -118,5 +125,12 @@ public class Pen implements Mockjang {
         if (!cows.remove(mockjang)) {
             throw new ThereIsNoGroupException(COMMON_NO_UNDER_GROUP, this);
         }
+    }
+
+    public void addCow(Cow cow) {
+        if (cows.contains(cow)) {
+            throw new AlreadyExistException(COMMON_ALREADY_EXIST.formatMessage(cow.getCodeId()));
+        }
+        cows.add(cow);
     }
 }

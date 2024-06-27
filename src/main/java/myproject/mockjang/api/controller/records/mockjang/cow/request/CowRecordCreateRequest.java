@@ -13,30 +13,30 @@ import myproject.mockjang.domain.records.RecordType;
 @NoArgsConstructor
 public class CowRecordCreateRequest {
 
-    @NotBlank(message = "소 이름은 공백일 수 없습니다.")
-    private String cowCode;
-    @NotNull(message = "기록 타입은 반드시 입력하셔야 합니다.")
+    @NotBlank(message = "{exception.cow.codeId.blank}")
+    private String codeId;
+    @NotNull(message = "{exception.recordType.null}")
     private RecordType recordType;
-    @NotNull(message = "날짜는 반드시 입력하셔야 합니다.")
+    @NotNull(message = "{exception.date.null}")
     private LocalDateTime date;
-    @NotBlank(message = "기록 메모는 공백일 수 없습니다.")
-    private String memo;
+    @NotBlank(message = "{exception.record.blank}")
+    private String record;
 
     @Builder
-    private CowRecordCreateRequest(String cowCode, RecordType recordType, LocalDateTime date,
-                                   String memo) {
-        this.cowCode = cowCode;
+    private CowRecordCreateRequest(String codeId, RecordType recordType, LocalDateTime date,
+                                   String record) {
+        this.codeId = codeId;
         this.recordType = recordType;
         this.date = date;
-        this.memo = memo;
+        this.record = record;
     }
 
     public CowRecordCreateServiceRequest toServiceRequest() {
         return CowRecordCreateServiceRequest.builder()
-                .cowCode(cowCode)
+                .cowCodeId(codeId)
                 .recordType(recordType)
                 .date(date)
-                .memo(memo)
+                .memo(record)
                 .build();
     }
 }

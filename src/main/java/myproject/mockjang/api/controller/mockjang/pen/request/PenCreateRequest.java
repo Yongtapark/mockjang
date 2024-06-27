@@ -10,10 +10,10 @@ import myproject.mockjang.api.service.mockjang.pen.request.PenCreateServiceReque
 @NoArgsConstructor
 public class PenCreateRequest {
 
-    @NotBlank(message = "축사칸명은 공백일 수 없습니다.")
+    @NotBlank(message = "{exception.pen.codeId.blank}")
     private String penCodeId;
 
-    @NotBlank(message = "축사명은 공백일 수 없습니다.")
+    @NotBlank(message = "{exception.barn.codeId.blank}")
     private String barnCodeId;
 
     @Builder

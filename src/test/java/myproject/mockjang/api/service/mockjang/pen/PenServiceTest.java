@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.mockjang.pen.request.PenCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.pen.request.PenUpdateServiceRequest;
 import myproject.mockjang.api.service.mockjang.pen.response.PenResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -43,11 +44,10 @@ class PenServiceTest extends IntegrationTestSupport {
                 .penCodeId(PEN_CODE_ID_1).barnCodeId(BARN_CODE_ID_1).build();
 
         //when
-        PenResponse response = penService.createPen(request);
+        Long response = penService.createPen(request);
 
         //then
-        assertThat(response.getBarn()).isEqualTo(barn);
-        assertThat(response.getCodeId()).isEqualTo(PEN_CODE_ID_1);
+        assertThat(response).isEqualTo(barn.getId());
     }
 
     @DisplayName("해당 축사칸을 제거하고 축사의 축사칸 리스트에서 제거한다.")
@@ -61,7 +61,7 @@ class PenServiceTest extends IntegrationTestSupport {
         pen.registerUpperGroup(barn);
 
         //when
-        penService.delete(pen);
+        penService.delete(pen.getId());
 
         //then
         assertThat(barn.getPens()).isEmpty();
@@ -72,17 +72,23 @@ class PenServiceTest extends IntegrationTestSupport {
 
     @DisplayName("축사칸의 축사를 변경한다.")
     @Test
-    void changeBarnWith() {
+    void update() {
         //given
         Barn barn1 = Barn.createBarn(BARN_CODE_ID_1);
         Barn barn2 = Barn.createBarn(PARSER_BARN_CODE_ID_2);
-        barnRepository.save(barn1);
+        barnRepository.saveAll(List.of(barn1,barn2));
         Pen pen = Pen.createPen(PEN_CODE_ID_1);
         pen.registerUpperGroup(barn1);
         penRepository.save(pen);
 
+        PenUpdateServiceRequest request = PenUpdateServiceRequest.builder()
+                .penId(pen.getId())
+                .barnId(barn2.getId())
+                .codeId(null)
+                .build();
+
         //when
-        pen.changeUpperGroup(barn2);
+        penService.update(request);
 
         //then
         assertThat(barn1.getPens()).isEmpty();
@@ -93,7 +99,7 @@ class PenServiceTest extends IntegrationTestSupport {
 
     @DisplayName("축사 이름에 빈 문자열이 들어올 경우 예외를 발생시킨다.")
     @Test
-    void createBarnWithEmptybarnCode() {
+    void createBarnWithEmptyBarnCode() {
         //given
         PenCreateServiceRequest request = PenCreateServiceRequest.builder()
                 .penCodeId(STRING_EMPTY).build();
@@ -129,7 +135,7 @@ class PenServiceTest extends IntegrationTestSupport {
     void findAll() {
         //given
         Pen pen1 = Pen.createPen(PEN_CODE_ID_1);
-        Pen pen2 = Pen.createPen(PARSER_PEN_CODE_ID_2);
+        Pen pen2 = Pen.createPen(PEN_CODE_ID_2);
         penRepository.save(pen1);
         penRepository.save(pen2);
 

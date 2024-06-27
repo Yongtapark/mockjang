@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import myproject.mockjang.api.service.mockjang.MockjangServiceAbstract;
 import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceRequest;
+import myproject.mockjang.api.service.mockjang.barn.request.BarnUpdateServiceRequest;
 import myproject.mockjang.api.service.mockjang.barn.response.BarnResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
@@ -21,12 +22,16 @@ public class BarnService extends MockjangServiceAbstract {
 
     private final BarnRepository barnRepository;
 
-    public BarnResponse createBarn(BarnCreateServiceRequest request) {
+    public Long create(BarnCreateServiceRequest request) {
         String barnCode = request.getCodeId();
         codeIdFilter(barnCode);
         Barn barn = Barn.createBarn(barnCode);
-        Barn savedBarn = barnRepository.save(barn);
-        return BarnResponse.of(savedBarn);
+        return barnRepository.save(barn).getId();
+    }
+
+    public void update(BarnUpdateServiceRequest request) {
+        Barn barn = findById(request.getId());
+        barn.updateCodeId(request.getCodeId());
     }
 
     public List<BarnResponse> findAll() {
@@ -41,8 +46,14 @@ public class BarnService extends MockjangServiceAbstract {
         return BarnResponse.of(barn);
     }
 
-    public void delete(Barn barn) {
+    public void remove(Long id) {
+        Barn barn = findById(id);
         barnRepository.delete(barn);
+    }
+
+    private Barn findById(Long id) {
+        return barnRepository.findById(id)
+                .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST.formatMessage(Barn.class)));
     }
 
 }

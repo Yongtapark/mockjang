@@ -14,32 +14,24 @@ public class BarnResponse {
 
     private final String codeId;
 
-    private final List<Pen> pens;
+    private final List<Long> pens;
 
-    private final List<BarnRecord> records;
-
-    private final List<Barn> barns;
+    private final List<Long> records;
 
     @Builder
-    public BarnResponse(Long id, String codeId, List<Pen> pens, List<BarnRecord> records,
-                        List<Barn> barns) {
+    public BarnResponse(Long id, String codeId, List<Long> pens, List<Long> records) {
         this.id = id;
         this.codeId = codeId;
         this.pens = pens;
         this.records = records;
-        this.barns = barns;
     }
 
     public static BarnResponse of(Barn barn) {
         return BarnResponse.builder()
                 .id(barn.getId())
                 .codeId(barn.getCodeId())
-                .pens(barn.getPens())
-                .records(barn.getRecords())
+                .pens(barn.getPens()==null?List.of():barn.getPens().stream().mapToLong(Pen::getId).boxed().toList())
+                .records(barn.getRecords()==null?List.of():barn.getRecords().stream().mapToLong(BarnRecord::getId).boxed().toList())
                 .build();
-    }
-
-    public static BarnResponse of(List<Barn> barns) {
-        return BarnResponse.builder().barns(barns).build();
     }
 }

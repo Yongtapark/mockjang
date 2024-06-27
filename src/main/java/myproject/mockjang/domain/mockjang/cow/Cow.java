@@ -202,7 +202,13 @@ public class Cow extends AuditingEntity implements Mockjang {
     }
 
     public void registerRecord(CowRecord record) {
-        records.add(record);
+        if(!records.contains(record)){
+            records.add(record);
+        }
+    }
+
+    public void removeRecord(CowRecord record){
+        records.remove(record);
     }
 
     public void registerFeedConsumptions(FeedConsumption feedConsumption) {

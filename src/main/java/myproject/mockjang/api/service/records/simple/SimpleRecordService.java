@@ -40,11 +40,6 @@ public class SimpleRecordService {
         simpleRecordRepository.save(targetSimpleRecord);
     }
 
-    public List<SimpleRecordResponse> findAllByCodeId(String codeId) {
-        List<SimpleRecord> simpleRecords = simpleRecordRepository.findAllByCodeId(codeId);
-        return simpleRecords.stream().map(SimpleRecordResponse::of).toList();
-    }
-
     public List<String> findAllCodeIdWithDistinct() {
         return simpleRecordQueryRepository.distinctCodeIds();
     }

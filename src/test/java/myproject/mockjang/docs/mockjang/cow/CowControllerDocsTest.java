@@ -14,6 +14,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 
 import java.util.List;
 import myproject.mockjang.api.controller.mockjang.cow.CowController;
@@ -69,7 +70,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
                 .unitPrice(null)
                 .build();
 
-        given(service.createRaisingCow(any())).willReturn(response);
+        given(service.createRaisingCow(any())).willReturn(1L);
 
         //when //then
         mockMvc.perform(
@@ -90,22 +91,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
                                 fieldWithPath("code").type(JsonFieldType.NUMBER).description("코드"),
                                 fieldWithPath("status").type(JsonFieldType.STRING).description("상태"),
                                 fieldWithPath("message").type(JsonFieldType.STRING).description("메시지"),
-                                fieldWithPath("data").type(JsonFieldType.OBJECT).description("응답 데이터"),
-                                fieldWithPath("data.id").type(JsonFieldType.NUMBER).description("id"),
-                                fieldWithPath("data.codeId").type(JsonFieldType.STRING).description("이름"),
-                                fieldWithPath("data.birthDate").type(JsonFieldType.ARRAY).description("생일"),
-                                fieldWithPath("data.gender").type(JsonFieldType.STRING).description("성별"),
-                                fieldWithPath("data.cowStatus").type(JsonFieldType.STRING)
-                                        .description("상태"),
-                                fieldWithPath("data.barnId").type(JsonFieldType.NUMBER).description("축사 id"),
-                                fieldWithPath("data.penId").type(JsonFieldType.NUMBER).description("축사칸 id"),
-                                fieldWithPath("data.momId").type(JsonFieldType.NULL).description("엄마 소 id"),
-                                fieldWithPath("data.dadId").type(JsonFieldType.NULL).description("아빠 소 id"),
-                                fieldWithPath("data.children").type(JsonFieldType.ARRAY).description("자식 id"),
-                                fieldWithPath("data.records").type(JsonFieldType.ARRAY).description("기록 id"),
-                                fieldWithPath("data.feedConsumptions").type(JsonFieldType.ARRAY)
-                                        .description("먹이 소비 기록 id"),
-                                fieldWithPath("data.unitPrice").type(JsonFieldType.NULL).description("판매가")
+                                fieldWithPath("data").type(JsonFieldType.NUMBER).description("생성된 소 id")
                         )
                 ));
 
@@ -177,7 +163,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/update/pen")
+                        put("/api/v0/cows/update/pen")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document(
@@ -206,7 +192,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/update/status")
+                        put("/api/v0/cows/update/status")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document(
@@ -234,7 +220,7 @@ public class CowControllerDocsTest extends RestDocsSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/remove/parents")
+                        put("/api/v0/cows/remove/parents")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(document(

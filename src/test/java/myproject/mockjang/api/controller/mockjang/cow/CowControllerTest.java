@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -205,7 +206,7 @@ class CowControllerTest extends ControllerTestSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/update/pen")
+                        put("/api/v0/cows/update/pen")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -223,7 +224,7 @@ class CowControllerTest extends ControllerTestSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/update/pen")
+                        put("/api/v0/cows/update/pen")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -242,7 +243,7 @@ class CowControllerTest extends ControllerTestSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/update/status")
+                        put("/api/v0/cows/update/status")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -260,7 +261,7 @@ class CowControllerTest extends ControllerTestSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/update/status")
+                        put("/api/v0/cows/update/status")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -278,7 +279,7 @@ class CowControllerTest extends ControllerTestSupport {
 
         //when //then
         mockMvc.perform(
-                        post("/api/v0/cows/remove/parents")
+                        put("/api/v0/cows/remove/parents")
                                 .content(objectMapper.writeValueAsString(request))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())

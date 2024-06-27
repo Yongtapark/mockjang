@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.mockjang.pen.PenRecord;
@@ -15,15 +14,15 @@ public class PenResponse {
 
     private Long id;
     private String codeId;
-    private Barn barn;
-    private List<Cow> cows;
-    private List<PenRecord> records;
+    private Long barnId;
+    private List<Long> cows;
+    private List<Long> records;
 
     @Builder
-    private PenResponse(Long id, String codeId, Barn barn, List<Cow> cows, List<PenRecord> records) {
+    private PenResponse(Long id, String codeId, Long barnId, List<Long> cows, List<Long> records) {
         this.id = id;
         this.codeId = codeId;
-        this.barn = barn;
+        this.barnId = barnId;
         this.cows = cows;
         this.records = records;
     }
@@ -32,9 +31,9 @@ public class PenResponse {
         return PenResponse.builder()
                 .id(pen.getId())
                 .codeId(pen.getCodeId())
-                .barn(pen.getBarn())
-                .cows(pen.getCows())
-                .records(pen.getRecords())
+                .barnId(pen.getBarn().getId())
+                .cows(pen.getCows()==null?List.of():pen.getCows().stream().mapToLong(Cow::getId).boxed().toList())
+                .records(pen.getRecords()==null?List.of():pen.getRecords().stream().mapToLong(PenRecord::getId).boxed().toList())
                 .build();
     }
 }

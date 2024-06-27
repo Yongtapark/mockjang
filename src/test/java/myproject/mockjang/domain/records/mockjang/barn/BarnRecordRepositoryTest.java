@@ -28,8 +28,8 @@ class BarnRecordRepositoryTest extends IntegrationTestSupport {
         BarnRecord barnRecord2 = BarnRecord.builder().barn(barn).build();
 
         //when
-        barnRecord1.writeNote("test1");
-        barnRecord2.writeNote("test2");
+        barnRecord1.recordMemo("test1");
+        barnRecord2.recordMemo("test2");
         barnRecordRepository.save(barnRecord1);
         barnRecordRepository.save(barnRecord2);
         Barn findBarn = barnRepository.findById(barn.getId()).orElseThrow();
@@ -48,8 +48,8 @@ class BarnRecordRepositoryTest extends IntegrationTestSupport {
 
         BarnRecord barnRecord1 = BarnRecord.builder().barn(barn).build();
         BarnRecord barnRecord2 = BarnRecord.builder().barn(barn).build();
-        barnRecord1.writeNote("test1");
-        barnRecord2.writeNote("test2");
+        barnRecord1.recordMemo("test1");
+        barnRecord2.recordMemo("test2");
         barnRecordRepository.save(barnRecord1);
         barnRecordRepository.save(barnRecord2);
 

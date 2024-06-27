@@ -11,7 +11,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.pen.Pen;
 import myproject.mockjang.domain.records.RecordType;
 import myproject.mockjang.domain.records.Records;
@@ -32,19 +31,19 @@ public class PenRecord extends Records {
     @ManyToOne(fetch = FetchType.LAZY)
     private Pen pen;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Barn barn;
-
     private final boolean deleted = false;
 
     @Builder
-    private PenRecord(Barn barn, Pen pen) {
+    private PenRecord(Pen pen) {
         this.pen = pen;
-        this.barn = barn;
+    }
+
+    public Long getPenId() {
+        return pen.getId();
     }
 
     public static PenRecord createRecord(Pen pen, RecordType recordType, LocalDateTime date) {
-        PenRecord penRecord = PenRecord.builder().pen(pen).barn(pen.getBarn()).build();
+        PenRecord penRecord = PenRecord.builder().pen(pen).build();
         penRecord.registerDate(date);
         penRecord.registerRecordType(recordType);
         return penRecord;
@@ -53,5 +52,26 @@ public class PenRecord extends Records {
     public void writeNote(String memo) {
         registerRecord(memo);
         pen.registerDailyRecord(this);
+    }
+
+    public void recordsNullCheck(PenRecord penRecord) {
+        basicNullCheck(penRecord);
+    }
+
+    public void registerRecordType(RecordType recordType) {
+        super.registerRecordType(recordType);
+    }
+
+    public void registerDate(LocalDateTime dateTime) {
+        super.registerDate(dateTime);
+    }
+
+    public void recordMemo(String memo) {
+        registerRecord(memo);
+        pen.registerRecord(this);
+    }
+
+    public void removeMemo() {
+        pen.removeRecord(this);
     }
 }

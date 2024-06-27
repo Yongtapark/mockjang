@@ -2,8 +2,10 @@ package myproject.mockjang.api.controller.mockjang.barn;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -11,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.List;
 import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.mockjang.barn.request.BarnCreateRequest;
+import myproject.mockjang.api.controller.mockjang.barn.request.BarnUpdateRequest;
 import myproject.mockjang.api.service.mockjang.barn.response.BarnResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import org.junit.jupiter.api.DisplayName;
@@ -96,6 +99,43 @@ class BarnControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.data").isEmpty());
     }
 
+    @DisplayName("축사 기본 정보를 수정한다.")
+    @Test
+    void update() throws Exception {
+        //given
+        BarnUpdateRequest request = BarnUpdateRequest.builder().id(1L).codeId(BARN_CODE_ID_1).build();
+
+        //when //then
+
+        mockMvc.perform(
+                        put("/api/v0/barns/update")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("204"))
+                .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+                .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+    }
+
+    @DisplayName("축사 정보를 수정 할 때, 수정할 이름이 없으면 예외를 발생시킨다.")
+    @Test
+    void updateWithNoData() throws Exception {
+        //given
+        BarnUpdateRequest request = BarnUpdateRequest.builder().id(1L).codeId(null).build();
+
+        //when //then
+        mockMvc.perform(
+                        put("/api/v0/barns/update")
+                                .content(objectMapper.writeValueAsString(request))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("400"))
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+                .andExpect(jsonPath("$.message").value("코드명은 공백일 수 없습니다."));
+    }
+
     @DisplayName("축사 목록을 조회한다.")
     @Test
     void findAll() throws Exception {
@@ -131,4 +171,21 @@ class BarnControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.message").value("OK"))
                 .andExpect(jsonPath("$.data").exists());
     }
+
+    @DisplayName("축사를 제거한다.")
+    @Test
+    void remove() throws Exception {
+
+        //given //when //then
+        mockMvc.perform(
+                        delete("/api/v0/barns/{id}",1L)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("204"))
+                .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+                .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+    }
+
+
 }

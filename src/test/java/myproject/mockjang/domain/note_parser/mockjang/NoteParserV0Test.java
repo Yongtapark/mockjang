@@ -165,7 +165,7 @@ class NoteParserV0Test extends IntegrationTestSupport {
         NoteParserV0 noteParserV0 = new NoteParserV0();
         MockjangNoteContainer mockjangNoteContainer = new MockjangNoteContainer();
         String wrongFormatContext =
-                "[[" + BARN_CODE_ID_1 + "," + PARSER_COW_CODE_ID_2 + "]] " + PARSER_BARN_NOTE_1;
+                "[[" + BARN_CODE_ID_1 + "," + COW_CODE_ID_2 + "]] " + PARSER_BARN_NOTE_1;
 
         //then
         assertThatThrownBy(

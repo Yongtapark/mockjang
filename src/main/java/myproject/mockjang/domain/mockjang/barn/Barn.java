@@ -57,6 +57,12 @@ public class Barn extends AuditingEntity implements Mockjang {
         return Barn.builder().codeId(codeId).build();
     }
 
+    public void registerDailyRecord(BarnRecord record) {
+        if (!records.contains(record)) {
+            records.add(record);
+        }
+    }
+
     public void addPen(Pen pen) {
         if (pens.contains(pen)) {
             throw new AlreadyExistException(Exceptions.COMMON_ALREADY_EXIST.formatMessage(pen.getCodeId()));
@@ -70,10 +76,18 @@ public class Barn extends AuditingEntity implements Mockjang {
         }
     }
 
-    public void registerDailyRecord(BarnRecord record) {
-        if (!records.contains(record)) {
+    public void registerRecord(BarnRecord record) {
+        if(!records.contains(record)){
             records.add(record);
         }
+    }
+
+    public void removeRecord(BarnRecord record){
+        records.remove(record);
+    }
+
+    public void updateCodeId(String codeId){
+        this.codeId = codeId;
     }
 
     @Override

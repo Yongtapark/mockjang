@@ -35,9 +35,9 @@ public class FeedService {
         return feedRepository.findAll();
     }
 
-    public Feed findByCodeId(String codId) {
-        return feedRepository.findByCodeId(codId)
-                .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codId));
+    public Feed findByCodeId(String codeId) {
+        return feedRepository.findByCodeId(codeId)
+                .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, codeId));
     }
 
     public void delete(Feed feed) {

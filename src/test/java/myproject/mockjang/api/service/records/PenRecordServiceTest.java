@@ -9,9 +9,6 @@ import java.util.List;
 import myproject.mockjang.IntegrationTestSupport;
 import myproject.mockjang.api.service.records.mockjang.cow.CowRecordService;
 import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordCreateServiceRequest;
-import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordFindAllByCodeIdAndRecordTypeServiceRequest;
-import myproject.mockjang.api.service.records.mockjang.cow.request.CowRecordRemoveServiceRequest;
-import myproject.mockjang.api.service.records.mockjang.cow.response.CowRecordResponse;
 import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.barn.BarnRepository;
 import myproject.mockjang.domain.mockjang.cow.Cow;
@@ -28,7 +25,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-class CowRecordServiceTest extends IntegrationTestSupport {
+class PenRecordServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private BarnRepository barnRepository;
@@ -56,13 +53,13 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         cowRepository.save(cow);
 
         CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCode(cow.getCodeId())
+                .cowCodeId(cow.getCodeId())
                 .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
         //when
-        CowRecordResponse response = cowRecordService.create(request);
+        Long savedId = cowRecordService.create(request);
 
         //then
-        cowRecordRepository.findById(response.getId());
+        cowRecordRepository.findById(savedId);
 
     }
 
@@ -74,7 +71,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         cowRepository.save(cow);
 
         CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCode(cow.getCodeId())
+                .cowCodeId(cow.getCodeId())
                 .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
 
         //when  //then
@@ -96,7 +93,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         cowRepository.save(cow);
 
         CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCode(cow.getCodeId())
+                .cowCodeId(cow.getCodeId())
                 .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
 
         //when  //then
@@ -109,7 +106,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
     void createWithNoCowId() {
         //given
         CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCode(null)
+                .cowCodeId(null)
                 .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
 
         //when  //then
@@ -132,7 +129,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         cowRepository.save(cow);
 
         CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCode(cow.getCodeId())
+                .cowCodeId(cow.getCodeId())
                 .recordType(null).date(TEMP_DATE).memo(MEMO_1).build();
 
         //when  //then
@@ -155,44 +152,12 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         cowRepository.save(cow);
 
         CowRecordCreateServiceRequest request = CowRecordCreateServiceRequest.builder()
-                .cowCode(cow.getCodeId())
+                .cowCodeId(cow.getCodeId())
                 .recordType(RecordType.DAILY).date(null).memo(MEMO_1).build();
 
         //when  //then
         assertThatThrownBy(() -> cowRecordService.create(request)).isInstanceOf(NotExistException.class)
                 .hasMessage(COMMON_NOT_EXIST.formatMessage(LocalDateTime.class));
-    }
-
-    @DisplayName("소 번호로 소 기록을 조회한다.")
-    @Test
-    void findAllByCodeId() {
-        //given
-        Barn barn = Barn.createBarn(BARN_CODE_ID_1);
-        barnRepository.save(barn);
-        Pen pen = Pen.createPen(PEN_CODE_ID_1);
-        pen.registerUpperGroup(barn);
-        penRepository.save(pen);
-        Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
-        cow.registerUpperGroup(pen);
-        cow.registerBarn(barn);
-        cowRepository.save(cow);
-
-        CowRecordCreateServiceRequest request1 = CowRecordCreateServiceRequest.builder()
-                .cowCode(cow.getCodeId())
-                .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_1).build();
-
-        CowRecordCreateServiceRequest request2 = CowRecordCreateServiceRequest.builder()
-                .cowCode(cow.getCodeId())
-                .recordType(RecordType.DAILY).date(TEMP_DATE).memo(MEMO_2).build();
-
-        cowRecordService.create(request1);
-        cowRecordService.create(request2);
-        //when
-        List<CowRecordResponse> responses = cowRecordService.findAllByCodeId(cow.getCodeId());
-
-        //then
-        List<String> memos = responses.stream().map(CowRecordResponse::getMemo).toList();
-        assertThat(memos).contains(request1.getMemo(), request2.getMemo());
     }
 
     @DisplayName("id 값으로 소 기록을 제거한다.")
@@ -208,54 +173,13 @@ class CowRecordServiceTest extends IntegrationTestSupport {
         CowRecord savedRecord1 = cowRecordRepository.save(cowRecord1);
         CowRecord savedRecord2 = cowRecordRepository.save(cowRecord2);
 
-        CowRecordRemoveServiceRequest request = CowRecordRemoveServiceRequest.builder()
-                .id(savedRecord1.getId()).build();
-
         //when
-        cowRecordService.remove(request);
+        cowRecordService.remove(savedRecord1.getId());
 
         //then
         List<CowRecord> cowRecords = cowRecordRepository.findAllByCow_CodeId(cow.getCodeId());
         assertThat(cowRecords).containsOnly(savedRecord2);
         assertThat(cowRecords).doesNotContain(savedRecord1);
+        assertThat(cow.getRecords()).doesNotContain(savedRecord1);
     }
-
-    @DisplayName("소 번호와 기록타입으로 소 기록 목록을 조회한다.")
-    @Test
-    void findAllByCodeIdWhereRecordType() {
-        //given
-        Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
-        cowRepository.save(cow);
-        CowRecord cowRecord1 = CowRecord.builder().cow(cow).build();
-        CowRecord cowRecord2 = CowRecord.builder().cow(cow).build();
-        cowRecord1.registerRecordType(RecordType.DAILY);
-        cowRecord2.registerRecordType(RecordType.HEALTH);
-        cowRecord1.recordMemo(MEMO_1);
-        cowRecord2.recordMemo(MEMO_2);
-        CowRecord savedRecord1 = cowRecordRepository.save(cowRecord1);
-        CowRecord savedRecord2 = cowRecordRepository.save(cowRecord2);
-
-        CowRecordFindAllByCodeIdAndRecordTypeServiceRequest request1 = CowRecordFindAllByCodeIdAndRecordTypeServiceRequest.builder()
-                .cowCode(savedRecord1.getCow().getCodeId()).recordType(RecordType.DAILY).build();
-
-        CowRecordFindAllByCodeIdAndRecordTypeServiceRequest request2 = CowRecordFindAllByCodeIdAndRecordTypeServiceRequest.builder()
-                .cowCode(savedRecord1.getCow().getCodeId()).recordType(RecordType.HEALTH).build();
-
-        //when
-        List<CowRecordResponse> allByCodeIdWhereRecordType1 = cowRecordService.findAllByCodeIdWhereRecordType(
-                request1);
-        List<CowRecordResponse> allByCodeIdWhereRecordType2 = cowRecordService.findAllByCodeIdWhereRecordType(
-                request2);
-
-        //then
-        List<String> dailyRecords = allByCodeIdWhereRecordType1.stream().map(CowRecordResponse::getMemo)
-                .toList();
-        List<String> healthRecords = allByCodeIdWhereRecordType2.stream()
-                .map(CowRecordResponse::getMemo)
-                .toList();
-        assertThat(dailyRecords).containsOnly(MEMO_1);
-        assertThat(healthRecords).containsOnly(MEMO_2);
-    }
-
-
 }

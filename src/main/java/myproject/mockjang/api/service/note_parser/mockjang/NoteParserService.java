@@ -107,7 +107,7 @@ public class NoteParserService {
             Barn findBarn = barnRepository.findByCodeId(recordAndCodeId.codeId())
                     .orElseThrow(() -> new NotExistException(COMMON_NOT_EXIST, recordAndCodeId.codeId()));
             BarnRecord barnRecord = BarnRecord.creatRecord(findBarn, recordType, date);
-            barnRecord.writeNote(recordAndCodeId.record());
+            barnRecord.recordMemo(recordAndCodeId.record());
             barnRecordRepository.save(barnRecord);
         }
     }

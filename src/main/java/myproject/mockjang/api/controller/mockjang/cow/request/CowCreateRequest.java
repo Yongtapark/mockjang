@@ -13,11 +13,11 @@ import myproject.mockjang.domain.mockjang.cow.Gender;
 @NoArgsConstructor
 public class CowCreateRequest {
 
-    @NotBlank(message = "{exception.cow.codId.blank}")
+    @NotBlank(message = "{exception.cow.codeId.blank}")
     private String cowCode;
     @NotNull(message = "{exception.cow.gender.null}")
     private Gender gender;
-    @NotBlank(message = "{exception.pen.codId.blank}")
+    @NotBlank(message = "{exception.pen.codeId.blank}")
     private String penCode;
     @NotNull(message = "{exception.cow.date.null}")
     private LocalDateTime birthDate;

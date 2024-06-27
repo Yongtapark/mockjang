@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import myproject.mockjang.api.service.mockjang.barn.request.BarnCreateServiceRequest;
 import myproject.mockjang.api.service.mockjang.barn.request.BarnUpdateServiceRequest;
 
 @Getter
