@@ -140,7 +140,7 @@ class CowRecordServiceTest extends IntegrationTestSupport {
     void update() {
         //given
         Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, TEMP_DATE);
-         cowRepository.save(cow);
+        cowRepository.save(cow);
         CowRecordUpdateServiceRequest request = CowRecordUpdateServiceRequest.builder()
                 .id(cow.getId())
                 .record(MEMO_2)
@@ -151,13 +151,13 @@ class CowRecordServiceTest extends IntegrationTestSupport {
 
 
         CowRecord cowRecord = CowRecord.createRecord(cow, RecordType.DAILY, TEMP_DATE);
-        CowRecord savedCowRecord = cowRecordRepository.save(cowRecord);
+        cowRecordRepository.save(cowRecord);
 
         //when
         cowRecordService.update(request);
 
         //then
-        assertThat(savedCowRecord.getRecord()).isEqualTo(MEMO_2);
+        assertThat(cowRecord.getRecord()).isEqualTo(MEMO_2);
     }
 
 }
