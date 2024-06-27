@@ -2,6 +2,7 @@ package myproject.mockjang.api.controller.mockjang.cow;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -12,6 +13,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import myproject.mockjang.ControllerTestSupport;
 import myproject.mockjang.api.controller.mockjang.cow.request.CowCreateRequest;
+import myproject.mockjang.api.controller.mockjang.cow.request.CowRegisterParentsRequest;
+import myproject.mockjang.api.controller.mockjang.cow.request.CowRegisterUnitPriceRequest;
+import myproject.mockjang.api.controller.mockjang.cow.request.CowRemoveParentsRequest;
+import myproject.mockjang.api.controller.mockjang.cow.request.CowUpdateCowStatusRequest;
+import myproject.mockjang.api.controller.mockjang.cow.request.CowUpdatePenRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
@@ -94,6 +100,203 @@ class CowControllerTest extends ControllerTestSupport {
         .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
         .andExpect(jsonPath("$.message").value("소 이름은 공백일 수 없습니다."))
         .andExpect(jsonPath("$.data").isEmpty());
+  }
+
+  @DisplayName("소의 부모를 등록한다")
+  @Test
+  void registerParents() throws Exception {
+    //given
+    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parentsIds(List.of(2L,3L)).build();
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/register/parents")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("204"))
+            .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+            .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+  }
+
+  @DisplayName("소의 부모의 부모는 최소 1마리, 최대 2마리 등록 가능하다.")
+  @Test
+  void registerParentsWithOverParents() throws Exception {
+    //given
+    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parentsIds(List.of(2L,3L,4L)).build();
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/register/parents")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("400"))
+            .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+            .andExpect(jsonPath("$.message").value("부모는 최소 1명, 최대 2명이어야 합니다."));
+  }
+
+  @DisplayName("소의 부모를 입력하지 않으면 예외를 발생시킨다.")
+  @Test
+  void registerParentsWithNoParents() throws Exception {
+    //given
+    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parentsIds(null).build();
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/register/parents")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("400"))
+            .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+            .andExpect(jsonPath("$.message").value("고유번호는 반드시 입력하셔야 합니다."));
+  }
+
+  @DisplayName("도축 상태가 된 소의 금액을 지정한다.")
+  @Test
+  void registerUnitPrice() throws Exception {
+    //given
+    CowRegisterUnitPriceRequest request = CowRegisterUnitPriceRequest.builder().cowId(1L).unitPrice(UNIT_PRICE_100_000_000).build();
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/register/price")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("204"))
+            .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+            .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+  }
+
+  @DisplayName("도축 상태가 된 소의 금액을 지정하지 않으면 예외를 발생키킨다.")
+  @Test
+  void registerUnitPriceWithNoPrice() throws Exception {
+    //given
+    CowRegisterUnitPriceRequest request = CowRegisterUnitPriceRequest.builder().cowId(1L).unitPrice(null).build();
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/register/price")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("400"))
+            .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+            .andExpect(jsonPath("$.message").value("소 금액은 반드시 입력하셔야 합니다."));
+  }
+
+  @DisplayName("소의 축사칸을 변경한다.")
+  @Test
+  void updatePen() throws Exception {
+    //given
+    CowUpdatePenRequest request = CowUpdatePenRequest.builder().cowId(1L).penId(1L).build();
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/update/pen")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("204"))
+            .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+            .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+  }
+
+  @DisplayName("소의 축사칸을 입력하지 않을 시 예외를 발생시킨다.")
+  @Test
+  void updatePenWithNoPenId() throws Exception {
+    //given
+    CowUpdatePenRequest request = CowUpdatePenRequest.builder().cowId(1L).penId(null).build();
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/update/pen")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("400"))
+            .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+            .andExpect(jsonPath("$.message").value("고유번호는 반드시 입력하셔야 합니다."));
+  }
+
+  @DisplayName("소의 상태를 변경한다")
+  @Test
+  void updateCowStatus() throws Exception {
+    //given
+    CowUpdateCowStatusRequest request = CowUpdateCowStatusRequest.builder().cowId(1L).cowStatus(CowStatus.SLAUGHTERED).build();
+
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/update/status")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("204"))
+            .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+            .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+  }
+
+  @DisplayName("소의 상태를 입력하지 않으면 예외를 발생시킨다.")
+  @Test
+  void updateCowStatusWithNoStatus() throws Exception {
+    //given
+    CowUpdateCowStatusRequest request = CowUpdateCowStatusRequest.builder().cowId(1L).cowStatus(null).build();
+
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/update/status")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.code").value("400"))
+            .andExpect(jsonPath("$.status").value("BAD_REQUEST"))
+            .andExpect(jsonPath("$.message").value("소 상태는 반드시 입력하셔야 합니다."));
+  }
+
+  @DisplayName("소의 부모 관계를 제거한다.")
+  @Test
+  void removeParents() throws Exception {
+    //given
+    CowRemoveParentsRequest request = CowRemoveParentsRequest.builder().cowId(1L).parentsIds(List.of(2L,3L)).build();
+
+
+    //when //then
+    mockMvc.perform(
+                    post("/api/v0/cows/remove/parents")
+                            .content(objectMapper.writeValueAsString(request))
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("204"))
+            .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+            .andExpect(jsonPath("$.message").value("NO_CONTENT"));
+  }
+
+  @DisplayName("소를 제거한다.")
+  @Test
+  void remove() throws Exception {
+    //given//when //then
+    mockMvc.perform(
+                    delete("/api/v0/cows/{id}", 1L)
+                            .contentType(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.code").value("204"))
+            .andExpect(jsonPath("$.status").value("NO_CONTENT"))
+            .andExpect(jsonPath("$.message").value("NO_CONTENT"));
   }
 
   @DisplayName("소 목록을 조회한다.")
