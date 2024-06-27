@@ -1,4 +1,4 @@
-[[product-create]]
+[[simpleNoteParser-new]]
 === 신규 노트 등록
 
 ==== HTTP Request

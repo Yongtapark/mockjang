@@ -1,0 +1,53 @@
+[[barnRecord-create]]
+=== 신규 축사 기록 등록
+
+==== HTTP Request
+
+include::{snippets}/barnRecord-new/http-request.adoc[]
+include::{snippets}/barnRecord-new/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/barnRecord-new/http-response.adoc[]
+include::{snippets}/barnRecord-new/response-fields.adoc[]
+
+[[barnRecord-search]]
+=== 축사 기록 검색
+
+==== HTTP Request
+
+include::{snippets}/barnRecord-search/http-request.adoc[]
+include::{snippets}/barnRecord-search/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/barnRecord-search/http-response.adoc[]
+include::{snippets}/barnRecord-search/response-fields.adoc[]
+
+
+
+[[barnRecord-update]]
+=== 축사 기록 수정
+
+==== HTTP Request
+
+include::{snippets}/barnRecord-update/http-request.adoc[]
+include::{snippets}/barnRecord-update/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/barnRecord-update/http-response.adoc[]
+include::{snippets}/barnRecord-update/response-fields.adoc[]
+
+
+[[barnRecord-remove]]
+=== 축사 기록 제거
+
+==== HTTP Request
+
+include::{snippets}/barnRecord-remove/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/barnRecord-remove/http-response.adoc[]
+include::{snippets}/barnRecord-remove/response-fields.adoc[]

@@ -24,6 +24,26 @@ include::api/mockjang/pen/pen.adoc[]
 
 include::api/mockjang/cow/cow.adoc[]
 
+[[BarnRecord-API]]
+== Barn Record API
+
+include::api/record/mockjang/barn/barn.adoc[]
+
+[[PenRecord-API]]
+== Pen Record API
+
+include::api/record/mockjang/pen/pen.adoc[]
+
+[[CowRecord-API]]
+== Cow Record API
+
+include::api/record/mockjang/cow/cow.adoc[]
+
+[[NoteParser-API]]
+== Note Parser API
+
+include::api/note_parser/mockjang/note-parser.adoc[]
+
 [[SimpleNoteParser-API]]
 == Simple Note Parser API
 
@@ -33,4 +53,11 @@ include::api/note_parser/simple/simple-note-parser.adoc[]
 == Simple Record API
 
 include::api/record/simple/simple-record.adoc[]
+
+[[Schedule-API]]
+== Schedule API
+
+include::api/schedule/schedule.adoc[]
+
+
 
