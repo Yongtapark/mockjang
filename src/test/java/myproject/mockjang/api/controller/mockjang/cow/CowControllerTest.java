@@ -19,9 +19,11 @@ import myproject.mockjang.api.controller.mockjang.cow.request.CowRemoveParentsRe
 import myproject.mockjang.api.controller.mockjang.cow.request.CowUpdateCowStatusRequest;
 import myproject.mockjang.api.controller.mockjang.cow.request.CowUpdatePenRequest;
 import myproject.mockjang.api.service.mockjang.cow.response.CowResponse;
+import myproject.mockjang.domain.mockjang.barn.Barn;
 import myproject.mockjang.domain.mockjang.cow.Cow;
 import myproject.mockjang.domain.mockjang.cow.CowStatus;
 import myproject.mockjang.domain.mockjang.cow.Gender;
+import myproject.mockjang.domain.mockjang.pen.Pen;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -32,9 +34,13 @@ class CowControllerTest extends ControllerTestSupport {
   @Test
   void create() throws Exception {
     //given
-    CowCreateRequest request = createRequest(PARSER_COW_CODE_ID_1);
+    CowCreateRequest request = createRequest(COW_CODE_ID_1);
+    //given(cowService.createRaisingCow(any())).willReturn();
+
+
 
     //when //then
+
     mockMvc.perform(
             post("/api/v0/cows/new")
                 .content(objectMapper.writeValueAsString(request))
@@ -106,7 +112,7 @@ class CowControllerTest extends ControllerTestSupport {
   @Test
   void registerParents() throws Exception {
     //given
-    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parentsIds(List.of(2L,3L)).build();
+    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parents(List.of(2L,3L)).build();
 
     //when //then
     mockMvc.perform(
@@ -124,7 +130,7 @@ class CowControllerTest extends ControllerTestSupport {
   @Test
   void registerParentsWithOverParents() throws Exception {
     //given
-    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parentsIds(List.of(2L,3L,4L)).build();
+    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parents(List.of(2L,3L,4L)).build();
 
     //when //then
     mockMvc.perform(
@@ -142,7 +148,7 @@ class CowControllerTest extends ControllerTestSupport {
   @Test
   void registerParentsWithNoParents() throws Exception {
     //given
-    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parentsIds(null).build();
+    CowRegisterParentsRequest request = CowRegisterParentsRequest.builder().cowId(1L).parents(null).build();
 
     //when //then
     mockMvc.perform(
@@ -270,7 +276,7 @@ class CowControllerTest extends ControllerTestSupport {
   @Test
   void removeParents() throws Exception {
     //given
-    CowRemoveParentsRequest request = CowRemoveParentsRequest.builder().cowId(1L).parentsIds(List.of(2L,3L)).build();
+    CowRemoveParentsRequest request = CowRemoveParentsRequest.builder().cowId(1L).parents(List.of(2L,3L)).build();
 
 
     //when //then
@@ -321,11 +327,12 @@ class CowControllerTest extends ControllerTestSupport {
   void findByCodeId() throws Exception {
     //given
     LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
-    Cow cow = Cow.createCow(PARSER_COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, date);
+    Cow cow = Cow.createCow(COW_CODE_ID_1, Gender.FEMALE, CowStatus.RAISING, date);
+
     CowResponse response = CowResponse.of(cow);
     //when //then
     when(cowService.findByCodeId(any())).thenReturn(response);
-    mockMvc.perform(get("/api/v0/cows/" + PARSER_COW_CODE_ID_1))
+    mockMvc.perform(get("/api/v0/cows/" + COW_CODE_ID_1))
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(status().isOk())
@@ -339,7 +346,7 @@ class CowControllerTest extends ControllerTestSupport {
   private CowCreateRequest createRequest(String cowCode) {
     LocalDateTime date = LocalDateTime.of(2024, 5, 31, 00, 00);
     return CowCreateRequest.builder().cowCode(cowCode)
-        .penCode(PARSER_PEN_CODE_ID_1)
+        .penCode(PEN_CODE_ID_1)
         .birthDate(date)
         .gender(Gender.FEMALE)
         .build();
