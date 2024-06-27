@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v0/cows")
 public class CowController {
   //컨트롤러 완성 ok
-  // 테스트 코드 완성
+  // 테스트 코드 완성 ok
   // docs 완성
 
   private final CowService cowService;
