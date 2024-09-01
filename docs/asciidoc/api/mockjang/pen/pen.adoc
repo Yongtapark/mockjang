@@ -1,0 +1,62 @@
+[[pen-create]]
+=== 신규 축사 칸 등록
+
+==== HTTP Request
+
+include::{snippets}/pen-new/http-request.adoc[]
+include::{snippets}/pen-new/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/pen-new/http-response.adoc[]
+include::{snippets}/pen-new/response-fields.adoc[]
+
+[[pen-findAll]]
+=== 축사 칸 목록 조회
+
+==== HTTP Request
+
+include::{snippets}/pen-findAll/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/pen-findAll/http-response.adoc[]
+include::{snippets}/pen-findAll/response-fields.adoc[]
+
+[[pen-findByCodeId]]
+=== 축사 칸 단건 조회
+
+==== HTTP Request
+
+include::{snippets}/pen-findByCodeId/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/pen-findByCodeId/http-response.adoc[]
+include::{snippets}/pen-findByCodeId/response-fields.adoc[]
+
+[[pen-update]]
+=== 축사 칸 기본 정보 수정
+
+==== HTTP Request
+
+include::{snippets}/pen-update/http-request.adoc[]
+include::{snippets}/pen-update/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/pen-update/http-response.adoc[]
+include::{snippets}/pen-update/response-fields.adoc[]
+
+
+[[pen-remove]]
+=== 축사 칸 제거
+
+==== HTTP Request
+
+include::{snippets}/pen-remove/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/pen-remove/http-response.adoc[]
+include::{snippets}/pen-remove/response-fields.adoc[]
