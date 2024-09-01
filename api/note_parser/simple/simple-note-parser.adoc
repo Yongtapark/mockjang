@@ -1,0 +1,12 @@
+[[simpleNoteParser-new]]
+=== 신규 노트 등록
+
+==== HTTP Request
+
+include::{snippets}/simpleParser-new/http-request.adoc[]
+include::{snippets}/simpleParser-new/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/simpleParser-new/http-response.adoc[]
+include::{snippets}/simpleParser-new/response-fields.adoc[]
