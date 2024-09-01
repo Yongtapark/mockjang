@@ -1,0 +1,53 @@
+[[cowRecord-create]]
+=== 신규 소 기록 등록
+
+==== HTTP Request
+
+include::{snippets}/cowRecord-new/http-request.adoc[]
+include::{snippets}/cowRecord-new/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/cowRecord-new/http-response.adoc[]
+include::{snippets}/cowRecord-new/response-fields.adoc[]
+
+[[cowRecord-search]]
+=== 소 기록 검색
+
+==== HTTP Request
+
+include::{snippets}/cowRecord-search/http-request.adoc[]
+include::{snippets}/cowRecord-search/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/cowRecord-search/http-response.adoc[]
+include::{snippets}/cowRecord-search/response-fields.adoc[]
+
+
+
+[[cowRecord-update]]
+=== 소 기록 수정
+
+==== HTTP Request
+
+include::{snippets}/cowRecord-update/http-request.adoc[]
+include::{snippets}/cowRecord-update/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/cowRecord-update/http-response.adoc[]
+include::{snippets}/cowRecord-update/response-fields.adoc[]
+
+
+[[cowRecord-remove]]
+=== 소 기록 제거
+
+==== HTTP Request
+
+include::{snippets}/cowRecord-remove/http-request.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/cowRecord-remove/http-response.adoc[]
+include::{snippets}/cowRecord-remove/response-fields.adoc[]
