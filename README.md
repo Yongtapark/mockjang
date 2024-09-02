@@ -6,6 +6,8 @@ docs :  https://yongtapark.github.io/mockjang/
 
 축사, 칸, 소 기본 CRUD
 
+일정 기능
+
 자동완성기능
 
 
